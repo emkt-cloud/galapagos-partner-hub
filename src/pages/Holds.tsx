@@ -15,18 +15,18 @@ type Hold = {
 };
 
 const holds: Hold[] = [
-  { ref: "GO-2841", client: "Maria Pérez",     ship: "Galapagos Legend", cabin: "Balcony Suite", departure: "22 Abr 2025", expiresIn: 1, total: "$9,780",  pax: 2 },
-  { ref: "GO-2839", client: "Robert Klein",    ship: "Coral II",         cabin: "Junior Suite",  departure: "26 Abr 2025", expiresIn: 3, total: "$7,120",  pax: 2 },
-  { ref: "GO-2836", client: "Sophie Laurent",  ship: "Coral I",          cabin: "Standard Plus", departure: "29 Abr 2025", expiresIn: 6, total: "$11,350", pax: 4 },
-  { ref: "GO-2830", client: "Hiroshi Tanaka",  ship: "Galapagos Legend", cabin: "Standard",      departure: "2 May 2025",  expiresIn: 8, total: "$8,490",  pax: 2 },
+  { ref: "GO-2841", client: "Maria Pérez",     ship: "Galapagos Legend", cabin: "Balcony Suite", departure: "Apr 22, 2025", expiresIn: 1, total: "$9,780",  pax: 2 },
+  { ref: "GO-2839", client: "Robert Klein",    ship: "Coral II",         cabin: "Junior Suite",  departure: "Apr 26, 2025", expiresIn: 3, total: "$7,120",  pax: 2 },
+  { ref: "GO-2836", client: "Sophie Laurent",  ship: "Coral I",          cabin: "Standard Plus", departure: "Apr 29, 2025", expiresIn: 6, total: "$11,350", pax: 4 },
+  { ref: "GO-2830", client: "Hiroshi Tanaka",  ship: "Galapagos Legend", cabin: "Standard",      departure: "May 2, 2025",  expiresIn: 8, total: "$8,490",  pax: 2 },
 ];
 
 const statusOf = (d: number): HoldStatus => d <= 2 ? "critical" : d <= 4 ? "warning" : "ok";
 const max = 7;
 
 const statusMap = {
-  critical: { ring: "hsl(var(--destructive))", text: "text-destructive", bg: "bg-destructive/10", label: "Urgente" },
-  warning:  { ring: "hsl(var(--warning))",     text: "text-warning",     bg: "bg-warning/10",     label: "Próximo" },
+  critical: { ring: "hsl(var(--destructive))", text: "text-destructive", bg: "bg-destructive/10", label: "Urgent" },
+  warning:  { ring: "hsl(var(--warning))",     text: "text-warning",     bg: "bg-warning/10",     label: "Soon" },
   ok:       { ring: "hsl(var(--success))",     text: "text-success",     bg: "bg-success/10",     label: "OK" },
 } as const;
 
@@ -45,16 +45,16 @@ const Holds = () => {
           <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-warning/15 blur-3xl" />
           <div className="relative">
             <p className="text-[10px] uppercase tracking-[0.28em] text-warning mb-3 inline-flex items-center gap-2">
-              <Clock4 className="h-3.5 w-3.5" /> Holds vigentes
+              <Clock4 className="h-3.5 w-3.5" /> Active holds
             </p>
             <p className="font-display text-5xl font-semibold text-navy leading-none">{holds.length}</p>
-            <p className="text-sm text-muted-foreground mt-2">Con valor total acumulado de <span className="text-navy font-semibold">$36,740</span></p>
+            <p className="text-sm text-muted-foreground mt-2">Total accumulated value of <span className="text-navy font-semibold">$36,740</span></p>
           </div>
         </div>
         {[
-          { k: "critical" as const, label: "Vencen ≤ 2 días", count: counts.critical },
-          { k: "warning"  as const, label: "Entre 3 y 4 días", count: counts.warning },
-          { k: "ok"       as const, label: "Más de 5 días",    count: counts.ok },
+          { k: "critical" as const, label: "Expiring in ≤ 2 days", count: counts.critical },
+          { k: "warning"  as const, label: "Between 3 and 4 days", count: counts.warning },
+          { k: "ok"       as const, label: "More than 5 days",     count: counts.ok },
         ].map(s => {
           const v = statusMap[s.k];
           return (
@@ -95,7 +95,7 @@ const Holds = () => {
                   <div className="h-[68px] w-[68px] rounded-full bg-card grid place-items-center">
                     <div className="text-center">
                       <p className={cn("font-display text-xl font-semibold leading-none", v.text)}>{h.expiresIn}</p>
-                      <p className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">{h.expiresIn === 1 ? "día" : "días"}</p>
+                      <p className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">{h.expiresIn === 1 ? "day" : "days"}</p>
                     </div>
                   </div>
                 </div>
@@ -114,7 +114,7 @@ const Holds = () => {
                     {h.ship} · <span className="text-muted-foreground">{h.cabin}</span>
                   </div>
                   <div className="flex items-center gap-4 text-[12px] text-muted-foreground mt-1">
-                    <span>Salida {h.departure}</span>
+                    <span>Departs {h.departure}</span>
                     <span>· {h.pax} pax</span>
                     <span>· <span className="text-navy font-display font-semibold">{h.total}</span></span>
                   </div>
@@ -123,13 +123,13 @@ const Holds = () => {
 
               <div className="grid grid-cols-3 gap-2 mt-5 pt-5 border-t border-border/60">
                 <button className="h-10 rounded-xl gradient-brand text-white text-[12.5px] font-medium inline-flex items-center justify-center gap-1.5 shadow-glow hover:shadow-elegant transition-premium">
-                  <CheckCircle2 className="h-3.5 w-3.5" /> Confirmar
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Confirm
                 </button>
                 <button className="h-10 rounded-xl border border-border bg-card text-navy text-[12.5px] font-medium hover:border-primary/40 transition-colors inline-flex items-center justify-center gap-1.5">
-                  <RefreshCcw className="h-3.5 w-3.5" /> Extender
+                  <RefreshCcw className="h-3.5 w-3.5" /> Extend
                 </button>
                 <button className="h-10 rounded-xl border border-border bg-card text-muted-foreground text-[12.5px] font-medium hover:border-destructive/40 hover:text-destructive transition-colors inline-flex items-center justify-center gap-1.5">
-                  <X className="h-3.5 w-3.5" /> Cancelar
+                  <X className="h-3.5 w-3.5" /> Cancel
                 </button>
               </div>
             </article>

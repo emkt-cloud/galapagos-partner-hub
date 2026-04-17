@@ -8,17 +8,17 @@ const tiers = [
 ];
 
 const history = [
-  { date: "12 Abr 2025", desc: "Reserva Legend · 5n",    pts: "+2,400" },
-  { date: "08 Abr 2025", desc: "Bono Early Booking",     pts: "+800" },
-  { date: "02 Abr 2025", desc: "Reserva Coral II · 4n",  pts: "+1,650" },
-  { date: "28 Mar 2025", desc: "Combinado Quito + Crucero", pts: "+3,200" },
-  { date: "20 Mar 2025", desc: "Reserva Coral I · 4n",   pts: "+1,800" },
+  { date: "Apr 12, 2025", desc: "Legend booking · 5n",       pts: "+2,400" },
+  { date: "Apr 8, 2025",  desc: "Early Booking bonus",       pts: "+800" },
+  { date: "Apr 2, 2025",  desc: "Coral II booking · 4n",     pts: "+1,650" },
+  { date: "Mar 28, 2025", desc: "Quito + Cruise combo",      pts: "+3,200" },
+  { date: "Mar 20, 2025", desc: "Coral I booking · 4n",      pts: "+1,800" },
 ];
 
 const bonuses = [
-  { title: "Doble millas Coral II",   desc: "Hasta 30 abr en todas las salidas Coral II", tag: "x2" },
-  { title: "Bonus combinado",         desc: "+1,000 millas por crucero + GO Quito Hotel", tag: "+1K" },
-  { title: "Ascenso anticipado",      desc: "Llega a Diamond y mantén el nivel 12 meses", tag: "VIP" },
+  { title: "Double miles · Coral II", desc: "Through Apr 30 on all Coral II departures",      tag: "x2" },
+  { title: "Combo bonus",             desc: "+1,000 miles per cruise + GO Quito Hotel",       tag: "+1K" },
+  { title: "Early upgrade",           desc: "Reach Diamond and keep the tier for 12 months",  tag: "VIP" },
 ];
 
 const Millas = () => {
@@ -38,17 +38,17 @@ const Millas = () => {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 mb-5">
               <Trophy className="h-3.5 w-3.5 text-primary-glow" />
-              <span className="text-xs uppercase tracking-wider">Nivel Platinum</span>
+              <span className="text-xs uppercase tracking-wider">Platinum Tier</span>
             </div>
-            <p className="text-xs uppercase tracking-[0.3em] text-primary-glow mb-3">Tus millas</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-primary-glow mb-3">Your miles</p>
             <h1 className="font-display text-6xl lg:text-7xl font-light leading-none">
               <span className="font-semibold">48,250</span>
             </h1>
-            <p className="text-white/70 mt-3">Acumuladas en los últimos 12 meses</p>
+            <p className="text-white/70 mt-3">Earned in the last 12 months</p>
 
             <div className="mt-8 max-w-md">
               <div className="flex items-center justify-between text-xs mb-2">
-                <span className="text-white/70">Hacia Diamond</span>
+                <span className="text-white/70">Toward Diamond</span>
                 <span className="font-medium">{Math.round(progress)}%</span>
               </div>
               <div className="h-2.5 rounded-full bg-white/10 overflow-hidden">
@@ -56,7 +56,7 @@ const Millas = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" style={{ backgroundSize: "200% 100%" }} />
                 </div>
               </div>
-              <p className="text-xs text-white/60 mt-3">Faltan <span className="text-primary-glow font-medium">11,750 millas</span> para alcanzar Diamond.</p>
+              <p className="text-xs text-white/60 mt-3"><span className="text-primary-glow font-medium">11,750 miles</span> to reach Diamond.</p>
             </div>
           </div>
 
@@ -68,8 +68,8 @@ const Millas = () => {
                 <div key={t.name} className={`relative rounded-2xl p-5 border transition-all ${active ? "border-primary bg-white/10 backdrop-blur-md shadow-glow" : "border-white/10 bg-white/5"}`}>
                   <t.icon className={`h-6 w-6 mb-3 ${active ? "text-primary-glow" : "text-white/50"}`} strokeWidth={1.4} />
                   <p className={`font-display font-semibold ${active ? "text-white" : "text-white/70"}`}>{t.name}</p>
-                  <p className="text-xs text-white/50">desde {t.from.toLocaleString()}</p>
-                  {active && <span className="absolute top-3 right-3 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary text-white font-bold">Actual</span>}
+                  <p className="text-xs text-white/50">from {t.from.toLocaleString()}</p>
+                  {active && <span className="absolute top-3 right-3 text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary text-white font-bold">Current</span>}
                 </div>
               );
             })}
@@ -80,7 +80,7 @@ const Millas = () => {
       {/* Bonuses & History */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="lg:col-span-1 space-y-5">
-          <h3 className="font-display text-lg font-semibold text-navy">Bonos vigentes</h3>
+          <h3 className="font-display text-lg font-semibold text-navy">Active bonuses</h3>
           {bonuses.map(b => (
             <div key={b.title} className="premium-card p-5 group relative overflow-hidden">
               <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-primary/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -103,11 +103,11 @@ const Millas = () => {
         <div className="lg:col-span-2 premium-card p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="font-display text-lg font-semibold text-navy">Historial</h3>
-              <p className="text-xs text-muted-foreground">Últimos movimientos</p>
+              <h3 className="font-display text-lg font-semibold text-navy">History</h3>
+              <p className="text-xs text-muted-foreground">Recent activity</p>
             </div>
             <div className="inline-flex items-center gap-2 text-xs text-success">
-              <TrendingUp className="h-3.5 w-3.5" /> +9,850 este mes
+              <TrendingUp className="h-3.5 w-3.5" /> +9,850 this month
             </div>
           </div>
           <div className="divide-y divide-border/60">

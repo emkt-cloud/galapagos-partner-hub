@@ -61,7 +61,7 @@ const sailings: Sailing[] = [
     range: "Apr 26 → Apr 29",
     rating: 4.7,
     badge: "last",
-    promo: "Solo 2 cabinas restantes",
+    promo: "Only 2 cabins left",
     langs: ["EN","ES","PT"],
     highlights: ["Isabela", "Fernandina", "Rabida"],
     cabins: [
@@ -79,9 +79,9 @@ const flagMap: Record<string, string> = {
 const Badge = ({ kind }: { kind?: Sailing["badge"] }) => {
   if (!kind) return null;
   const map = {
-    best: { t: "Best Seller",  c: "bg-primary text-white" },
-    promo:{ t: "Promo activa", c: "bg-ocean text-white" },
-    last: { t: "Últimas plazas", c: "bg-destructive text-white" },
+    best: { t: "Best Seller",     c: "bg-primary text-white" },
+    promo:{ t: "Active promo",    c: "bg-ocean text-white" },
+    last: { t: "Last availability", c: "bg-destructive text-white" },
   } as const;
   const v = map[kind];
   return <span className={cn("pill shadow-soft", v.c)}>{v.t}</span>;
@@ -89,7 +89,7 @@ const Badge = ({ kind }: { kind?: Sailing["badge"] }) => {
 
 const Disponibilidad = () => {
   const [view, setView] = useState<"cards"|"grid">("cards");
-  const [shipFilter, setShipFilter] = useState("Todas");
+  const [shipFilter, setShipFilter] = useState("All");
 
   return (
     <div className="space-y-6 max-w-[1480px]">
@@ -101,16 +101,16 @@ const Disponibilidad = () => {
         <div className="relative p-7 lg:p-10 text-white">
           <p className="text-[10px] uppercase tracking-[0.32em] text-primary-glow mb-2">Search Availability · FTS</p>
           <h2 className="font-display text-3xl lg:text-[40px] font-light leading-tight max-w-2xl tracking-tight">
-            Encuentra la salida ideal en <span className="font-semibold text-primary-glow">segundos</span>.
+            Find the perfect departure in <span className="font-semibold text-primary-glow">seconds</span>.
           </h2>
 
           {/* Sticky filter bar */}
           <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-2 p-2 bg-white/95 rounded-2xl shadow-elegant max-w-4xl backdrop-blur-md">
             {[
-              { icon: Calendar, label: "Fechas",     value: "22 Abr → 30 Abr" },
-              { icon: Users,    label: "Pasajeros",  value: "2 adultos" },
-              { icon: MapPin,   label: "Duración",   value: "4–5 noches" },
-              { icon: Sparkles, label: "Embarcación",value: "Todas" },
+              { icon: Calendar, label: "Dates",      value: "Apr 22 → Apr 30" },
+              { icon: Users,    label: "Passengers", value: "2 adults" },
+              { icon: MapPin,   label: "Duration",   value: "4–5 nights" },
+              { icon: Sparkles, label: "Ship",       value: "All" },
             ].map(f => (
               <button key={f.label} className="flex items-center gap-3 p-3 rounded-xl hover:bg-secondary text-left transition-colors">
                 <div className="h-9 w-9 rounded-lg bg-accent grid place-items-center text-ocean shrink-0">
@@ -123,7 +123,7 @@ const Disponibilidad = () => {
               </button>
             ))}
             <button className="h-full rounded-xl gradient-brand text-white font-medium text-sm inline-flex items-center justify-center gap-2 shadow-glow hover:shadow-elegant transition-premium">
-              Buscar <ArrowRight className="h-4 w-4" />
+              Search <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -132,7 +132,7 @@ const Disponibilidad = () => {
       {/* Toolbar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sticky top-[72px] bg-background/85 backdrop-blur-xl py-3 z-20 -mx-4 px-4 lg:mx-0 lg:px-0">
         <div className="flex flex-wrap gap-2">
-          {["Todas","Galapagos Legend","Coral I","Coral II"].map(f => (
+          {["All","Galapagos Legend","Coral I","Coral II"].map(f => (
             <button key={f} onClick={() => setShipFilter(f)} className={cn(
               "px-4 h-9 rounded-xl text-[13px] font-medium transition-colors",
               shipFilter === f ? "bg-navy text-white shadow-soft" : "bg-card border border-border text-navy hover:border-primary/40"
@@ -141,14 +141,14 @@ const Disponibilidad = () => {
         </div>
         <div className="flex items-center gap-2">
           <button className="h-9 px-3.5 rounded-xl border border-border bg-card text-navy text-[13px] inline-flex items-center gap-1.5 hover:border-primary/40 transition-colors">
-            <Filter className="h-3.5 w-3.5" /> Más filtros
+            <Filter className="h-3.5 w-3.5" /> More filters
           </button>
           <div className="flex p-0.5 rounded-xl bg-secondary/60">
             {(["cards","grid"] as const).map(v => (
               <button key={v} onClick={() => setView(v)} className={cn(
                 "px-3 h-8 text-[12px] rounded-lg font-medium transition-all capitalize",
                 view === v ? "bg-white text-navy shadow-soft" : "text-muted-foreground"
-              )}>{v === "cards" ? "Cards" : "Grilla"}</button>
+              )}>{v === "cards" ? "Cards" : "Grid"}</button>
             ))}
           </div>
         </div>
@@ -160,11 +160,11 @@ const Disponibilidad = () => {
           <Wand2 className="h-4 w-4" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-medium text-navy">Sugerencia IA</p>
-          <p className="text-[12px] text-muted-foreground mt-0.5">Combina <span className="text-primary font-medium">Coral II · 26 Abr</span> con 2 noches en <span className="text-primary font-medium">GO Quito Hotel</span> para un upsell estimado de <span className="text-navy font-semibold">+$580</span> y bonus de <span className="text-navy font-semibold">+1,000 millas</span>.</p>
+          <p className="text-[13px] font-medium text-navy">AI Suggestion</p>
+          <p className="text-[12px] text-muted-foreground mt-0.5">Combine <span className="text-primary font-medium">Coral II · Apr 26</span> with 2 nights at <span className="text-primary font-medium">GO Quito Hotel</span> for an estimated upsell of <span className="text-navy font-semibold">+$580</span> and a bonus of <span className="text-navy font-semibold">+1,000 miles</span>.</p>
         </div>
         <button className="hidden md:inline-flex h-9 px-4 rounded-lg bg-navy text-white text-[12px] font-medium hover:bg-night transition-colors items-center gap-1.5">
-          Aplicar combo <ArrowRight className="h-3 w-3" />
+          Apply combo <ArrowRight className="h-3 w-3" />
         </button>
       </div>
 
@@ -224,7 +224,7 @@ const Disponibilidad = () => {
                         c.left <= 2 ? "text-destructive font-medium" :
                         c.left <= 5 ? "text-warning" :
                         "text-success"
-                      )}>{c.left} disponibles</p>
+                      )}>{c.left} available</p>
                     </div>
                   ))}
                 </div>
@@ -239,25 +239,25 @@ const Disponibilidad = () => {
               {/* Right: action panel */}
               <div className="border-t lg:border-t-0 lg:border-l border-border/60 bg-gradient-to-br from-secondary/40 to-accent/30 p-6 lg:p-7 flex flex-col justify-between gap-4">
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Desde</p>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">From</p>
                   <p className="font-display text-[34px] font-semibold text-gradient-brand leading-none mt-1">
                     {s.cabins[0].price}
                   </p>
-                  <p className="text-[11px] text-muted-foreground mt-1">por persona · doble</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">per person · double</p>
 
                   <div className="mt-5 space-y-1.5 text-[11.5px]">
-                    <div className="flex justify-between"><span className="text-muted-foreground">Comisión partner</span><span className="text-navy font-medium">15%</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">Millas/pax</span><span className="text-primary font-medium">+2,400</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Partner commission</span><span className="text-navy font-medium">15%</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Miles/pax</span><span className="text-primary font-medium">+2,400</span></div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <button className="w-full h-11 rounded-xl gradient-brand text-white font-medium text-sm shadow-glow hover:shadow-elegant transition-premium inline-flex items-center justify-center gap-2">
-                    Reservar <ArrowRight className="h-4 w-4" />
+                    Book now <ArrowRight className="h-4 w-4" />
                   </button>
                   <div className="grid grid-cols-2 gap-2">
-                    <button className="h-9 rounded-lg border border-border bg-card text-navy text-[12px] font-medium hover:border-primary/40 transition-colors">Cotizar</button>
-                    <button className="h-9 rounded-lg border border-border bg-card text-navy text-[12px] font-medium hover:border-primary/40 transition-colors">Ver detalle</button>
+                    <button className="h-9 rounded-lg border border-border bg-card text-navy text-[12px] font-medium hover:border-primary/40 transition-colors">Quote</button>
+                    <button className="h-9 rounded-lg border border-border bg-card text-navy text-[12px] font-medium hover:border-primary/40 transition-colors">View details</button>
                   </div>
                 </div>
               </div>
