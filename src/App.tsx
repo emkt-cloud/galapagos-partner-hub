@@ -9,6 +9,8 @@ import PortalLayout from "./layouts/PortalLayout";
 import Dashboard from "./pages/Dashboard";
 import Reservas from "./pages/Reservas";
 import Disponibilidad from "./pages/Disponibilidad";
+import Holds from "./pages/Holds";
+import Confirmadas from "./pages/Confirmadas";
 import Recursos from "./pages/Recursos";
 import Millas from "./pages/Millas";
 import Placeholder from "./pages/Placeholder";
@@ -29,14 +31,17 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reservas" element={<Reservas />} />
             <Route path="/disponibilidad" element={<Disponibilidad />} />
+            <Route path="/holds" element={<Holds />} />
+            <Route path="/confirmadas" element={<Confirmadas />} />
             <Route path="/recursos" element={<Recursos />} />
             <Route path="/millas" element={<Millas />} />
             <Route path="/flota" element={<Placeholder title="Flota & Itinerarios" />} />
             <Route path="/hotel" element={<Placeholder title="GO Quito Hotel" />} />
-            <Route path="/paquetes" element={<Placeholder title="Paquetes" />} />
+            <Route path="/paquetes" element={<Placeholder title="Productos & Servicios" />} />
             <Route path="/tarifas" element={<Placeholder title="Tarifas & Promociones" />} />
             <Route path="/reportes" element={<Placeholder title="Reportes" />} />
             <Route path="/soporte" element={<Placeholder title="Soporte" />} />
+            <Route path="/perfil" element={<Placeholder title="Mi Perfil" />} />
           </Route>
           <Route path="/index" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
