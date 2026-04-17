@@ -5,10 +5,14 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import availabilityHero from "@/assets/availability-hero.jpg";
+import shipLegend from "@/assets/ship-legend.jpg";
+import shipCoral1 from "@/assets/ship-coral1.jpg";
+import shipCoral2 from "@/assets/ship-coral2.jpg";
 
 type Cabin = { name: string; price: string; left: number };
 type Sailing = {
   ship: string;
+  image: string;
   itinerary: string;
   duration: string;
   range: string;
@@ -23,6 +27,7 @@ type Sailing = {
 const sailings: Sailing[] = [
   {
     ship: "Galapagos Legend",
+    image: shipLegend,
     itinerary: "Itinerary A · Northern",
     duration: "5 Days / 4 Nights",
     range: "Apr 22 → Apr 26",
@@ -40,6 +45,7 @@ const sailings: Sailing[] = [
   },
   {
     ship: "Coral I",
+    image: shipCoral1,
     itinerary: "Itinerary South · Eastern",
     duration: "4 Days / 3 Nights",
     range: "Apr 24 → Apr 27",
@@ -56,6 +62,7 @@ const sailings: Sailing[] = [
   },
   {
     ship: "Coral II",
+    image: shipCoral2,
     itinerary: "Itinerary North · Western",
     duration: "4 Days / 3 Nights",
     range: "Apr 26 → Apr 29",
