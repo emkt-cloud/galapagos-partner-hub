@@ -122,6 +122,20 @@
   .glow-ring {
     box-shadow: 0 0 0 1px hsl(var(--primary) / 0.3), 0 0 24px hsl(var(--primary) / 0.25);
   }
+  .pill {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider;
+  }
+  .grid-luxe {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.6) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.6) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+  }
+  .countdown-ring {
+    background:
+      conic-gradient(hsl(var(--primary)) var(--p, 0%), hsl(var(--secondary)) 0);
+  }
 }
 
 @layer utilities {

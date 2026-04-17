@@ -1,117 +1,269 @@
-import { Ship, Filter } from "lucide-react";
+import { useState } from "react";
+import {
+  Filter, MapPin, Star, Sparkles, Languages, Users, Calendar,
+  ArrowRight, Heart, Wand2
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import availabilityHero from "@/assets/availability-hero.jpg";
 
-const days = Array.from({ length: 30 }, (_, i) => i + 1);
-const ships = ["Galapagos Legend", "Coral I", "Coral II"];
-
-const status = (d: number, s: number): "available" | "low" | "full" => {
-  const seed = (d * 7 + s * 13) % 10;
-  if (seed < 6) return "available";
-  if (seed < 8) return "low";
-  return "full";
+type Cabin = { name: string; price: string; left: number };
+type Sailing = {
+  ship: string;
+  itinerary: string;
+  duration: string;
+  range: string;
+  rating: number;
+  badge?: "best" | "promo" | "last";
+  cabins: Cabin[];
+  langs: string[];
+  highlights: string[];
+  promo?: string;
 };
 
-const colorMap = {
-  available: "bg-primary/15 text-ocean hover:bg-primary/30",
-  low:       "bg-warning/15 text-warning hover:bg-warning/30",
-  full:      "bg-destructive/15 text-destructive cursor-not-allowed",
+const sailings: Sailing[] = [
+  {
+    ship: "Galapagos Legend",
+    itinerary: "Itinerary A · Northern",
+    duration: "5 Days / 4 Nights",
+    range: "Apr 22 → Apr 26",
+    rating: 4.9,
+    badge: "best",
+    promo: "Early booking · 15% off",
+    langs: ["EN","ES","DE","FR"],
+    highlights: ["Genovesa", "Bartolomé", "North Seymour"],
+    cabins: [
+      { name: "Standard",         price: "$3,290", left: 12 },
+      { name: "Junior Suite",     price: "$3,890", left: 6 },
+      { name: "Balcony Suite",    price: "$4,490", left: 3 },
+      { name: "Legend Balcony",   price: "$5,290", left: 2 },
+    ],
+  },
+  {
+    ship: "Coral I",
+    itinerary: "Itinerary South · Eastern",
+    duration: "4 Days / 3 Nights",
+    range: "Apr 24 → Apr 27",
+    rating: 4.8,
+    badge: "promo",
+    promo: "Stay 4 pay 3",
+    langs: ["EN","ES","IT"],
+    highlights: ["Española", "Floreana", "Santa Fe"],
+    cabins: [
+      { name: "Standard Plus",    price: "$2,890", left: 8  },
+      { name: "Junior Suite",     price: "$3,240", left: 5  },
+      { name: "Balcony Suite",    price: "$3,890", left: 2  },
+    ],
+  },
+  {
+    ship: "Coral II",
+    itinerary: "Itinerary North · Western",
+    duration: "4 Days / 3 Nights",
+    range: "Apr 26 → Apr 29",
+    rating: 4.7,
+    badge: "last",
+    promo: "Solo 2 cabinas restantes",
+    langs: ["EN","ES","PT"],
+    highlights: ["Isabela", "Fernandina", "Rabida"],
+    cabins: [
+      { name: "Standard",         price: "$3,140", left: 4 },
+      { name: "Junior Suite",     price: "$3,540", left: 2 },
+      { name: "Balcony Suite",    price: "$4,180", left: 1 },
+    ],
+  },
+];
+
+const flagMap: Record<string, string> = {
+  EN: "🇬🇧", ES: "🇪🇸", DE: "🇩🇪", FR: "🇫🇷", IT: "🇮🇹", PT: "🇵🇹",
+};
+
+const Badge = ({ kind }: { kind?: Sailing["badge"] }) => {
+  if (!kind) return null;
+  const map = {
+    best: { t: "Best Seller",  c: "bg-primary text-white" },
+    promo:{ t: "Promo activa", c: "bg-ocean text-white" },
+    last: { t: "Últimas plazas", c: "bg-destructive text-white" },
+  } as const;
+  const v = map[kind];
+  return <span className={cn("pill shadow-soft", v.c)}>{v.t}</span>;
 };
 
 const Disponibilidad = () => {
+  const [view, setView] = useState<"cards"|"grid">("cards");
+  const [shipFilter, setShipFilter] = useState("Todas");
+
   return (
-    <div className="space-y-6 max-w-[1400px]">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-[1480px]">
+      {/* Hero */}
+      <section className="relative overflow-hidden rounded-3xl shadow-navy">
+        <img src={availabilityHero} alt="" className="absolute inset-0 w-full h-full object-cover" width={1600} height={640} />
+        <div className="absolute inset-0 bg-gradient-to-r from-night/85 via-navy/70 to-navy/30" />
+        <div className="absolute inset-0 grid-luxe opacity-10" />
+        <div className="relative p-7 lg:p-10 text-white">
+          <p className="text-[10px] uppercase tracking-[0.32em] text-primary-glow mb-2">Search Availability · FTS</p>
+          <h2 className="font-display text-3xl lg:text-[40px] font-light leading-tight max-w-2xl tracking-tight">
+            Encuentra la salida ideal en <span className="font-semibold text-primary-glow">segundos</span>.
+          </h2>
+
+          {/* Sticky filter bar */}
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-2 p-2 bg-white/95 rounded-2xl shadow-elegant max-w-4xl backdrop-blur-md">
+            {[
+              { icon: Calendar, label: "Fechas",     value: "22 Abr → 30 Abr" },
+              { icon: Users,    label: "Pasajeros",  value: "2 adultos" },
+              { icon: MapPin,   label: "Duración",   value: "4–5 noches" },
+              { icon: Sparkles, label: "Embarcación",value: "Todas" },
+            ].map(f => (
+              <button key={f.label} className="flex items-center gap-3 p-3 rounded-xl hover:bg-secondary text-left transition-colors">
+                <div className="h-9 w-9 rounded-lg bg-accent grid place-items-center text-ocean shrink-0">
+                  <f.icon className="h-4 w-4" strokeWidth={1.6} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{f.label}</p>
+                  <p className="text-[13px] font-medium text-navy truncate">{f.value}</p>
+                </div>
+              </button>
+            ))}
+            <button className="h-full rounded-xl gradient-brand text-white font-medium text-sm inline-flex items-center justify-center gap-2 shadow-glow hover:shadow-elegant transition-premium">
+              Buscar <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Toolbar */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sticky top-[72px] bg-background/85 backdrop-blur-xl py-3 z-20 -mx-4 px-4 lg:mx-0 lg:px-0">
         <div className="flex flex-wrap gap-2">
-          {["Todas","Galapagos Legend","Coral I","Coral II"].map((f, i) => (
-            <button key={f} className={cn("px-4 h-10 rounded-xl text-sm transition-colors",
-              i === 0 ? "bg-navy text-white" : "bg-card border border-border text-navy hover:border-primary/40"
+          {["Todas","Galapagos Legend","Coral I","Coral II"].map(f => (
+            <button key={f} onClick={() => setShipFilter(f)} className={cn(
+              "px-4 h-9 rounded-xl text-[13px] font-medium transition-colors",
+              shipFilter === f ? "bg-navy text-white shadow-soft" : "bg-card border border-border text-navy hover:border-primary/40"
             )}>{f}</button>
           ))}
         </div>
-        <div className="flex items-center gap-3">
-          <button className="h-10 px-4 rounded-xl border border-border bg-card text-navy text-sm inline-flex items-center gap-2 hover:border-primary/40 transition-colors">
-            <Filter className="h-3.5 w-3.5" /> Filtros
+        <div className="flex items-center gap-2">
+          <button className="h-9 px-3.5 rounded-xl border border-border bg-card text-navy text-[13px] inline-flex items-center gap-1.5 hover:border-primary/40 transition-colors">
+            <Filter className="h-3.5 w-3.5" /> Más filtros
           </button>
-          <select className="h-10 px-4 rounded-xl border border-border bg-card text-navy text-sm">
-            <option>Abril 2025</option><option>Mayo 2025</option><option>Junio 2025</option>
-          </select>
+          <div className="flex p-0.5 rounded-xl bg-secondary/60">
+            {(["cards","grid"] as const).map(v => (
+              <button key={v} onClick={() => setView(v)} className={cn(
+                "px-3 h-8 text-[12px] rounded-lg font-medium transition-all capitalize",
+                view === v ? "bg-white text-navy shadow-soft" : "text-muted-foreground"
+              )}>{v === "cards" ? "Cards" : "Grilla"}</button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap items-center gap-5 text-xs text-muted-foreground">
-        <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded bg-primary" /> Disponible</span>
-        <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded bg-warning" /> Pocas plazas</span>
-        <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded bg-destructive" /> Completo</span>
+      {/* AI suggestion */}
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-primary/[0.08] via-ocean/[0.05] to-transparent border border-primary/15">
+        <div className="h-9 w-9 rounded-lg gradient-brand grid place-items-center text-white shrink-0 shadow-glow">
+          <Wand2 className="h-4 w-4" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[13px] font-medium text-navy">Sugerencia IA</p>
+          <p className="text-[12px] text-muted-foreground mt-0.5">Combina <span className="text-primary font-medium">Coral II · 26 Abr</span> con 2 noches en <span className="text-primary font-medium">GO Quito Hotel</span> para un upsell estimado de <span className="text-navy font-semibold">+$580</span> y bonus de <span className="text-navy font-semibold">+1,000 millas</span>.</p>
+        </div>
+        <button className="hidden md:inline-flex h-9 px-4 rounded-lg bg-navy text-white text-[12px] font-medium hover:bg-night transition-colors items-center gap-1.5">
+          Aplicar combo <ArrowRight className="h-3 w-3" />
+        </button>
       </div>
 
-      {/* Grid */}
-      <div className="premium-card p-6 overflow-x-auto">
-        <table className="w-full text-sm border-separate border-spacing-1">
-          <thead>
-            <tr>
-              <th className="text-left text-xs uppercase tracking-wider text-muted-foreground font-medium pb-3 sticky left-0 bg-card pr-4 min-w-[180px]">Embarcación</th>
-              {days.map(d => (
-                <th key={d} className="text-xs text-muted-foreground font-medium pb-3 min-w-[36px]">{d}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {ships.map((s, si) => (
-              <tr key={s}>
-                <td className="sticky left-0 bg-card pr-4 py-1">
-                  <div className="flex items-center gap-2.5">
-                    <div className="h-9 w-9 rounded-lg gradient-ocean grid place-items-center text-white"><Ship className="h-4 w-4" /></div>
-                    <div>
-                      <p className="font-medium text-navy text-sm">{s}</p>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Itinerario {si === 0 ? "A · 5n" : si === 1 ? "Sur · 4n" : "Norte · 4n"}</p>
+      {/* Sailings */}
+      <div className="space-y-5">
+        {sailings.map((s, i) => (
+          <article
+            key={s.ship + s.range}
+            style={{ animationDelay: `${i * 80}ms` }}
+            className="premium-card p-0 overflow-hidden animate-fade-up group"
+          >
+            <div className="grid lg:grid-cols-[1fr_280px]">
+              {/* Left: details */}
+              <div className="p-6 lg:p-7">
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                      <Badge kind={s.badge} />
+                      <span className="inline-flex items-center gap-1 text-[11px] text-warning">
+                        <Star className="h-3 w-3 fill-warning" /> {s.rating}
+                      </span>
                     </div>
+                    <h3 className="font-display text-2xl font-semibold text-navy leading-tight">{s.ship}</h3>
+                    <p className="text-sm text-muted-foreground mt-0.5">{s.itinerary} · {s.duration}</p>
                   </div>
-                </td>
-                {days.map(d => {
-                  const st = status(d, si);
-                  return (
-                    <td key={d} className="p-0.5">
-                      <button className={cn("w-full h-10 rounded-md text-[11px] font-medium transition-all", colorMap[st])}>
-                        {st === "full" ? "—" : st === "low" ? "3" : "12"}
-                      </button>
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Salidas destacadas */}
-      <div>
-        <h3 className="font-display text-lg font-semibold text-navy mb-4">Salidas destacadas</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            { ship: "Legend", date: "22 Abr · Itin. A", left: 2,  st: "low" },
-            { ship: "Coral I", date: "24 Abr · Sur",    left: 8,  st: "available" },
-            { ship: "Coral II", date: "26 Abr · Norte", left: 14, st: "available" },
-          ].map((c, i) => (
-            <div key={i} className="premium-card p-6 group">
-              <div className="flex items-start justify-between mb-4">
-                <div className="h-11 w-11 rounded-xl gradient-brand grid place-items-center text-white shadow-glow"><Ship className="h-4 w-4" /></div>
-                <span className={cn("text-[10px] uppercase tracking-wider px-2 py-1 rounded-full font-semibold",
-                  c.st === "low" ? "bg-warning/15 text-warning" : "bg-primary/15 text-ocean"
-                )}>{c.st === "low" ? "Pocas plazas" : "Disponible"}</span>
-              </div>
-              <p className="font-display font-semibold text-navy text-lg">{c.ship}</p>
-              <p className="text-sm text-muted-foreground">{c.date}</p>
-              <div className="flex items-center justify-between mt-5 pt-4 border-t border-border/60">
-                <div>
-                  <p className="text-xs text-muted-foreground">Cabinas libres</p>
-                  <p className="font-display font-semibold text-navy">{c.left}</p>
+                  <button className="h-9 w-9 rounded-xl border border-border grid place-items-center text-muted-foreground hover:text-destructive hover:border-destructive/40 transition-colors">
+                    <Heart className="h-4 w-4" strokeWidth={1.6} />
+                  </button>
                 </div>
-                <button className="h-9 px-4 rounded-lg gradient-brand text-white text-sm font-medium hover:shadow-glow transition-premium">Reservar</button>
+
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] mb-5">
+                  <span className="inline-flex items-center gap-1.5 text-navy font-medium">
+                    <Calendar className="h-3.5 w-3.5 text-primary" /> {s.range}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                    <Languages className="h-3.5 w-3.5" />
+                    {s.langs.map(l => <span key={l} title={l} className="text-base leading-none">{flagMap[l]}</span>)}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                    <MapPin className="h-3.5 w-3.5 text-ocean" />
+                    {s.highlights.join(" · ")}
+                  </span>
+                </div>
+
+                {/* Cabins matrix */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+                  {s.cabins.map(c => (
+                    <div key={c.name} className={cn(
+                      "p-3.5 rounded-xl border transition-all hover:border-primary/40 hover:shadow-soft cursor-pointer",
+                      c.left <= 2 ? "border-destructive/30 bg-destructive/[0.03]" :
+                      c.left <= 5 ? "border-warning/30 bg-warning/[0.03]" :
+                      "border-border bg-secondary/30"
+                    )}>
+                      <p className="text-[11px] uppercase tracking-wider text-muted-foreground">{c.name}</p>
+                      <p className="font-display font-semibold text-navy text-base mt-0.5">{c.price}</p>
+                      <p className={cn("text-[11px] mt-0.5",
+                        c.left <= 2 ? "text-destructive font-medium" :
+                        c.left <= 5 ? "text-warning" :
+                        "text-success"
+                      )}>{c.left} disponibles</p>
+                    </div>
+                  ))}
+                </div>
+
+                {s.promo && (
+                  <div className="mt-4 inline-flex items-center gap-2 text-[12px] text-primary font-medium">
+                    <Sparkles className="h-3.5 w-3.5" /> {s.promo}
+                  </div>
+                )}
+              </div>
+
+              {/* Right: action panel */}
+              <div className="border-t lg:border-t-0 lg:border-l border-border/60 bg-gradient-to-br from-secondary/40 to-accent/30 p-6 lg:p-7 flex flex-col justify-between gap-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Desde</p>
+                  <p className="font-display text-[34px] font-semibold text-gradient-brand leading-none mt-1">
+                    {s.cabins[0].price}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground mt-1">por persona · doble</p>
+
+                  <div className="mt-5 space-y-1.5 text-[11.5px]">
+                    <div className="flex justify-between"><span className="text-muted-foreground">Comisión partner</span><span className="text-navy font-medium">15%</span></div>
+                    <div className="flex justify-between"><span className="text-muted-foreground">Millas/pax</span><span className="text-primary font-medium">+2,400</span></div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <button className="w-full h-11 rounded-xl gradient-brand text-white font-medium text-sm shadow-glow hover:shadow-elegant transition-premium inline-flex items-center justify-center gap-2">
+                    Reservar <ArrowRight className="h-4 w-4" />
+                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button className="h-9 rounded-lg border border-border bg-card text-navy text-[12px] font-medium hover:border-primary/40 transition-colors">Cotizar</button>
+                    <button className="h-9 rounded-lg border border-border bg-card text-navy text-[12px] font-medium hover:border-primary/40 transition-colors">Ver detalle</button>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </article>
+        ))}
       </div>
     </div>
   );
