@@ -5,10 +5,14 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import availabilityHero from "@/assets/availability-hero.jpg";
+import shipLegend from "@/assets/ship-legend.jpg";
+import shipCoral1 from "@/assets/ship-coral1.jpg";
+import shipCoral2 from "@/assets/ship-coral2.jpg";
 
 type Cabin = { name: string; price: string; left: number };
 type Sailing = {
   ship: string;
+  image: string;
   itinerary: string;
   duration: string;
   range: string;
@@ -23,6 +27,7 @@ type Sailing = {
 const sailings: Sailing[] = [
   {
     ship: "Galapagos Legend",
+    image: shipLegend,
     itinerary: "Itinerary A · Northern",
     duration: "5 Days / 4 Nights",
     range: "Apr 22 → Apr 26",
@@ -40,6 +45,7 @@ const sailings: Sailing[] = [
   },
   {
     ship: "Coral I",
+    image: shipCoral1,
     itinerary: "Itinerary South · Eastern",
     duration: "4 Days / 3 Nights",
     range: "Apr 24 → Apr 27",
@@ -56,6 +62,7 @@ const sailings: Sailing[] = [
   },
   {
     ship: "Coral II",
+    image: shipCoral2,
     itinerary: "Itinerary North · Western",
     duration: "4 Days / 3 Nights",
     range: "Apr 26 → Apr 29",
@@ -176,16 +183,31 @@ const Disponibilidad = () => {
             style={{ animationDelay: `${i * 80}ms` }}
             className="premium-card p-0 overflow-hidden animate-fade-up group"
           >
-            <div className="grid lg:grid-cols-[1fr_280px]">
-              {/* Left: details */}
+            <div className="grid lg:grid-cols-[260px_1fr_280px]">
+              {/* Image */}
+              <div className="relative h-56 lg:h-auto overflow-hidden">
+                <img
+                  src={s.image}
+                  alt={s.ship}
+                  loading="lazy"
+                  width={520}
+                  height={520}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-night/60 via-transparent to-transparent" />
+              </div>
+              {/* Details */}
               <div className="p-6 lg:p-7">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                    <div className="flex items-center gap-2 flex-wrap mb-1.5 lg:hidden">
                       <Badge kind={s.badge} />
                       <span className="inline-flex items-center gap-1 text-[11px] text-warning">
                         <Star className="h-3 w-3 fill-warning" /> {s.rating}
                       </span>
+                    </div>
+                    <div className="hidden lg:inline-flex items-center gap-1 text-[11px] text-warning mb-1">
+                      <Star className="h-3 w-3 fill-warning" /> {s.rating}
                     </div>
                     <h3 className="font-display text-2xl font-semibold text-navy leading-tight">{s.ship}</h3>
                     <p className="text-sm text-muted-foreground mt-0.5">{s.itinerary} · {s.duration}</p>

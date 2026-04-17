@@ -5,6 +5,17 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import dashboardHero from "@/assets/dashboard-hero.jpg";
+import shipLegend from "@/assets/ship-legend.jpg";
+import shipCoral1 from "@/assets/ship-coral1.jpg";
+import shipCoral2 from "@/assets/ship-coral2.jpg";
+
+const shipImageMap: Record<string, string> = {
+  "Galapagos Legend": shipLegend,
+  "Legend": shipLegend,
+  "Coral I": shipCoral1,
+  "Coral II": shipCoral2,
+};
 
 const kpis = [
   { label: "Active bookings",   value: "182",  delta: "+12.4%",        up: true,  icon: Users,        tone: "primary"  },
@@ -67,8 +78,16 @@ const Dashboard = () => {
   return (
     <div className="space-y-6 max-w-[1480px]">
       {/* Hero strip */}
-      <section className="relative overflow-hidden rounded-3xl gradient-ocean text-white p-7 lg:p-9 shadow-navy">
-        <div className="absolute inset-0 bg-gradient-glow opacity-40" />
+      <section className="relative overflow-hidden rounded-3xl text-white p-7 lg:p-9 shadow-navy min-h-[260px]">
+        <img
+          src={dashboardHero}
+          alt=""
+          width={1920}
+          height={720}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-night/95 via-navy/85 to-navy/40" />
+        <div className="absolute inset-0 bg-gradient-glow opacity-30" />
         <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-primary/30 blur-[90px]" />
         <div className="absolute inset-0 grid-luxe opacity-[0.08]" />
         <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -258,7 +277,10 @@ const Dashboard = () => {
           </div>
           <div className="space-y-3">
             {holds.map(h => (
-              <div key={h.ref} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50 hover:bg-accent transition-colors">
+              <div key={h.ref} className="flex items-center gap-3 p-2.5 rounded-xl bg-secondary/50 hover:bg-accent transition-colors">
+                <div className="relative h-12 w-12 rounded-lg overflow-hidden shrink-0">
+                  <img src={shipImageMap[h.ship] || shipLegend} alt="" loading="lazy" width={96} height={96} className="absolute inset-0 w-full h-full object-cover" />
+                </div>
                 <HoldRing days={h.exp} />
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-medium text-navy truncate">{h.ref} · {h.ship}</p>
