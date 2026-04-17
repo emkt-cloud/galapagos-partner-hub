@@ -277,7 +277,10 @@ const Dashboard = () => {
           </div>
           <div className="space-y-3">
             {holds.map(h => (
-              <div key={h.ref} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50 hover:bg-accent transition-colors">
+              <div key={h.ref} className="flex items-center gap-3 p-2.5 rounded-xl bg-secondary/50 hover:bg-accent transition-colors">
+                <div className="relative h-12 w-12 rounded-lg overflow-hidden shrink-0">
+                  <img src={shipImageMap[h.ship] || shipLegend} alt="" loading="lazy" width={96} height={96} className="absolute inset-0 w-full h-full object-cover" />
+                </div>
                 <HoldRing days={h.exp} />
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-medium text-navy truncate">{h.ref} · {h.ship}</p>
