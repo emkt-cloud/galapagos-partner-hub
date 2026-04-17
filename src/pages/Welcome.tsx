@@ -4,12 +4,14 @@ import {
   Sparkles, Tag, LifeBuoy, ArrowUpRight, UserCircle2
 } from "lucide-react";
 import welcomeBg from "@/assets/welcome-bg.jpg";
+import dashboardHero from "@/assets/dashboard-hero.jpg";
+import wildlifeBooby from "@/assets/wildlife-booby.jpg";
 
 const tiles = [
-  { to: "/dashboard",     icon: LayoutDashboard, title: "Dashboard",      desc: "Operations hub & KPIs",          featured: true },
+  { to: "/dashboard",     icon: LayoutDashboard, title: "Dashboard",      desc: "Operations hub & KPIs",          featured: true, image: dashboardHero },
   { to: "/reservas",      icon: CalendarCheck,   title: "New Booking",    desc: "Quote, hold or confirm" },
   { to: "/disponibilidad",icon: CalendarRange,   title: "Availability",   desc: "Live cabins & departures" },
-  { to: "/recursos",      icon: FolderOpen,      title: "Resources",      desc: "Brochures, photos, video" },
+  { to: "/recursos",      icon: FolderOpen,      title: "Resources",      desc: "Brochures, photos, video", image: wildlifeBooby },
   { to: "/millas",        icon: Sparkles,        title: "Miles",          desc: "Your tier & rewards" },
   { to: "/tarifas",       icon: Tag,             title: "Rates",          desc: "Net, gross & promos" },
   { to: "/soporte",       icon: LifeBuoy,        title: "Support",        desc: "Your dedicated team" },
