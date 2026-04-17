@@ -184,15 +184,18 @@ const Disponibilidad = () => {
             className="premium-card p-0 overflow-hidden animate-fade-up group"
           >
             <div className="grid lg:grid-cols-[1fr_280px]">
-              {/* Left: details */}
+              {/* Details */}
               <div className="p-6 lg:p-7">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                    <div className="flex items-center gap-2 flex-wrap mb-1.5 lg:hidden">
                       <Badge kind={s.badge} />
                       <span className="inline-flex items-center gap-1 text-[11px] text-warning">
                         <Star className="h-3 w-3 fill-warning" /> {s.rating}
                       </span>
+                    </div>
+                    <div className="hidden lg:inline-flex items-center gap-1 text-[11px] text-warning mb-1">
+                      <Star className="h-3 w-3 fill-warning" /> {s.rating}
                     </div>
                     <h3 className="font-display text-2xl font-semibold text-navy leading-tight">{s.ship}</h3>
                     <p className="text-sm text-muted-foreground mt-0.5">{s.itinerary} · {s.duration}</p>
