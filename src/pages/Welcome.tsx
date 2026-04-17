@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
 import {
   LayoutDashboard, CalendarCheck, CalendarRange, FolderOpen,
-  Sparkles, Tag, Ship, Hotel, LifeBuoy, ArrowUpRight
+  Sparkles, Tag, LifeBuoy, ArrowUpRight, UserCircle2
 } from "lucide-react";
 import welcomeBg from "@/assets/welcome-bg.jpg";
 
 const tiles = [
-  { to: "/dashboard",     icon: LayoutDashboard, title: "Dashboard",        desc: "Resumen comercial en tiempo real" },
-  { to: "/reservas",      icon: CalendarCheck,   title: "Reservas",         desc: "Crea, confirma y gestiona holds" },
-  { to: "/disponibilidad",icon: CalendarRange,   title: "Disponibilidad",   desc: "Cabinas y salidas en vivo" },
-  { to: "/recursos",      icon: FolderOpen,      title: "Recursos",         desc: "Brochures, fotos y deck de ventas" },
-  { to: "/millas",        icon: Sparkles,        title: "Millas e Incentivos", desc: "Tu nivel y beneficios exclusivos" },
-  { to: "/tarifas",       icon: Tag,             title: "Tarifas & Promos", desc: "Vigencias y campañas activas" },
-  { to: "/flota",         icon: Ship,            title: "Flota & Itinerarios", desc: "Legend, Coral I y Coral II" },
-  { to: "/hotel",         icon: Hotel,           title: "GO Quito Hotel",   desc: "Pre y post crucero" },
-  { to: "/soporte",       icon: LifeBuoy,        title: "Soporte",          desc: "Tu equipo dedicado, siempre" },
+  { to: "/dashboard",     icon: LayoutDashboard, title: "Dashboard",      desc: "Centro operativo y KPIs",     featured: true },
+  { to: "/reservas",      icon: CalendarCheck,   title: "Nueva reserva",  desc: "Cotizar, hold o confirmar" },
+  { to: "/disponibilidad",icon: CalendarRange,   title: "Disponibilidad", desc: "Cabinas y salidas en vivo" },
+  { to: "/recursos",      icon: FolderOpen,      title: "Recursos",       desc: "Brochures, fotos, videos" },
+  { to: "/millas",        icon: Sparkles,        title: "Millas",         desc: "Tu nivel y rewards" },
+  { to: "/tarifas",       icon: Tag,             title: "Tarifas",        desc: "Net, gross y promos" },
+  { to: "/soporte",       icon: LifeBuoy,        title: "Soporte",        desc: "Tu equipo dedicado" },
+  { to: "/perfil",        icon: UserCircle2,     title: "Mi Perfil",      desc: "Agencia, equipo y datos" },
 ];
 
 const Welcome = () => {
@@ -22,72 +21,97 @@ const Welcome = () => {
     <div className="min-h-screen relative overflow-hidden bg-background">
       {/* Ambient background */}
       <div className="absolute inset-0">
-        <img src={welcomeBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background to-background" />
-        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-primary/20 blur-[120px]" />
-        <div className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-ocean/20 blur-[140px]" />
+        <img src={welcomeBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.18]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background to-background" />
+        <div className="absolute -top-40 -right-40 h-[520px] w-[520px] rounded-full bg-primary/20 blur-[130px]" />
+        <div className="absolute -bottom-40 -left-40 h-[520px] w-[520px] rounded-full bg-ocean/25 blur-[150px]" />
+        <div className="absolute inset-0 grid-luxe opacity-[0.35]" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-10 lg:py-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-10 lg:py-14">
         {/* Top bar */}
-        <header className="flex items-center justify-between mb-16 lg:mb-20 animate-fade-in">
+        <header className="flex items-center justify-between mb-14 lg:mb-20 animate-fade-in">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-xl gradient-brand grid place-items-center shadow-glow">
               <span className="text-white font-display font-bold">G</span>
             </div>
             <div>
-              <p className="font-display font-bold text-navy">GO Galápagos</p>
+              <p className="font-display font-bold text-navy leading-tight">GO Galápagos</p>
               <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Partner Portal</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden md:inline text-sm text-muted-foreground">Andes Travel · Premium Partner</span>
+            <span className="hidden md:inline-flex items-center gap-2 text-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+              <span className="text-muted-foreground">Andes Travel · </span>
+              <span className="text-primary font-semibold">Elite Partner</span>
+            </span>
             <div className="h-10 w-10 rounded-full gradient-ocean grid place-items-center text-white text-sm font-semibold shadow-soft">CR</div>
           </div>
         </header>
 
         {/* Greeting */}
-        <div className="max-w-3xl mb-12 lg:mb-16 animate-fade-up">
-          <p className="text-xs uppercase tracking-[0.35em] text-primary mb-5 inline-flex items-center gap-2">
-            <span className="h-px w-10 bg-primary" /> Welcome Hub
+        <div className="max-w-3xl mb-10 lg:mb-14 animate-fade-up">
+          <p className="text-[10px] uppercase tracking-[0.4em] text-primary mb-5 inline-flex items-center gap-2">
+            <span className="h-px w-10 bg-primary" /> Welcome Hub · Abril 2025
           </p>
-          <h1 className="font-display text-5xl md:text-7xl font-light text-navy leading-[1.05] mb-6">
+          <h1 className="font-display text-5xl md:text-7xl lg:text-[88px] font-light text-navy leading-[1.02] mb-6 tracking-tight">
             Bienvenida, <span className="font-semibold text-gradient-brand">Camila</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Tu espacio para gestionar reservas, disponibilidad y herramientas comerciales de GO Galápagos.
+            Tu centro de operaciones GO Galápagos. Accede a reservas, disponibilidad y herramientas comerciales en un solo lugar.
           </p>
         </div>
 
+        {/* Quick metric strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10 animate-fade-up" style={{ animationDelay: "120ms" }}>
+          {[
+            ["Reservas activas", "182", "+12.4%"],
+            ["Holds vigentes", "3", "expira hoy"],
+            ["Revenue del mes", "$284K", "+8.2%"],
+            ["Millas disponibles", "48,250", "Platinum"],
+          ].map(([l,v,d]) => (
+            <div key={l} className="px-4 py-3 rounded-2xl bg-card/70 backdrop-blur-md border border-border/60">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{l}</p>
+              <div className="flex items-baseline gap-2 mt-1">
+                <p className="font-display text-xl font-semibold text-navy">{v}</p>
+                <p className="text-[11px] text-primary font-medium">{d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* Quick access tiles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {tiles.map((t, i) => (
             <Link
               key={t.to}
               to={t.to}
-              style={{ animationDelay: `${i * 60}ms` }}
-              className="group relative premium-card p-7 overflow-hidden animate-fade-up"
+              style={{ animationDelay: `${180 + i * 50}ms` }}
+              className={`group relative premium-card p-6 overflow-hidden animate-fade-up ${t.featured ? "lg:col-span-2 lg:row-span-1" : ""}`}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-ocean/5 transition-all duration-500" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: "linear-gradient(135deg, hsl(var(--primary)/0.06), hsl(var(--ocean)/0.06))" }} />
               <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="relative flex items-start justify-between mb-6">
-                <div className="h-12 w-12 rounded-xl bg-accent grid place-items-center text-ocean group-hover:gradient-brand group-hover:text-white transition-all duration-500">
-                  <t.icon className="h-5 w-5" strokeWidth={1.6} />
+                <div className="h-11 w-11 rounded-xl bg-accent grid place-items-center text-ocean group-hover:gradient-brand group-hover:text-white transition-all duration-500 shadow-soft">
+                  <t.icon className="h-[18px] w-[18px]" strokeWidth={1.6} />
                 </div>
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
               </div>
 
               <div className="relative">
-                <h3 className="font-display text-lg font-semibold text-navy mb-1">{t.title}</h3>
+                <h3 className="font-display text-[17px] font-semibold text-navy mb-1">{t.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
               </div>
             </Link>
           ))}
         </div>
 
-        <div className="mt-14 text-center text-xs text-muted-foreground animate-fade-in">
-          Sesión segura · Última actividad hoy a las 09:42
+        <div className="mt-12 flex items-center justify-between text-xs text-muted-foreground animate-fade-in">
+          <span>Sesión segura · Última actividad hoy 09:42</span>
+          <span className="hidden md:inline">v2026.04 · Premium experience</span>
         </div>
       </div>
     </div>
