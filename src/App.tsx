@@ -13,7 +13,13 @@ import Holds from "./pages/Holds";
 import Confirmadas from "./pages/Confirmadas";
 import Recursos from "./pages/Recursos";
 import Millas from "./pages/Millas";
-import Placeholder from "./pages/Placeholder";
+import Flota from "./pages/Flota";
+import Hotel from "./pages/Hotel";
+import Paquetes from "./pages/Paquetes";
+import Tarifas from "./pages/Tarifas";
+import Reportes from "./pages/Reportes";
+import Soporte from "./pages/Soporte";
+import Perfil from "./pages/Perfil";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -35,13 +41,13 @@ const App = () => (
             <Route path="/confirmadas" element={<Confirmadas />} />
             <Route path="/recursos" element={<Recursos />} />
             <Route path="/millas" element={<Millas />} />
-            <Route path="/flota" element={<Placeholder title="Fleet & Itineraries" />} />
-            <Route path="/hotel" element={<Placeholder title="GO Quito Hotel" />} />
-            <Route path="/paquetes" element={<Placeholder title="Products & Services" />} />
-            <Route path="/tarifas" element={<Placeholder title="Rates & Promotions" />} />
-            <Route path="/reportes" element={<Placeholder title="Reports" />} />
-            <Route path="/soporte" element={<Placeholder title="Support" />} />
-            <Route path="/perfil" element={<Placeholder title="My Profile" />} />
+            <Route path="/flota" element={<Flota />} />
+            <Route path="/hotel" element={<Hotel />} />
+            <Route path="/paquetes" element={<Paquetes />} />
+            <Route path="/tarifas" element={<Tarifas />} />
+            <Route path="/reportes" element={<Reportes />} />
+            <Route path="/soporte" element={<Soporte />} />
+            <Route path="/perfil" element={<Perfil />} />
           </Route>
           <Route path="/index" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />
