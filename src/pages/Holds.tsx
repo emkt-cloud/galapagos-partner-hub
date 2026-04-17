@@ -1,5 +1,14 @@
 import { Clock4, AlertTriangle, Ship, ArrowRight, X, RefreshCcw, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import shipLegend from "@/assets/ship-legend.jpg";
+import shipCoral1 from "@/assets/ship-coral1.jpg";
+import shipCoral2 from "@/assets/ship-coral2.jpg";
+
+const shipImageMap: Record<string, string> = {
+  "Galapagos Legend": shipLegend,
+  "Coral I": shipCoral1,
+  "Coral II": shipCoral2,
+};
 
 type HoldStatus = "critical" | "warning" | "ok";
 
