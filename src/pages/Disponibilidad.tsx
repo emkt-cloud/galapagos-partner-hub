@@ -183,7 +183,19 @@ const Disponibilidad = () => {
             style={{ animationDelay: `${i * 80}ms` }}
             className="premium-card p-0 overflow-hidden animate-fade-up group"
           >
-            <div className="grid lg:grid-cols-[1fr_280px]">
+            <div className="grid lg:grid-cols-[260px_1fr_280px]">
+              {/* Image */}
+              <div className="relative h-56 lg:h-auto overflow-hidden">
+                <img
+                  src={s.image}
+                  alt={s.ship}
+                  loading="lazy"
+                  width={520}
+                  height={520}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-night/60 via-transparent to-transparent" />
+              </div>
               {/* Details */}
               <div className="p-6 lg:p-7">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
