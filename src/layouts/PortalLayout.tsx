@@ -16,29 +16,29 @@ const groups: NavGroup[] = [
     ],
   },
   {
-    label: "Operación",
+    label: "Operations",
     items: [
-      { to: "/reservas",       label: "Nueva reserva",   icon: CalendarCheck },
+      { to: "/reservas",       label: "New Booking",     icon: CalendarCheck },
       { to: "/disponibilidad", label: "Availability",    icon: CalendarRange },
       { to: "/holds",          label: "Holds",           icon: Clock4, badge: "3" },
-      { to: "/confirmadas",    label: "Confirmadas",     icon: CheckCircle2 },
+      { to: "/confirmadas",    label: "Confirmed",       icon: CheckCircle2 },
     ],
   },
   {
-    label: "Catálogo",
+    label: "Catalog",
     items: [
-      { to: "/tarifas",  label: "Tarifas",         icon: Tag },
-      { to: "/paquetes", label: "Productos",       icon: Package },
+      { to: "/tarifas",  label: "Rates",           icon: Tag },
+      { to: "/paquetes", label: "Products",        icon: Package },
       { to: "/hotel",    label: "GO Quito Hotel",  icon: Hotel },
-      { to: "/recursos", label: "Recursos",        icon: FolderOpen },
+      { to: "/recursos", label: "Resources",       icon: FolderOpen },
     ],
   },
   {
     label: "Performance",
     items: [
-      { to: "/millas",   label: "Millas",   icon: Sparkles },
-      { to: "/reportes", label: "Reportes", icon: BarChart3 },
-      { to: "/soporte",  label: "Soporte",  icon: LifeBuoy },
+      { to: "/millas",   label: "Miles",   icon: Sparkles },
+      { to: "/reportes", label: "Reports", icon: BarChart3 },
+      { to: "/soporte",  label: "Support", icon: LifeBuoy },
     ],
   },
 ];
@@ -158,7 +158,7 @@ const PortalLayout = () => {
           <div className="flex items-center gap-2.5">
             <div className="hidden md:flex items-center gap-2 h-10 px-3.5 rounded-xl bg-secondary/60 w-[320px] focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-soft transition-all">
               <Search className="h-4 w-4 text-muted-foreground" />
-              <input className="bg-transparent outline-none text-sm flex-1 placeholder:text-muted-foreground/70" placeholder="Reservas, GO codes, partners…" />
+              <input className="bg-transparent outline-none text-sm flex-1 placeholder:text-muted-foreground/70" placeholder="Bookings, GO codes, partners…" />
               <kbd className="hidden lg:inline-flex items-center gap-0.5 text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5"><Command className="h-2.5 w-2.5" />K</kbd>
             </div>
             <button className="relative h-10 w-10 rounded-xl bg-secondary/60 hover:bg-secondary grid place-items-center transition-colors">

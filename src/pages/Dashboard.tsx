@@ -7,31 +7,31 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
 const kpis = [
-  { label: "Reservas activas",  value: "182",  delta: "+12.4%",      up: true,  icon: Users,        tone: "primary"  },
-  { label: "Holds pendientes",  value: "3",    delta: "1 vence hoy", up: false, icon: Clock4,       tone: "warning"  },
-  { label: "Revenue del mes",   value: "$284K",delta: "+8.2%",       up: true,  icon: TrendingUp,   tone: "ocean"    },
-  { label: "Próximas salidas",  value: "14",   delta: "esta semana", up: true,  icon: Ship,         tone: "primary"  },
-  { label: "Cabinas libres",    value: "37",   delta: "-6 vs ayer",  up: false, icon: CheckCircle2, tone: "ocean"    },
-  { label: "Millas",            value: "48.2K",delta: "Platinum",    up: true,  icon: Sparkles,     tone: "primary"  },
+  { label: "Active bookings",   value: "182",  delta: "+12.4%",        up: true,  icon: Users,        tone: "primary"  },
+  { label: "Open holds",        value: "3",    delta: "1 expires today",up: false, icon: Clock4,       tone: "warning"  },
+  { label: "Revenue MTD",       value: "$284K",delta: "+8.2%",         up: true,  icon: TrendingUp,   tone: "ocean"    },
+  { label: "Upcoming departures",value: "14",  delta: "this week",     up: true,  icon: Ship,         tone: "primary"  },
+  { label: "Available cabins",  value: "37",   delta: "-6 vs yday",    up: false, icon: CheckCircle2, tone: "ocean"    },
+  { label: "Miles",             value: "48.2K",delta: "Platinum",      up: true,  icon: Sparkles,     tone: "primary"  },
 ];
 
 const quotes = [
-  { date: "16 Abr", client: "Maria Pérez",     product: "Legend · Itin A · 5n",  value: "$9,780",  status: "Sent",     pill: "bg-primary/15 text-primary"   },
-  { date: "15 Abr", client: "Robert Klein",    product: "Coral II · Norte · 4n", value: "$7,120",  status: "Pending",  pill: "bg-warning/15 text-warning"   },
-  { date: "15 Abr", client: "Sophie Laurent",  product: "Combo Quito + Coral I", value: "$11,350", status: "Reviewed", pill: "bg-ocean/15 text-ocean"       },
-  { date: "14 Abr", client: "Hiroshi Tanaka",  product: "Legend · Itin B · 4n",  value: "$8,490",  status: "Sent",     pill: "bg-primary/15 text-primary"   },
+  { date: "Apr 16", client: "Maria Pérez",     product: "Legend · Itin A · 5n",  value: "$9,780",  status: "Sent",     pill: "bg-primary/15 text-primary"   },
+  { date: "Apr 15", client: "Robert Klein",    product: "Coral II · North · 4n", value: "$7,120",  status: "Pending",  pill: "bg-warning/15 text-warning"   },
+  { date: "Apr 15", client: "Sophie Laurent",  product: "Combo Quito + Coral I", value: "$11,350", status: "Reviewed", pill: "bg-ocean/15 text-ocean"       },
+  { date: "Apr 14", client: "Hiroshi Tanaka",  product: "Legend · Itin B · 4n",  value: "$8,490",  status: "Sent",     pill: "bg-primary/15 text-primary"   },
 ];
 
 const holds = [
-  { ref: "GO-2841", ship: "Galapagos Legend", date: "22 Abr",  exp: 1, total: "$9,780"  },
-  { ref: "GO-2839", ship: "Coral II",         date: "26 Abr",  exp: 3, total: "$7,120"  },
-  { ref: "GO-2836", ship: "Coral I",          date: "29 Abr",  exp: 6, total: "$11,350" },
+  { ref: "GO-2841", ship: "Galapagos Legend", date: "Apr 22", exp: 1, total: "$9,780"  },
+  { ref: "GO-2839", ship: "Coral II",         date: "Apr 26", exp: 3, total: "$7,120"  },
+  { ref: "GO-2836", ship: "Coral I",          date: "Apr 29", exp: 6, total: "$11,350" },
 ];
 
 const confirmed = [
-  { code: "GO-2820", ref: "AT-9271", ship: "Legend",  date: "22 Abr", total: "$9,780",  paid: 50  },
-  { code: "GO-2818", ref: "AT-9268", ship: "Coral I", date: "24 Abr", total: "$11,350", paid: 100 },
-  { code: "GO-2815", ref: "AT-9261", ship: "Coral II",date: "26 Abr", total: "$7,120",  paid: 30  },
+  { code: "GO-2820", ref: "AT-9271", ship: "Legend",  date: "Apr 22", total: "$9,780",  paid: 50  },
+  { code: "GO-2818", ref: "AT-9268", ship: "Coral I", date: "Apr 24", total: "$11,350", paid: 100 },
+  { code: "GO-2815", ref: "AT-9261", ship: "Coral II",date: "Apr 26", total: "$7,120",  paid: 30  },
 ];
 
 const Sparkline = () => (
@@ -73,15 +73,15 @@ const Dashboard = () => {
         <div className="absolute inset-0 grid-luxe opacity-[0.08]" />
         <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.32em] text-primary-glow mb-3">Resumen Comercial · Abril 2025</p>
+            <p className="text-[10px] uppercase tracking-[0.32em] text-primary-glow mb-3">Commercial Summary · April 2025</p>
             <h2 className="font-display text-3xl lg:text-[44px] font-light leading-[1.1] max-w-2xl tracking-tight">
-              Vas <span className="font-semibold text-primary-glow">8.2%</span> sobre el objetivo del mes.
+              You're <span className="font-semibold text-primary-glow">8.2%</span> above this month's target.
             </h2>
-            <p className="text-white/65 mt-3 max-w-md text-[15px]">Tu mejor abril del trienio. Asegura mayo con las salidas de Coral II.</p>
+            <p className="text-white/65 mt-3 max-w-md text-[15px]">Your best April in three years. Lock in May with the Coral II departures.</p>
           </div>
           <div className="flex flex-wrap gap-2.5">
-            <Link to="/reservas" className="h-11 px-5 rounded-xl bg-white text-navy font-medium hover:bg-primary-glow hover:text-white transition-premium text-sm">Nueva reserva</Link>
-            <Link to="/reportes" className="h-11 px-5 rounded-xl border border-white/20 backdrop-blur-md hover:bg-white/10 transition-premium text-sm inline-flex items-center gap-2">Ver reporte <ChevronRight className="h-3.5 w-3.5" /></Link>
+            <Link to="/reservas" className="h-11 px-5 rounded-xl bg-white text-navy font-medium hover:bg-primary-glow hover:text-white transition-premium text-sm">New booking</Link>
+            <Link to="/reportes" className="h-11 px-5 rounded-xl border border-white/20 backdrop-blur-md hover:bg-white/10 transition-premium text-sm inline-flex items-center gap-2">View report <ChevronRight className="h-3.5 w-3.5" /></Link>
           </div>
         </div>
       </section>
@@ -119,8 +119,8 @@ const Dashboard = () => {
         <div className="lg:col-span-2 premium-card p-7">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="font-display text-[17px] font-semibold text-navy">Revenue estimado</h3>
-              <p className="text-xs text-muted-foreground">Últimas 12 semanas</p>
+              <h3 className="font-display text-[17px] font-semibold text-navy">Estimated revenue</h3>
+              <p className="text-xs text-muted-foreground">Last 12 weeks</p>
             </div>
             <div className="flex gap-1 text-xs">
               {["7D","4W","12W","1Y"].map((p, i) => (
@@ -131,7 +131,7 @@ const Dashboard = () => {
           <div className="flex items-end gap-6 flex-wrap">
             <div>
               <p className="font-display text-4xl font-semibold text-navy leading-none">$284,920</p>
-              <p className="text-sm text-success mt-2 inline-flex items-center gap-1"><ArrowUpRight className="h-3 w-3" /> +12.4% vs periodo anterior</p>
+              <p className="text-sm text-success mt-2 inline-flex items-center gap-1"><ArrowUpRight className="h-3 w-3" /> +12.4% vs previous period</p>
             </div>
             <div className="flex gap-5 ml-auto">
               {[["Legend","$142K","primary"],["Coral I","$84K","ocean"],["Coral II","$58K","navy"]].map(([n,v,c]) => (
@@ -161,9 +161,9 @@ const Dashboard = () => {
           </div>
           <div className="relative space-y-3">
             {[
-              { icon: TrendingUp, t: "Smart upsell", d: "Cliente Pérez podría tomar Balcony Suite por +$420.", tag: "+$420" },
-              { icon: AlertTriangle, t: "Smart alert", d: "Solo 2 cabinas Coral II · 22 Abr.", tag: "URG" },
-              { icon: Zap, t: "Seasonal push", d: "Mercado UK vende fuerte Jul–Ago. Activa campaña.", tag: "EU" },
+              { icon: TrendingUp, t: "Smart upsell", d: "Pérez could upgrade to Balcony Suite for +$420.", tag: "+$420" },
+              { icon: AlertTriangle, t: "Smart alert", d: "Only 2 cabins left on Coral II · Apr 22.", tag: "URG" },
+              { icon: Zap, t: "Seasonal push", d: "UK market peaks Jul–Aug. Activate campaign.", tag: "EU" },
             ].map(s => (
               <div key={s.t} className="group p-3 rounded-xl bg-secondary/50 hover:bg-accent transition-colors cursor-pointer">
                 <div className="flex items-start gap-3">
@@ -189,11 +189,11 @@ const Dashboard = () => {
         <div className="lg:col-span-2 premium-card p-0 overflow-hidden">
           <div className="flex items-center justify-between p-6 pb-4">
             <div>
-              <h3 className="font-display text-[17px] font-semibold text-navy">Quotes recientes</h3>
-              <p className="text-xs text-muted-foreground">Cotizaciones enviadas en los últimos 7 días</p>
+              <h3 className="font-display text-[17px] font-semibold text-navy">Recent quotes</h3>
+              <p className="text-xs text-muted-foreground">Quotes sent in the last 7 days</p>
             </div>
             <Link to="/reservas" className="text-xs text-primary hover:text-ocean inline-flex items-center gap-1 font-medium">
-              Ver todas <ArrowUpRight className="h-3 w-3" />
+              View all <ArrowUpRight className="h-3 w-3" />
             </Link>
           </div>
 
@@ -202,11 +202,11 @@ const Dashboard = () => {
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground border-y border-border/60 bg-secondary/30">
-                  <th className="text-left font-medium px-6 py-2.5">Fecha</th>
-                  <th className="text-left font-medium py-2.5">Cliente</th>
-                  <th className="text-left font-medium py-2.5">Producto</th>
-                  <th className="text-right font-medium py-2.5">Valor</th>
-                  <th className="text-left font-medium py-2.5 pl-4">Estado</th>
+                  <th className="text-left font-medium px-6 py-2.5">Date</th>
+                  <th className="text-left font-medium py-2.5">Client</th>
+                  <th className="text-left font-medium py-2.5">Product</th>
+                  <th className="text-right font-medium py-2.5">Value</th>
+                  <th className="text-left font-medium py-2.5 pl-4">Status</th>
                   <th className="px-6"></th>
                 </tr>
               </thead>
@@ -252,9 +252,9 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
               <Clock4 className="h-4 w-4 text-warning" strokeWidth={1.7} />
-              <h3 className="font-display text-[17px] font-semibold text-navy">Holds activos</h3>
+              <h3 className="font-display text-[17px] font-semibold text-navy">Active holds</h3>
             </div>
-            <Link to="/holds" className="text-xs text-primary hover:text-ocean font-medium inline-flex items-center gap-1">Gestionar <ArrowUpRight className="h-3 w-3" /></Link>
+            <Link to="/holds" className="text-xs text-primary hover:text-ocean font-medium inline-flex items-center gap-1">Manage <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="space-y-3">
             {holds.map(h => (
@@ -262,13 +262,13 @@ const Dashboard = () => {
                 <HoldRing days={h.exp} />
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-medium text-navy truncate">{h.ref} · {h.ship}</p>
-                  <p className="text-[11px] text-muted-foreground">Salida {h.date} · {h.total}</p>
+                  <p className="text-[11px] text-muted-foreground">Departs {h.date} · {h.total}</p>
                 </div>
                 <span className={cn("pill",
                   h.exp <= 2 ? "bg-destructive/15 text-destructive" :
                   h.exp <= 4 ? "bg-warning/15 text-warning" :
                   "bg-success/15 text-success"
-                )}>{h.exp <= 2 ? "Urgente" : h.exp <= 4 ? "Próx." : "OK"}</span>
+                )}>{h.exp <= 2 ? "Urgent" : h.exp <= 4 ? "Soon" : "OK"}</span>
               </div>
             ))}
           </div>
@@ -280,22 +280,22 @@ const Dashboard = () => {
         <div className="flex items-center justify-between p-6 pb-4">
           <div>
             <h3 className="font-display text-[17px] font-semibold text-navy inline-flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-success" /> Reservas confirmadas
+              <CheckCircle2 className="h-4 w-4 text-success" /> Confirmed bookings
             </h3>
-            <p className="text-xs text-muted-foreground">Próximas salidas con balance pendiente</p>
+            <p className="text-xs text-muted-foreground">Upcoming departures with pending balance</p>
           </div>
-          <Link to="/confirmadas" className="text-xs text-primary hover:text-ocean font-medium inline-flex items-center gap-1">Ver todas <ArrowUpRight className="h-3 w-3" /></Link>
+          <Link to="/confirmadas" className="text-xs text-primary hover:text-ocean font-medium inline-flex items-center gap-1">View all <ArrowUpRight className="h-3 w-3" /></Link>
         </div>
         <div className="hidden md:block">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground border-y border-border/60 bg-secondary/30">
                 <th className="text-left font-medium px-6 py-2.5">GO Code</th>
-                <th className="text-left font-medium py-2.5">Ref. agencia</th>
-                <th className="text-left font-medium py-2.5">Barco</th>
-                <th className="text-left font-medium py-2.5">Salida</th>
+                <th className="text-left font-medium py-2.5">Agency Ref.</th>
+                <th className="text-left font-medium py-2.5">Ship</th>
+                <th className="text-left font-medium py-2.5">Departure</th>
                 <th className="text-right font-medium py-2.5">Total</th>
-                <th className="text-left font-medium py-2.5 pl-6">Pago</th>
+                <th className="text-left font-medium py-2.5 pl-6">Payment</th>
                 <th className="text-right font-medium px-6 py-2.5">Voucher</th>
               </tr>
             </thead>
@@ -312,11 +312,11 @@ const Dashboard = () => {
                       <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
                         <div className={cn("h-full rounded-full", c.paid === 100 ? "bg-success" : "gradient-brand")} style={{ width: `${c.paid}%` }} />
                       </div>
-                      <span className="text-[11px] text-muted-foreground tabular-nums">{c.paid}%</span>
+                      <span className="text-[11px] tabular-nums text-muted-foreground">{c.paid}%</span>
                     </div>
                   </td>
                   <td className="px-6 py-3.5 text-right">
-                    <button className="inline-flex items-center gap-1 text-xs text-primary hover:text-ocean font-medium">
+                    <button className="inline-flex items-center gap-1 text-[12px] text-primary hover:text-ocean font-medium">
                       <FileText className="h-3.5 w-3.5" /> PDF
                     </button>
                   </td>
@@ -325,20 +325,21 @@ const Dashboard = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile cards */}
         <div className="md:hidden divide-y divide-border/40">
           {confirmed.map(c => (
             <div key={c.code} className="p-5">
-              <div className="flex items-center justify-between">
-                <p className="font-mono text-xs text-navy font-semibold">{c.code}</p>
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="font-mono text-xs font-medium text-navy">{c.code}</p>
                 <span className="font-display font-semibold text-navy">{c.total}</span>
               </div>
-              <p className="text-sm text-navy mt-1">{c.ship} · {c.date}</p>
-              <p className="text-xs text-muted-foreground">Ref {c.ref}</p>
+              <p className="text-sm text-navy/80">{c.ship} · <span className="text-muted-foreground">{c.date}</span></p>
               <div className="flex items-center gap-2 mt-3">
                 <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
                   <div className={cn("h-full rounded-full", c.paid === 100 ? "bg-success" : "gradient-brand")} style={{ width: `${c.paid}%` }} />
                 </div>
-                <span className="text-[11px] text-muted-foreground">{c.paid}%</span>
+                <span className="text-[11px] tabular-nums text-muted-foreground">{c.paid}%</span>
               </div>
             </div>
           ))}

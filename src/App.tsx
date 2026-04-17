@@ -35,13 +35,13 @@ const App = () => (
             <Route path="/confirmadas" element={<Confirmadas />} />
             <Route path="/recursos" element={<Recursos />} />
             <Route path="/millas" element={<Millas />} />
-            <Route path="/flota" element={<Placeholder title="Flota & Itinerarios" />} />
+            <Route path="/flota" element={<Placeholder title="Fleet & Itineraries" />} />
             <Route path="/hotel" element={<Placeholder title="GO Quito Hotel" />} />
-            <Route path="/paquetes" element={<Placeholder title="Productos & Servicios" />} />
-            <Route path="/tarifas" element={<Placeholder title="Tarifas & Promociones" />} />
-            <Route path="/reportes" element={<Placeholder title="Reportes" />} />
-            <Route path="/soporte" element={<Placeholder title="Soporte" />} />
-            <Route path="/perfil" element={<Placeholder title="Mi Perfil" />} />
+            <Route path="/paquetes" element={<Placeholder title="Products & Services" />} />
+            <Route path="/tarifas" element={<Placeholder title="Rates & Promotions" />} />
+            <Route path="/reportes" element={<Placeholder title="Reports" />} />
+            <Route path="/soporte" element={<Placeholder title="Support" />} />
+            <Route path="/perfil" element={<Placeholder title="My Profile" />} />
           </Route>
           <Route path="/index" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />

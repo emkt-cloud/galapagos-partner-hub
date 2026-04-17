@@ -1,16 +1,16 @@
 import { Download, FileText, Image, Video, FileBox, Search } from "lucide-react";
 
-const cats = ["Todos", "Brochures", "Fotografía", "Video", "Itinerarios", "Logos", "Deck de ventas"];
+const cats = ["All", "Brochures", "Photography", "Video", "Itineraries", "Logos", "Sales Deck"];
 
 const items = [
   { type: "pdf",   icon: FileText, title: "Brochure 2025 · Galapagos Legend", lang: "ES · EN", size: "8.4 MB" },
-  { type: "image", icon: Image,    title: "Fotografía oficial · Coral I",     lang: "RAW",     size: "124 MB" },
-  { type: "video", icon: Video,    title: "Video institucional 4K",            lang: "ES",      size: "320 MB" },
-  { type: "pdf",   icon: FileText, title: "Itinerario A · Día por día",        lang: "ES · EN · DE", size: "2.1 MB" },
-  { type: "pdf",   icon: FileBox,  title: "Deck de Ventas Q2 2025",            lang: "ES",      size: "12 MB" },
-  { type: "image", icon: Image,    title: "Logos · Pack identidad",            lang: "SVG · PNG", size: "4.6 MB" },
-  { type: "pdf",   icon: FileText, title: "Brochure GO Quito Hotel",           lang: "ES · EN", size: "5.2 MB" },
-  { type: "video", icon: Video,    title: "Reels redes sociales",              lang: "—",       size: "210 MB" },
+  { type: "image", icon: Image,    title: "Official photography · Coral I",    lang: "RAW",     size: "124 MB" },
+  { type: "video", icon: Video,    title: "Institutional video 4K",            lang: "ES",      size: "320 MB" },
+  { type: "pdf",   icon: FileText, title: "Itinerary A · Day by day",          lang: "ES · EN · DE", size: "2.1 MB" },
+  { type: "pdf",   icon: FileBox,  title: "Sales Deck Q2 2025",                lang: "ES",      size: "12 MB" },
+  { type: "image", icon: Image,    title: "Logos · Brand identity pack",       lang: "SVG · PNG", size: "4.6 MB" },
+  { type: "pdf",   icon: FileText, title: "GO Quito Hotel Brochure",           lang: "ES · EN", size: "5.2 MB" },
+  { type: "video", icon: Video,    title: "Social media reels",                lang: "—",       size: "210 MB" },
 ];
 
 const typeAccent = {
@@ -30,7 +30,7 @@ const Recursos = () => {
         </div>
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input className="h-10 pl-11 pr-4 w-72 rounded-xl bg-card border border-border text-sm focus:border-primary/40 outline-none" placeholder="Buscar recursos…" />
+          <input className="h-10 pl-11 pr-4 w-72 rounded-xl bg-card border border-border text-sm focus:border-primary/40 outline-none" placeholder="Search resources…" />
         </div>
       </div>
 
@@ -50,7 +50,7 @@ const Recursos = () => {
                 <span>{it.size}</span>
               </div>
               <button className="mt-4 w-full h-10 rounded-lg bg-secondary text-navy text-sm font-medium inline-flex items-center justify-center gap-2 hover:gradient-brand hover:text-white hover:shadow-glow transition-premium">
-                <Download className="h-3.5 w-3.5" /> Descargar
+                <Download className="h-3.5 w-3.5" /> Download
               </button>
             </div>
           </div>

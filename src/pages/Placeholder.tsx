@@ -6,7 +6,7 @@ const Placeholder = ({ title }: { title: string }) => (
       <Construction className="h-6 w-6" />
     </div>
     <h2 className="font-display text-3xl font-semibold text-navy mb-3">{title}</h2>
-    <p className="text-muted-foreground">Esta sección estará disponible en la próxima iteración del Partner Portal.</p>
+    <p className="text-muted-foreground">This section will be available in the next iteration of the Partner Portal.</p>
   </div>
 );
 

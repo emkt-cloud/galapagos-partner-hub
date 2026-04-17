@@ -6,14 +6,14 @@ import {
 import welcomeBg from "@/assets/welcome-bg.jpg";
 
 const tiles = [
-  { to: "/dashboard",     icon: LayoutDashboard, title: "Dashboard",      desc: "Centro operativo y KPIs",     featured: true },
-  { to: "/reservas",      icon: CalendarCheck,   title: "Nueva reserva",  desc: "Cotizar, hold o confirmar" },
-  { to: "/disponibilidad",icon: CalendarRange,   title: "Disponibilidad", desc: "Cabinas y salidas en vivo" },
-  { to: "/recursos",      icon: FolderOpen,      title: "Recursos",       desc: "Brochures, fotos, videos" },
-  { to: "/millas",        icon: Sparkles,        title: "Millas",         desc: "Tu nivel y rewards" },
-  { to: "/tarifas",       icon: Tag,             title: "Tarifas",        desc: "Net, gross y promos" },
-  { to: "/soporte",       icon: LifeBuoy,        title: "Soporte",        desc: "Tu equipo dedicado" },
-  { to: "/perfil",        icon: UserCircle2,     title: "Mi Perfil",      desc: "Agencia, equipo y datos" },
+  { to: "/dashboard",     icon: LayoutDashboard, title: "Dashboard",      desc: "Operations hub & KPIs",          featured: true },
+  { to: "/reservas",      icon: CalendarCheck,   title: "New Booking",    desc: "Quote, hold or confirm" },
+  { to: "/disponibilidad",icon: CalendarRange,   title: "Availability",   desc: "Live cabins & departures" },
+  { to: "/recursos",      icon: FolderOpen,      title: "Resources",      desc: "Brochures, photos, video" },
+  { to: "/millas",        icon: Sparkles,        title: "Miles",          desc: "Your tier & rewards" },
+  { to: "/tarifas",       icon: Tag,             title: "Rates",          desc: "Net, gross & promos" },
+  { to: "/soporte",       icon: LifeBuoy,        title: "Support",        desc: "Your dedicated team" },
+  { to: "/perfil",        icon: UserCircle2,     title: "My Profile",     desc: "Agency, team & data" },
 ];
 
 const Welcome = () => {
@@ -53,23 +53,23 @@ const Welcome = () => {
         {/* Greeting */}
         <div className="max-w-3xl mb-10 lg:mb-14 animate-fade-up">
           <p className="text-[10px] uppercase tracking-[0.4em] text-primary mb-5 inline-flex items-center gap-2">
-            <span className="h-px w-10 bg-primary" /> Welcome Hub · Abril 2025
+            <span className="h-px w-10 bg-primary" /> Welcome Hub · April 2025
           </p>
           <h1 className="font-display text-5xl md:text-7xl lg:text-[88px] font-light text-navy leading-[1.02] mb-6 tracking-tight">
-            Bienvenida, <span className="font-semibold text-gradient-brand">Camila</span>
+            Welcome, <span className="font-semibold text-gradient-brand">Camila</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Tu centro de operaciones GO Galápagos. Accede a reservas, disponibilidad y herramientas comerciales en un solo lugar.
+            Your GO Galápagos operations hub. Access bookings, availability and commercial tools — all in one place.
           </p>
         </div>
 
         {/* Quick metric strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10 animate-fade-up" style={{ animationDelay: "120ms" }}>
           {[
-            ["Reservas activas", "182", "+12.4%"],
-            ["Holds vigentes", "3", "expira hoy"],
-            ["Revenue del mes", "$284K", "+8.2%"],
-            ["Millas disponibles", "48,250", "Platinum"],
+            ["Active bookings", "182", "+12.4%"],
+            ["Open holds", "3", "expires today"],
+            ["Revenue MTD", "$284K", "+8.2%"],
+            ["Available miles", "48,250", "Platinum"],
           ].map(([l,v,d]) => (
             <div key={l} className="px-4 py-3 rounded-2xl bg-card/70 backdrop-blur-md border border-border/60">
               <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{l}</p>
@@ -110,7 +110,7 @@ const Welcome = () => {
         </div>
 
         <div className="mt-12 flex items-center justify-between text-xs text-muted-foreground animate-fade-in">
-          <span>Sesión segura · Última actividad hoy 09:42</span>
+          <span>Secure session · Last activity today 09:42</span>
           <span className="hidden md:inline">v2026.04 · Premium experience</span>
         </div>
       </div>

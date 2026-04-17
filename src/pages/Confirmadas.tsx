@@ -8,18 +8,18 @@ type Booking = {
 };
 
 const bookings: Booking[] = [
-  { code: "GO-2820", ref: "AT-9271", client: "Maria Pérez",     pax: 2, ship: "Galapagos Legend", departure: "22 Abr 2025", total: 9780,  deposit: 4890 },
-  { code: "GO-2818", ref: "AT-9268", client: "Robert Klein",    pax: 2, ship: "Coral I",          departure: "24 Abr 2025", total: 11350, deposit: 11350 },
-  { code: "GO-2815", ref: "AT-9261", client: "Sophie Laurent",  pax: 4, ship: "Coral II",         departure: "26 Abr 2025", total: 7120,  deposit: 2136 },
-  { code: "GO-2812", ref: "AT-9255", client: "Hiroshi Tanaka",  pax: 2, ship: "Galapagos Legend", departure: "29 Abr 2025", total: 8490,  deposit: 8490 },
-  { code: "GO-2809", ref: "AT-9248", client: "Anna Lindqvist",  pax: 3, ship: "Coral II",         departure: "2 May 2025",  total: 12780, deposit: 6390 },
-  { code: "GO-2805", ref: "AT-9241", client: "James Whitaker",  pax: 2, ship: "Coral I",          departure: "5 May 2025",  total: 7480,  deposit: 7480 },
+  { code: "GO-2820", ref: "AT-9271", client: "Maria Pérez",     pax: 2, ship: "Galapagos Legend", departure: "Apr 22, 2025", total: 9780,  deposit: 4890 },
+  { code: "GO-2818", ref: "AT-9268", client: "Robert Klein",    pax: 2, ship: "Coral I",          departure: "Apr 24, 2025", total: 11350, deposit: 11350 },
+  { code: "GO-2815", ref: "AT-9261", client: "Sophie Laurent",  pax: 4, ship: "Coral II",         departure: "Apr 26, 2025", total: 7120,  deposit: 2136 },
+  { code: "GO-2812", ref: "AT-9255", client: "Hiroshi Tanaka",  pax: 2, ship: "Galapagos Legend", departure: "Apr 29, 2025", total: 8490,  deposit: 8490 },
+  { code: "GO-2809", ref: "AT-9248", client: "Anna Lindqvist",  pax: 3, ship: "Coral II",         departure: "May 2, 2025",  total: 12780, deposit: 6390 },
+  { code: "GO-2805", ref: "AT-9241", client: "James Whitaker",  pax: 2, ship: "Coral I",          departure: "May 5, 2025",  total: 7480,  deposit: 7480 },
 ];
 
 const fmt = (n: number) => `$${n.toLocaleString()}`;
 
 const Confirmadas = () => {
-  const [ship, setShip] = useState("Todas");
+  const [ship, setShip] = useState("All");
   const total = bookings.reduce((a, b) => a + b.total, 0);
   const deposited = bookings.reduce((a, b) => a + b.deposit, 0);
 
@@ -28,10 +28,10 @@ const Confirmadas = () => {
       {/* Stats */}
       <section className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { l: "Reservas confirmadas", v: bookings.length.toString(), d: "Próximos 60 días" },
-          { l: "Valor total",          v: fmt(total),                 d: "Cartera confirmada" },
-          { l: "Depositado",           v: fmt(deposited),             d: `${Math.round((deposited/total)*100)}% del total` },
-          { l: "Balance pendiente",    v: fmt(total - deposited),     d: "Por cobrar" },
+          { l: "Confirmed bookings", v: bookings.length.toString(), d: "Next 60 days" },
+          { l: "Total value",        v: fmt(total),                 d: "Confirmed pipeline" },
+          { l: "Deposited",          v: fmt(deposited),             d: `${Math.round((deposited/total)*100)}% of total` },
+          { l: "Outstanding balance",v: fmt(total - deposited),     d: "To be collected" },
         ].map((k, i) => (
           <div key={k.l} style={{ animationDelay: `${i*60}ms` }} className="premium-card p-5 animate-fade-up">
             <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{k.l}</p>
@@ -44,7 +44,7 @@ const Confirmadas = () => {
       {/* Toolbar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
-          {["Todas","Galapagos Legend","Coral I","Coral II"].map(f => (
+          {["All","Galapagos Legend","Coral I","Coral II"].map(f => (
             <button key={f} onClick={() => setShip(f)} className={cn(
               "px-4 h-9 rounded-xl text-[13px] font-medium transition-colors",
               ship === f ? "bg-navy text-white shadow-soft" : "bg-card border border-border text-navy hover:border-primary/40"
@@ -54,13 +54,13 @@ const Confirmadas = () => {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 h-9 px-3 rounded-xl bg-secondary/60 w-64">
             <Search className="h-3.5 w-3.5 text-muted-foreground" />
-            <input className="bg-transparent outline-none text-[13px] flex-1" placeholder="Cliente, código, ref…" />
+            <input className="bg-transparent outline-none text-[13px] flex-1" placeholder="Client, code, ref…" />
           </div>
           <button className="h-9 px-3.5 rounded-xl border border-border bg-card text-navy text-[13px] inline-flex items-center gap-1.5 hover:border-primary/40 transition-colors">
-            <Filter className="h-3.5 w-3.5" /> Filtros
+            <Filter className="h-3.5 w-3.5" /> Filters
           </button>
           <button className="h-9 px-4 rounded-xl gradient-brand text-white text-[13px] font-medium inline-flex items-center gap-1.5 shadow-glow hover:shadow-elegant transition-premium">
-            <Download className="h-3.5 w-3.5" /> Exportar CSV
+            <Download className="h-3.5 w-3.5" /> Export CSV
           </button>
         </div>
       </div>
@@ -72,14 +72,14 @@ const Confirmadas = () => {
             <thead>
               <tr className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground border-b border-border/60 bg-secondary/30">
                 <th className="text-left font-medium px-6 py-3">GO Code</th>
-                <th className="text-left font-medium py-3">Ref. agencia</th>
-                <th className="text-left font-medium py-3">Cliente</th>
+                <th className="text-left font-medium py-3">Agency Ref.</th>
+                <th className="text-left font-medium py-3">Client</th>
                 <th className="text-center font-medium py-3">Pax</th>
-                <th className="text-left font-medium py-3">Barco · Salida</th>
+                <th className="text-left font-medium py-3">Ship · Departure</th>
                 <th className="text-right font-medium py-3">Total</th>
-                <th className="text-right font-medium py-3">Depositado</th>
+                <th className="text-right font-medium py-3">Deposited</th>
                 <th className="text-right font-medium py-3">Balance</th>
-                <th className="text-left font-medium py-3 pl-6">Estado</th>
+                <th className="text-left font-medium py-3 pl-6">Status</th>
                 <th className="text-right font-medium px-6 py-3">Voucher</th>
               </tr>
             </thead>
@@ -141,7 +141,7 @@ const Confirmadas = () => {
                 </div>
                 <span className={cn("pill", fullyPaid ? "bg-success/15 text-success" : "bg-warning/15 text-warning")}>
                   {fullyPaid ? <CheckCircle2 className="h-3 w-3" /> : <AlertCircle className="h-3 w-3" />}
-                  {fullyPaid ? "Pagado" : "Pendiente"}
+                  {fullyPaid ? "Paid" : "Pending"}
                 </span>
               </div>
               <p className="text-[13px] text-navy/80">{b.ship} · {b.departure}</p>
@@ -151,7 +151,7 @@ const Confirmadas = () => {
                   <p className="font-display font-semibold text-navy">{fmt(b.total)}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Depositado</p>
+                  <p className="text-muted-foreground">Deposited</p>
                   <p className="font-medium text-success">{fmt(b.deposit)}</p>
                 </div>
                 <div>

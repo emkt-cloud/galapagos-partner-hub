@@ -34,12 +34,12 @@ const Login = () => {
           </div>
 
           <div className="max-w-md animate-fade-up">
-            <p className="text-xs uppercase tracking-[0.3em] text-primary-glow mb-4">Expediciones de Lujo</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-primary-glow mb-4">Luxury Expeditions</p>
             <h1 className="font-display text-5xl font-light leading-[1.1] mb-4">
-              Donde el océano <span className="italic text-primary-glow">despierta</span> el negocio.
+              Where the ocean <span className="italic text-primary-glow">awakens</span> business.
             </h1>
             <p className="text-white/70 text-sm leading-relaxed">
-              Un espacio diseñado para nuestros aliados comerciales. Disponibilidad, reservas e inteligencia comercial en un solo lugar.
+              A space designed for our commercial partners. Availability, bookings and business intelligence — all in one place.
             </p>
           </div>
 
@@ -63,27 +63,27 @@ const Login = () => {
           </div>
 
           <p className="text-xs uppercase tracking-[0.3em] text-primary mb-3">Partner Portal</p>
-          <h2 className="font-display text-4xl font-semibold text-navy mb-2">Bienvenido de vuelta</h2>
-          <p className="text-muted-foreground mb-10">Ingresa con tus credenciales para continuar.</p>
+          <h2 className="font-display text-4xl font-semibold text-navy mb-2">Welcome back</h2>
+          <p className="text-muted-foreground mb-10">Sign in with your credentials to continue.</p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="group">
-              <label className="text-xs font-medium text-navy/70 uppercase tracking-wider">Usuario</label>
+              <label className="text-xs font-medium text-navy/70 uppercase tracking-wider">Username</label>
               <div className="relative mt-2">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
                 <input
                   type="text"
                   defaultValue="camila.rivas"
                   className="w-full h-14 pl-11 pr-4 rounded-xl bg-secondary/60 border border-transparent focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-premium text-navy"
-                  placeholder="tu.usuario"
+                  placeholder="your.username"
                 />
               </div>
             </div>
 
             <div className="group">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-navy/70 uppercase tracking-wider">Contraseña</label>
-                <Link to="#" className="text-xs text-primary hover:text-ocean transition-colors">Recuperar acceso</Link>
+                <label className="text-xs font-medium text-navy/70 uppercase tracking-wider">Password</label>
+                <Link to="#" className="text-xs text-primary hover:text-ocean transition-colors">Forgot password</Link>
               </div>
               <div className="relative mt-2">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
@@ -104,7 +104,7 @@ const Login = () => {
               className="group relative w-full h-14 rounded-xl gradient-brand text-white font-medium overflow-hidden shadow-glow hover:shadow-elegant transition-premium disabled:opacity-70"
             >
               <span className="relative z-10 inline-flex items-center justify-center gap-2">
-                {loading ? "Ingresando…" : "Ingresar"}
+                {loading ? "Signing in…" : "Sign in"}
                 {!loading && <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />}
               </span>
               <span className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors" />
@@ -112,10 +112,10 @@ const Login = () => {
           </form>
 
           <div className="mt-10 pt-6 border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
-            <span>Acceso exclusivo para partners</span>
+            <span>Exclusive access for partners</span>
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse-glow" />
-              Sistema operativo
+              System operational
             </span>
           </div>
         </div>
