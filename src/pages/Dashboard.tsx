@@ -78,8 +78,16 @@ const Dashboard = () => {
   return (
     <div className="space-y-6 max-w-[1480px]">
       {/* Hero strip */}
-      <section className="relative overflow-hidden rounded-3xl gradient-ocean text-white p-7 lg:p-9 shadow-navy">
-        <div className="absolute inset-0 bg-gradient-glow opacity-40" />
+      <section className="relative overflow-hidden rounded-3xl text-white p-7 lg:p-9 shadow-navy min-h-[260px]">
+        <img
+          src={dashboardHero}
+          alt=""
+          width={1920}
+          height={720}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-night/95 via-navy/85 to-navy/40" />
+        <div className="absolute inset-0 bg-gradient-glow opacity-30" />
         <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-primary/30 blur-[90px]" />
         <div className="absolute inset-0 grid-luxe opacity-[0.08]" />
         <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
