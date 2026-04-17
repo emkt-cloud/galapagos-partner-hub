@@ -5,6 +5,17 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import dashboardHero from "@/assets/dashboard-hero.jpg";
+import shipLegend from "@/assets/ship-legend.jpg";
+import shipCoral1 from "@/assets/ship-coral1.jpg";
+import shipCoral2 from "@/assets/ship-coral2.jpg";
+
+const shipImageMap: Record<string, string> = {
+  "Galapagos Legend": shipLegend,
+  "Legend": shipLegend,
+  "Coral I": shipCoral1,
+  "Coral II": shipCoral2,
+};
 
 const kpis = [
   { label: "Active bookings",   value: "182",  delta: "+12.4%",        up: true,  icon: Users,        tone: "primary"  },
