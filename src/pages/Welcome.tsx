@@ -90,22 +90,39 @@ const Welcome = () => {
               key={t.to}
               to={t.to}
               style={{ animationDelay: `${180 + i * 50}ms` }}
-              className={`group relative premium-card p-6 overflow-hidden animate-fade-up ${t.featured ? "lg:col-span-2 lg:row-span-1" : ""}`}
+              className={`group relative premium-card p-0 overflow-hidden animate-fade-up ${t.featured ? "lg:col-span-2 lg:row-span-1" : ""}`}
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: "linear-gradient(135deg, hsl(var(--primary)/0.06), hsl(var(--ocean)/0.06))" }} />
-              <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              <div className="relative flex items-start justify-between mb-6">
-                <div className="h-11 w-11 rounded-xl bg-accent grid place-items-center text-ocean group-hover:gradient-brand group-hover:text-white transition-all duration-500 shadow-soft">
-                  <t.icon className="h-[18px] w-[18px]" strokeWidth={1.6} />
+              {/* Optional image */}
+              {t.image && (
+                <div className={`relative overflow-hidden ${t.featured ? "h-44" : "h-28"}`}>
+                  <img
+                    src={t.image}
+                    alt=""
+                    loading="lazy"
+                    width={800}
+                    height={400}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
                 </div>
-                <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
-              </div>
+              )}
 
-              <div className="relative">
-                <h3 className="font-display text-[17px] font-semibold text-navy mb-1">{t.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
+              <div className="relative p-6">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: "linear-gradient(135deg, hsl(var(--primary)/0.06), hsl(var(--ocean)/0.06))" }} />
+                <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <div className="relative flex items-start justify-between mb-6">
+                  <div className="h-11 w-11 rounded-xl bg-accent grid place-items-center text-ocean group-hover:gradient-brand group-hover:text-white transition-all duration-500 shadow-soft">
+                    <t.icon className="h-[18px] w-[18px]" strokeWidth={1.6} />
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
+                </div>
+
+                <div className="relative">
+                  <h3 className="font-display text-[17px] font-semibold text-navy mb-1">{t.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{t.desc}</p>
+                </div>
               </div>
             </Link>
           ))}
