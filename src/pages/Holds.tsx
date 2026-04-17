@@ -93,53 +93,71 @@ const Holds = () => {
             <article
               key={h.ref}
               style={{ animationDelay: `${i * 70}ms` }}
-              className="premium-card p-6 animate-fade-up group relative overflow-hidden"
+              className="premium-card p-0 animate-fade-up group relative overflow-hidden"
             >
-              <span className="absolute left-0 top-0 bottom-0 w-1" style={{ background: v.ring }} />
+              <span className="absolute left-0 top-0 bottom-0 w-1 z-10" style={{ background: v.ring }} />
 
-              <div className="flex items-start gap-5">
-                {/* Countdown ring */}
-                <div className="relative h-20 w-20 shrink-0 rounded-full grid place-items-center"
-                  style={{ background: `conic-gradient(${v.ring} ${pct}%, hsl(var(--secondary)) 0)` }}>
-                  <div className="h-[68px] w-[68px] rounded-full bg-card grid place-items-center">
-                    <div className="text-center">
-                      <p className={cn("font-display text-xl font-semibold leading-none", v.text)}>{h.expiresIn}</p>
-                      <p className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">{h.expiresIn === 1 ? "day" : "days"}</p>
-                    </div>
-                  </div>
+              <div className="grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr]">
+                {/* Ship image */}
+                <div className="relative overflow-hidden">
+                  <img
+                    src={shipImageMap[h.ship]}
+                    alt={h.ship}
+                    loading="lazy"
+                    width={400}
+                    height={400}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/30" />
                 </div>
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-3 mb-1">
-                    <div className="min-w-0">
-                      <p className="font-mono text-[11px] text-muted-foreground">{h.ref}</p>
-                      <p className="font-display text-[17px] font-semibold text-navy leading-tight truncate">{h.client}</p>
+                {/* Content */}
+                <div className="p-5 lg:p-6">
+                  <div className="flex items-start gap-4">
+                    {/* Countdown ring */}
+                    <div className="relative h-16 w-16 shrink-0 rounded-full grid place-items-center"
+                      style={{ background: `conic-gradient(${v.ring} ${pct}%, hsl(var(--secondary)) 0)` }}>
+                      <div className="h-[54px] w-[54px] rounded-full bg-card grid place-items-center">
+                        <div className="text-center">
+                          <p className={cn("font-display text-lg font-semibold leading-none", v.text)}>{h.expiresIn}</p>
+                          <p className="text-[8px] uppercase tracking-wider text-muted-foreground mt-0.5">{h.expiresIn === 1 ? "day" : "days"}</p>
+                        </div>
+                      </div>
                     </div>
-                    <span className={cn("pill shrink-0", v.bg, v.text)}>{v.label}</span>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <div className="min-w-0">
+                          <p className="font-mono text-[10.5px] text-muted-foreground">{h.ref}</p>
+                          <p className="font-display text-[16px] font-semibold text-navy leading-tight truncate">{h.client}</p>
+                        </div>
+                        <span className={cn("pill shrink-0", v.bg, v.text)}>{v.label}</span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-[12.5px] text-navy/80 mt-1.5">
+                        <Ship className="h-3.5 w-3.5 text-ocean shrink-0" />
+                        <span className="truncate">{h.ship} · <span className="text-muted-foreground">{h.cabin}</span></span>
+                      </div>
+                      <div className="flex items-center flex-wrap gap-x-3 gap-y-0.5 text-[11.5px] text-muted-foreground mt-1">
+                        <span>{h.departure}</span>
+                        <span>· {h.pax} pax</span>
+                        <span>· <span className="text-navy font-display font-semibold">{h.total}</span></span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-[13px] text-navy/80 mt-2">
-                    <Ship className="h-3.5 w-3.5 text-ocean" />
-                    {h.ship} · <span className="text-muted-foreground">{h.cabin}</span>
-                  </div>
-                  <div className="flex items-center gap-4 text-[12px] text-muted-foreground mt-1">
-                    <span>Departs {h.departure}</span>
-                    <span>· {h.pax} pax</span>
-                    <span>· <span className="text-navy font-display font-semibold">{h.total}</span></span>
+                  <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border/60">
+                    <button className="h-9 rounded-lg gradient-brand text-white text-[12px] font-medium inline-flex items-center justify-center gap-1.5 shadow-glow hover:shadow-elegant transition-premium">
+                      <CheckCircle2 className="h-3.5 w-3.5" /> Confirm
+                    </button>
+                    <button className="h-9 rounded-lg border border-border bg-card text-navy text-[12px] font-medium hover:border-primary/40 transition-colors inline-flex items-center justify-center gap-1.5">
+                      <RefreshCcw className="h-3.5 w-3.5" /> Extend
+                    </button>
+                    <button className="h-9 rounded-lg border border-border bg-card text-muted-foreground text-[12px] font-medium hover:border-destructive/40 hover:text-destructive transition-colors inline-flex items-center justify-center gap-1.5">
+                      <X className="h-3.5 w-3.5" /> Cancel
+                    </button>
                   </div>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-2 mt-5 pt-5 border-t border-border/60">
-                <button className="h-10 rounded-xl gradient-brand text-white text-[12.5px] font-medium inline-flex items-center justify-center gap-1.5 shadow-glow hover:shadow-elegant transition-premium">
-                  <CheckCircle2 className="h-3.5 w-3.5" /> Confirm
-                </button>
-                <button className="h-10 rounded-xl border border-border bg-card text-navy text-[12.5px] font-medium hover:border-primary/40 transition-colors inline-flex items-center justify-center gap-1.5">
-                  <RefreshCcw className="h-3.5 w-3.5" /> Extend
-                </button>
-                <button className="h-10 rounded-xl border border-border bg-card text-muted-foreground text-[12.5px] font-medium hover:border-destructive/40 hover:text-destructive transition-colors inline-flex items-center justify-center gap-1.5">
-                  <X className="h-3.5 w-3.5" /> Cancel
-                </button>
               </div>
             </article>
           );
