@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => navigate("/welcome"), 900);
+    setTimeout(() => navigate("/select-user"), 900);
   };
 
   return (
