@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Login from "./pages/Login";
+import SelectUser from "./pages/SelectUser";
 import Welcome from "./pages/Welcome";
 import PortalLayout from "./layouts/PortalLayout";
 import Dashboard from "./pages/Dashboard";
@@ -39,6 +40,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/select-user" element={<SelectUser />} />
           <Route path="/welcome" element={<Welcome />} />
           <Route element={<PortalLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
