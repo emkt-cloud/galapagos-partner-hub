@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Outlet, NavLink, useLocation, useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard, CalendarRange, Clock4, CheckCircle2, Tag, Package,
-  Hotel, FolderOpen, Sparkles, BarChart3, LifeBuoy, ChevronLeft,
-  Search, Bell, LogOut, UserCircle2, CalendarCheck, Command, Home, Menu, X
+  FolderOpen, Sparkles, LifeBuoy, ChevronLeft, GraduationCap, Image as ImageIcon,
+  Search, Bell, LogOut, UserCircle2, Ship, Compass, Command, Menu, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getUserById } from "@/data/users";
@@ -13,34 +13,38 @@ type NavGroup = { label?: string; items: { to: string; label: string; icon: any;
 const groups: NavGroup[] = [
   {
     items: [
-      { to: "/welcome",   label: "Home",      icon: Home },
-      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/dashboard", label: "Home / Dashboard", icon: LayoutDashboard },
     ],
   },
   {
     label: "Operations",
     items: [
-      { to: "/reservas",       label: "New Booking",     icon: CalendarCheck },
-      { to: "/disponibilidad", label: "Availability",    icon: CalendarRange },
-      { to: "/holds",          label: "Holds",           icon: Clock4, badge: "3" },
-      { to: "/confirmadas",    label: "Confirmed",       icon: CheckCircle2 },
+      { to: "/reservas",       label: "Book a Cruise",  icon: Ship },
+      { to: "/land-tours",     label: "Book Land Tours",icon: Compass },
+      { to: "/disponibilidad", label: "Availability",   icon: CalendarRange },
+      { to: "/holds",          label: "Holds",          icon: Clock4, badge: "3" },
+      { to: "/confirmadas",    label: "Confirmed",      icon: CheckCircle2 },
     ],
   },
   {
     label: "Catalog",
     items: [
-      { to: "/tarifas",  label: "Rates",           icon: Tag },
-      { to: "/paquetes", label: "Products",        icon: Package },
-      { to: "/hotel",    label: "GO Quito Hotel",  icon: Hotel },
-      { to: "/recursos", label: "Resources",       icon: FolderOpen },
+      { to: "/tarifas",          label: "Rates",     icon: Tag },
+      { to: "/recursos/products",label: "Products",  icon: Package },
+      { to: "/recursos",         label: "Resources", icon: FolderOpen },
+      { to: "/recursos/gallery", label: "Gallery",   icon: ImageIcon },
     ],
   },
   {
     label: "Performance",
     items: [
       { to: "/millas",   label: "Miles",   icon: Sparkles },
-      { to: "/reportes", label: "Reports", icon: BarChart3 },
       { to: "/soporte",  label: "Support", icon: LifeBuoy },
+    ],
+  },
+  {
+    items: [
+      { to: "/academy",  label: "GO Academy", icon: GraduationCap },
     ],
   },
 ];
