@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Outlet, NavLink, useLocation, useNavigate, Link } from "react-router-dom";
+import { Outlet, NavLink, useLocation, useNavigate } from "react-router-dom";
+import Footer from "@/components/Footer";
+import TierInfo from "@/components/TierInfo";
 import {
   LayoutDashboard, CalendarRange, Clock4, CheckCircle2, Tag, Package,
   FolderOpen, Sparkles, LifeBuoy, ChevronLeft, GraduationCap, Image as ImageIcon,
@@ -260,15 +262,17 @@ const PortalLayout = () => {
             <div className="h-10 px-3 rounded-xl bg-secondary/60 hidden lg:flex items-center gap-2.5">
               <UserCircle2 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
               <div className="text-left">
-                <p className="text-[11px] leading-none text-muted-foreground">Andes Travel</p>
                 <p className="text-[12px] leading-tight font-medium text-navy">{user.name}</p>
+                <p className="text-[10.5px] leading-none text-muted-foreground">{user.company} · {user.tier}</p>
               </div>
+              <TierInfo user={user} className="ml-1" />
             </div>
           </div>
         </header>
 
         <main className="flex-1 p-4 md:p-6 lg:p-10 animate-fade-in">
           <Outlet />
+          <Footer />
         </main>
       </div>
     </div>
