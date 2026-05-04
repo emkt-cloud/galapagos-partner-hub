@@ -15,7 +15,7 @@ const SelectUser = () => {
 
   const choose = (id: string) => {
     sessionStorage.setItem("portal:userId", id);
-    navigate("/welcome");
+    navigate("/dashboard");
   };
 
   return (
@@ -37,7 +37,7 @@ const SelectUser = () => {
               <span className="text-white font-display font-bold">G</span>
             </div>
             <div>
-              <p className="font-display font-bold text-navy leading-tight">GO Galápagos</p>
+              <p className="font-display font-bold text-navy leading-tight">GO Galapagos</p>
               <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Partner Portal</p>
             </div>
           </div>
