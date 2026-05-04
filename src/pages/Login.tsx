@@ -18,7 +18,7 @@ const Login = () => {
     <div className="min-h-screen flex bg-background">
       {/* Hero visual */}
       <div className="relative hidden lg:flex lg:w-[58%] overflow-hidden">
-        <img src={heroImg} alt="Galápagos premium expedition yacht at sunset" className="absolute inset-0 h-full w-full object-cover scale-105 animate-[float_12s_ease-in-out_infinite]" />
+        <img src={heroImg} alt="Galapagos premium expedition yacht at sunset" className="absolute inset-0 h-full w-full object-cover scale-105 animate-[float_12s_ease-in-out_infinite]" />
         <div className="absolute inset-0 bg-gradient-to-br from-night/80 via-navy/40 to-primary/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-night via-night/30 to-transparent" />
 
