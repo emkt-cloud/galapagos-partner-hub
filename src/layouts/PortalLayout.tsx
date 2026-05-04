@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Outlet, NavLink, useLocation, useNavigate, Link } from "react-router-dom";
+import { Outlet, NavLink, useLocation, useNavigate } from "react-router-dom";
+import Footer from "@/components/Footer";
+import TierInfo from "@/components/TierInfo";
 import {
   LayoutDashboard, CalendarRange, Clock4, CheckCircle2, Tag, Package,
-  Hotel, FolderOpen, Sparkles, BarChart3, LifeBuoy, ChevronLeft,
-  Search, Bell, LogOut, UserCircle2, CalendarCheck, Command, Home, Menu, X
+  FolderOpen, Sparkles, LifeBuoy, ChevronLeft, GraduationCap, Image as ImageIcon,
+  Search, Bell, LogOut, UserCircle2, Ship, Compass, Command, Menu, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getUserById } from "@/data/users";
@@ -13,34 +15,38 @@ type NavGroup = { label?: string; items: { to: string; label: string; icon: any;
 const groups: NavGroup[] = [
   {
     items: [
-      { to: "/welcome",   label: "Home",      icon: Home },
-      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/dashboard", label: "Home / Dashboard", icon: LayoutDashboard },
     ],
   },
   {
     label: "Operations",
     items: [
-      { to: "/reservas",       label: "New Booking",     icon: CalendarCheck },
-      { to: "/disponibilidad", label: "Availability",    icon: CalendarRange },
-      { to: "/holds",          label: "Holds",           icon: Clock4, badge: "3" },
-      { to: "/confirmadas",    label: "Confirmed",       icon: CheckCircle2 },
+      { to: "/reservas",       label: "Book a Cruise",  icon: Ship },
+      { to: "/land-tours",     label: "Book Land Tours",icon: Compass },
+      { to: "/disponibilidad", label: "Availability",   icon: CalendarRange },
+      { to: "/holds",          label: "Holds",          icon: Clock4, badge: "3" },
+      { to: "/confirmadas",    label: "Confirmed",      icon: CheckCircle2 },
     ],
   },
   {
     label: "Catalog",
     items: [
-      { to: "/tarifas",  label: "Rates",           icon: Tag },
-      { to: "/paquetes", label: "Products",        icon: Package },
-      { to: "/hotel",    label: "GO Quito Hotel",  icon: Hotel },
-      { to: "/recursos", label: "Resources",       icon: FolderOpen },
+      { to: "/tarifas",          label: "Rates",     icon: Tag },
+      { to: "/recursos/products",label: "Products",  icon: Package },
+      { to: "/recursos",         label: "Resources", icon: FolderOpen },
+      { to: "/recursos/gallery", label: "Gallery",   icon: ImageIcon },
     ],
   },
   {
     label: "Performance",
     items: [
       { to: "/millas",   label: "Miles",   icon: Sparkles },
-      { to: "/reportes", label: "Reports", icon: BarChart3 },
       { to: "/soporte",  label: "Support", icon: LifeBuoy },
+    ],
+  },
+  {
+    items: [
+      { to: "/academy",  label: "GO Academy", icon: GraduationCap },
     ],
   },
 ];
@@ -87,7 +93,7 @@ const PortalLayout = () => {
             <span className="font-display font-bold text-white">G</span>
           </div>
           <div className={cn("overflow-hidden transition-all duration-300 flex-1", expanded ? "opacity-100 w-auto" : "opacity-0 w-0")}>
-            <p className="font-display font-bold text-white whitespace-nowrap leading-tight">GO Galápagos</p>
+            <p className="font-display font-bold text-white whitespace-nowrap leading-tight">GO Galapagos</p>
             <p className="text-[10px] uppercase tracking-[0.25em] text-primary-glow whitespace-nowrap">Partner Portal</p>
           </div>
           {isMobile && (
@@ -160,7 +166,7 @@ const PortalLayout = () => {
             </div>
             <div className={cn("flex-1 min-w-0 transition-all", expanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden")}>
               <p className="text-[13px] text-white truncate leading-tight">{user.name}</p>
-              <p className="text-[11px] text-primary-glow/80 truncate">Andes Travel · {user.tier}</p>
+              <p className="text-[11px] text-primary-glow/80 truncate">{user.company} · {user.tier}</p>
             </div>
             {expanded && (
               <button
@@ -256,15 +262,17 @@ const PortalLayout = () => {
             <div className="h-10 px-3 rounded-xl bg-secondary/60 hidden lg:flex items-center gap-2.5">
               <UserCircle2 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
               <div className="text-left">
-                <p className="text-[11px] leading-none text-muted-foreground">Andes Travel</p>
                 <p className="text-[12px] leading-tight font-medium text-navy">{user.name}</p>
+                <p className="text-[10.5px] leading-none text-muted-foreground">{user.company} · {user.tier}</p>
               </div>
+              <TierInfo user={user} className="ml-1" />
             </div>
           </div>
         </header>
 
         <main className="flex-1 p-4 md:p-6 lg:p-10 animate-fade-in">
           <Outlet />
+          <Footer />
         </main>
       </div>
     </div>

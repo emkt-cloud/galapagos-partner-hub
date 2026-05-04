@@ -7,7 +7,7 @@ const services = [
     to: "/recursos/services/best-sellers",
     title: "Best Sellers",
     sub: "6 cruise + mainland combos",
-    description: "Our top-selling Galápagos packages combined with Quito, Andes and Peru.",
+    description: "Our top-selling Galapagos packages combined with Quito, Andes and Peru.",
     icon: Sparkles,
     cover: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=1600&q=80",
   },

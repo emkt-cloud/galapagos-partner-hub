@@ -10,7 +10,7 @@ const BestSellers = () => {
 
       <div className="flex flex-col gap-2">
         <h2 className="font-display text-2xl font-bold text-navy">Best Sellers</h2>
-        <p className="text-sm text-muted-foreground">Six top-performing combos blending Galápagos cruises with mainland Ecuador and Peru.</p>
+        <p className="text-sm text-muted-foreground">Six top-performing combos blending Galapagos cruises with mainland Ecuador and Peru.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
