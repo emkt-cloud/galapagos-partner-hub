@@ -28,7 +28,7 @@ const Login = () => {
               <span className="font-display font-bold text-lg">G</span>
             </div>
             <div className="leading-tight">
-              <p className="font-display font-bold tracking-tight">GO Galápagos</p>
+              <p className="font-display font-bold tracking-tight">GO Galapagos</p>
               <p className="text-xs text-white/60 uppercase tracking-[0.2em]">Partner Portal</p>
             </div>
           </div>
@@ -44,7 +44,7 @@ const Login = () => {
           </div>
 
           <div className="flex items-center justify-between text-xs text-white/50">
-            <span>© {new Date().getFullYear()} GO Galápagos</span>
+            <span>© {new Date().getFullYear()} GO Galapagos</span>
             <span>Galapagos Legend · Coral I · Coral II</span>
           </div>
         </div>
@@ -59,7 +59,7 @@ const Login = () => {
             <div className="h-10 w-10 rounded-xl gradient-brand grid place-items-center">
               <span className="text-white font-display font-bold">G</span>
             </div>
-            <span className="font-display font-bold">GO Galápagos</span>
+            <span className="font-display font-bold">GO Galapagos</span>
           </div>
 
           <p className="text-xs uppercase tracking-[0.3em] text-primary mb-3">Partner Portal</p>
