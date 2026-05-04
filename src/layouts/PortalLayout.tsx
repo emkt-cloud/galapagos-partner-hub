@@ -91,7 +91,7 @@ const PortalLayout = () => {
             <span className="font-display font-bold text-white">G</span>
           </div>
           <div className={cn("overflow-hidden transition-all duration-300 flex-1", expanded ? "opacity-100 w-auto" : "opacity-0 w-0")}>
-            <p className="font-display font-bold text-white whitespace-nowrap leading-tight">GO Galápagos</p>
+            <p className="font-display font-bold text-white whitespace-nowrap leading-tight">GO Galapagos</p>
             <p className="text-[10px] uppercase tracking-[0.25em] text-primary-glow whitespace-nowrap">Partner Portal</p>
           </div>
           {isMobile && (
@@ -164,7 +164,7 @@ const PortalLayout = () => {
             </div>
             <div className={cn("flex-1 min-w-0 transition-all", expanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden")}>
               <p className="text-[13px] text-white truncate leading-tight">{user.name}</p>
-              <p className="text-[11px] text-primary-glow/80 truncate">Andes Travel · {user.tier}</p>
+              <p className="text-[11px] text-primary-glow/80 truncate">{user.company} · {user.tier}</p>
             </div>
             {expanded && (
               <button
