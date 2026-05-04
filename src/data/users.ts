@@ -8,6 +8,7 @@ export type PortalUser = {
   name: string;
   initials: string;
   role: string;
+  company: string;
   email: string;
   avatar: string;
   commission: number; // percentage
