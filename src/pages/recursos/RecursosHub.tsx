@@ -65,7 +65,7 @@ const Recursos = () => {
         <div className="relative max-w-2xl">
           <p className="text-[11px] uppercase tracking-[0.28em] text-primary-glow">Resource Center</p>
           <h2 className="font-display text-3xl lg:text-4xl font-bold mt-2 leading-tight">
-            Everything you need to <span className="text-gradient-brand">sell Galapagos</span>.
+            Everything you need to <span className="text-gradient-brand">sell Galápagos</span>.
           </h2>
           <p className="mt-3 text-white/75 max-w-lg text-sm">
             Brochures, deckplans, itineraries, HD photography and ready-to-share material — all in one place, in Spanish & English.

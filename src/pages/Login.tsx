@@ -18,7 +18,7 @@ const Login = () => {
     <div className="min-h-screen flex bg-background">
       {/* Hero visual */}
       <div className="relative hidden lg:flex lg:w-[58%] overflow-hidden">
-        <img src={heroImg} alt="Galapagos premium expedition yacht at sunset" className="absolute inset-0 h-full w-full object-cover scale-105 animate-[float_12s_ease-in-out_infinite]" />
+        <img src={heroImg} alt="Galápagos premium expedition yacht at sunset" className="absolute inset-0 h-full w-full object-cover scale-105 animate-[float_12s_ease-in-out_infinite]" />
         <div className="absolute inset-0 bg-gradient-to-br from-night/80 via-navy/40 to-primary/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-night via-night/30 to-transparent" />
 
@@ -28,7 +28,7 @@ const Login = () => {
               <span className="font-display font-bold text-lg">G</span>
             </div>
             <div className="leading-tight">
-              <p className="font-display font-bold tracking-tight">GO Galapagos</p>
+              <p className="font-display font-bold tracking-tight">GO Galápagos</p>
               <p className="text-xs text-white/60 uppercase tracking-[0.2em]">Partner Portal</p>
             </div>
           </div>
@@ -44,7 +44,7 @@ const Login = () => {
           </div>
 
           <div className="flex items-center justify-between text-xs text-white/50">
-            <span>© {new Date().getFullYear()} GO Galapagos</span>
+            <span>© {new Date().getFullYear()} GO Galápagos</span>
             <span>Galapagos Legend · Coral I · Coral II</span>
           </div>
         </div>
@@ -59,7 +59,7 @@ const Login = () => {
             <div className="h-10 w-10 rounded-xl gradient-brand grid place-items-center">
               <span className="text-white font-display font-bold">G</span>
             </div>
-            <span className="font-display font-bold">GO Galapagos</span>
+            <span className="font-display font-bold">GO Galápagos</span>
           </div>
 
           <p className="text-xs uppercase tracking-[0.3em] text-primary mb-3">Partner Portal</p>

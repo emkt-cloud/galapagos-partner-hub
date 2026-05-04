@@ -8,7 +8,6 @@ export type PortalUser = {
   name: string;
   initials: string;
   role: string;
-  company: string;
   email: string;
   avatar: string;
   commission: number; // percentage
@@ -25,7 +24,6 @@ export const users: PortalUser[] = [
     initials: "CR",
     role: "Sales Manager",
     email: "camila@andestravel.com",
-    company: "Andes Travel",
     avatar: camila,
     commission: 14,
     tier: "Elite",
@@ -39,7 +37,6 @@ export const users: PortalUser[] = [
     initials: "MV",
     role: "Operations Lead",
     email: "mateo@andestravel.com",
-    company: "Andes Travel",
     avatar: mateo,
     commission: 12,
     tier: "Platinum",
@@ -53,7 +50,6 @@ export const users: PortalUser[] = [
     initials: "VS",
     role: "Travel Advisor",
     email: "valentina@andestravel.com",
-    company: "Andes Travel",
     avatar: valentina,
     commission: 10,
     tier: "Gold",
@@ -67,7 +63,6 @@ export const users: PortalUser[] = [
     initials: "DM",
     role: "Reservations",
     email: "diego@andestravel.com",
-    company: "Andes Travel",
     avatar: diego,
     commission: 8,
     tier: "Silver",

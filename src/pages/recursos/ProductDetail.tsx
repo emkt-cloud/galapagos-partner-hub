@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import { Check, Layers, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 import { findProduct, type ResourceDoc, type ProductSlug } from "@/data/resources";
 import ResourceBreadcrumb from "@/components/resources/ResourceBreadcrumb";
 import DocCard from "@/components/resources/DocCard";
 import DownloadDialog from "@/components/resources/DownloadDialog";
-
-const journeyDocs: ResourceDoc[] = [
-  { id: "journey-branded",   label: "Branded version",   kind: "brochure", size: "6.4 MB", langs: ["es", "en"], file: "/docs/journey-branded" },
-  { id: "journey-unbranded", label: "Unbranded version", kind: "brochure", size: "6.1 MB", langs: ["es", "en"], file: "/docs/journey-unbranded" },
-];
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: ProductSlug }>();
@@ -51,21 +46,6 @@ const ProductDetail = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {product.docs.map(d => (
-            <DocCard key={d.id} doc={d} onClick={() => setActiveDoc(d)} />
-          ))}
-        </div>
-      </section>
-
-      {/* Journey Resources */}
-      <section className="space-y-4">
-        <div>
-          <h3 className="font-display text-xl font-bold text-navy inline-flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" /> Journey Resources
-          </h3>
-          <p className="text-sm text-muted-foreground">Sales-ready material in branded or unbranded format.</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {journeyDocs.map(d => (
             <DocCard key={d.id} doc={d} onClick={() => setActiveDoc(d)} />
           ))}
         </div>

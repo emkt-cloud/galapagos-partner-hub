@@ -29,12 +29,12 @@ export type Product = {
 export const products: Product[] = [
   {
     slug: "legend",
-    name: "Galapagos Legend",
+    name: "Galápagos Legend",
     tagline: "Expedition cruise · 100 guests",
     cover:
       "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1600&q=80",
     description:
-      "Our flagship expedition vessel sailing the Galapagos archipelago with 100 guests, naturalist guides and 4/5/8-day itineraries.",
+      "Our flagship expedition vessel sailing the Galápagos archipelago with 100 guests, naturalist guides and 4/5/8-day itineraries.",
     highlights: [
       "57 cabins across 4 decks",
       "4D · 5D · 8D itineraries",
@@ -63,7 +63,7 @@ export const products: Product[] = [
     cover:
       "https://images.unsplash.com/photo-1473445730015-841f29a9490b?auto=format&fit=crop&w=1600&q=80",
     description:
-      "Two intimate yachts cruising side-by-side in Galapagos. Perfect for small groups and personalised expeditions.",
+      "Two intimate yachts cruising side-by-side in Galápagos. Perfect for small groups and personalised expeditions.",
     highlights: [
       "20 cabins per yacht",
       "4D · 5D · 8D itineraries",
@@ -179,78 +179,78 @@ export const bestSellers: Tour[] = [
   {
     slug: "go1-7d",
     code: "GO 1",
-    name: "Galapagos Cruise & Colonial Quito · 7D",
+    name: "Galápagos Cruise & Colonial Quito · 7D",
     tagline: "A journey through time and nature's wonders",
     duration: "7 days / 6 nights",
     fromUSD: 3053,
     category: "best-seller",
     cover: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1600&q=80",
-    highlights: ["3 days in Quito", "4 days onboard Galapagos", "All meals included onboard"],
+    highlights: ["3 days in Quito", "4 days onboard Galápagos", "All meals included onboard"],
     docs: tourDocs("go1-7d"),
     gallery: baseGallery,
   },
   {
     slug: "go1-8d",
     code: "GO 1",
-    name: "Galapagos Cruise & Colonial Quito · 8D",
+    name: "Galápagos Cruise & Colonial Quito · 8D",
     tagline: "A journey through time and nature's wonders",
     duration: "8 days / 7 nights",
     fromUSD: 3920,
     category: "best-seller",
     cover: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1600&q=80",
-    highlights: ["3 days in Quito", "5 days onboard Galapagos", "All meals included onboard"],
+    highlights: ["3 days in Quito", "5 days onboard Galápagos", "All meals included onboard"],
     docs: tourDocs("go1-8d"),
     gallery: baseGallery,
   },
   {
     slug: "go2-9d",
     code: "GO 2",
-    name: "Galapagos & Andean Cross-Culture · 9D",
+    name: "Galápagos & Andean Cross-Culture · 9D",
     tagline: "A fusion of nature and culture",
     duration: "9 days / 8 nights",
     fromUSD: 3551,
     category: "best-seller",
     cover: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80",
-    highlights: ["3 days Quito + 2 days Karanki", "4 days onboard Galapagos", "All meals included onboard"],
+    highlights: ["3 days Quito + 2 days Karanki", "4 days onboard Galápagos", "All meals included onboard"],
     docs: tourDocs("go2-9d"),
     gallery: baseGallery,
   },
   {
     slug: "go2-13d",
     code: "GO 2",
-    name: "Galapagos & Andean Cross-Culture · 13D",
+    name: "Galápagos & Andean Cross-Culture · 13D",
     tagline: "A fusion of nature and culture",
     duration: "13 days / 12 nights",
     fromUSD: 6482,
     category: "best-seller",
     cover: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80",
-    highlights: ["3 days Quito + 2 days Karanki", "8 days onboard Galapagos", "All meals included onboard"],
+    highlights: ["3 days Quito + 2 days Karanki", "8 days onboard Galápagos", "All meals included onboard"],
     docs: tourDocs("go2-13d"),
     gallery: baseGallery,
   },
   {
     slug: "go3-12d",
     code: "GO 3",
-    name: "Galapagos & Volcano Avenue · 12D",
+    name: "Galápagos & Volcano Avenue · 12D",
     tagline: "Andes peaks meet Pacific isles",
     duration: "12 days / 11 nights",
     fromUSD: 5410,
     category: "best-seller",
     cover: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80",
-    highlights: ["8 days Mainland Ecuador", "4 days onboard Galapagos", "All meals included onboard"],
+    highlights: ["8 days Mainland Ecuador", "4 days onboard Galápagos", "All meals included onboard"],
     docs: tourDocs("go3-12d"),
     gallery: baseGallery,
   },
   {
     slug: "go6-grand",
     code: "GO 6",
-    name: "Ecuador, Galapagos & Peru · Grand Tour 14D",
+    name: "Ecuador, Galápagos & Peru · Grand Tour 14D",
     tagline: "South America's timeless treasures",
     duration: "14 days / 13 nights",
     fromUSD: 7480,
     category: "best-seller",
     cover: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1600&q=80",
-    highlights: ["3 days Quito + 4 days Galapagos", "5 days Peru (Cusco · Machu Picchu)", "All transfers & meals included"],
+    highlights: ["3 days Quito + 4 days Galápagos", "5 days Peru (Cusco · Machu Picchu)", "All transfers & meals included"],
     docs: tourDocs("go6-grand"),
     gallery: baseGallery,
   },
@@ -337,14 +337,14 @@ export type GalleryItem = {
   id: string;
   title: string;
   type: "image" | "video";
-  category: "Galapagos Legend" | "Coral Yachts" | "GO Quito Hotel" | "Karanki" | "Mainland" | "Brand";
+  category: "Galápagos Legend" | "Coral Yachts" | "GO Quito Hotel" | "Karanki" | "Mainland" | "Brand";
   size: string;
   url: string;
 };
 
 export const galleryItems: GalleryItem[] = [
-  { id: "g1", title: "Legend · Sun deck sunset", type: "image", category: "Galapagos Legend", size: "12 MB", url: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1200&q=80" },
-  { id: "g2", title: "Legend · Wildlife encounter", type: "image", category: "Galapagos Legend", size: "9 MB", url: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=1200&q=80" },
+  { id: "g1", title: "Legend · Sun deck sunset", type: "image", category: "Galápagos Legend", size: "12 MB", url: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1200&q=80" },
+  { id: "g2", title: "Legend · Wildlife encounter", type: "image", category: "Galápagos Legend", size: "9 MB", url: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=1200&q=80" },
   { id: "g3", title: "Coral · Aerial view", type: "image", category: "Coral Yachts", size: "14 MB", url: "https://images.unsplash.com/photo-1473445730015-841f29a9490b?auto=format&fit=crop&w=1200&q=80" },
   { id: "g4", title: "Coral · Suite interior", type: "image", category: "Coral Yachts", size: "8 MB", url: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=80" },
   { id: "g5", title: "GO Quito · Rooftop bar", type: "image", category: "GO Quito Hotel", size: "11 MB", url: "https://images.unsplash.com/photo-1455587734955-081b22074882?auto=format&fit=crop&w=1200&q=80" },
@@ -359,7 +359,7 @@ export const galleryItems: GalleryItem[] = [
 
 export const galleryCategories = [
   "All",
-  "Galapagos Legend",
+  "Galápagos Legend",
   "Coral Yachts",
   "GO Quito Hotel",
   "Karanki",
