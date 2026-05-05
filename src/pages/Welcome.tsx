@@ -1,25 +1,34 @@
 import { Link } from "react-router-dom";
 import {
-  LayoutDashboard, CalendarCheck, Tag, Image as ImageIcon,
-  Package, Compass, ArrowUpRight, TrendingUp
+  LayoutDashboard, CalendarCheck, Image as ImageIcon, FolderOpen,
+  ArrowUpRight, TrendingUp, Info, Home as HomeIcon
 } from "lucide-react";
 import dashboardHero from "@/assets/dashboard-hero.jpg";
 import wildlifeBooby from "@/assets/wildlife-booby.jpg";
 import shipLegend from "@/assets/ship-legend.jpg";
 import { getUserById } from "@/data/users";
+import {
+  Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const tiles = [
-  { to: "/dashboard",          icon: LayoutDashboard, title: "Dashboard",     desc: "Operations hub & KPIs",        featured: true, image: dashboardHero },
-  { to: "/disponibilidad",     icon: CalendarCheck,   title: "New Booking",   desc: "Quote, hold or confirm" },
-  { to: "/tarifas",            icon: Tag,             title: "Gross Rates",   desc: "Net, gross & promos" },
-  { to: "/recursos/gallery",   icon: ImageIcon,       title: "Gallery",       desc: "HD photos & video", image: wildlifeBooby },
-  { to: "/recursos/products",  icon: Package,         title: "Our Products",  desc: "Legend · Coral · Hotel · Karanki", image: shipLegend },
-  { to: "/recursos/services",  icon: Compass,         title: "Our Services",  desc: "Best sellers & mainland tours" },
+  { to: "/dashboard",          icon: LayoutDashboard, title: "Dashboard",   desc: "Operations hub & KPIs",        featured: true, image: dashboardHero },
+  { to: "/book/cruise",        icon: CalendarCheck,   title: "Book Now",    desc: "Cruises & land tours" },
+  { to: "/recursos/gallery",   icon: ImageIcon,       title: "Gallery",     desc: "HD photos & video",            image: wildlifeBooby },
+  { to: "/recursos",           icon: FolderOpen,      title: "Resources",   desc: "Rates · Products · Services",  image: shipLegend },
 ];
+
+const tierExplain: Record<string, { from: string; perks: string }> = {
+  Elite:    { from: "40,000 miles",  perks: "12% extra commission · priority allotments · free FAM trips · dedicated account manager"  },
+  Platinum: { from: "25,000 miles",  perks: "9% extra commission · early bird access · 2 free FAM nights / year"                       },
+  Gold:     { from: "12,000 miles",  perks: "6% extra commission · exclusive promos · birthday upgrade for clients"                    },
+  Silver:   { from: "0 miles",       perks: "Standard commission · access to all marketing assets and trainings"                       },
+};
 
 const Welcome = () => {
   const userId = typeof window !== "undefined" ? sessionStorage.getItem("portal:userId") : null;
   const user = getUserById(userId);
+  const tierInfo = tierExplain[user.tier];
 
   return (
     <div className="relative">
@@ -27,13 +36,13 @@ const Welcome = () => {
       <div className="grid lg:grid-cols-[1fr_auto] gap-6 lg:gap-12 items-start mb-10 animate-fade-up">
         <div>
           <p className="text-[10px] uppercase tracking-[0.4em] text-primary mb-4 inline-flex items-center gap-2">
-            <span className="h-px w-10 bg-primary" /> Welcome Hub · April 2026
+            <span className="h-px w-10 bg-primary" /> Welcome Hub
           </p>
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-light text-navy leading-[1.05] mb-4 tracking-tight">
             Welcome, <span className="font-semibold text-gradient-brand">{user.name.split(" ")[0]}</span>
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Your GO Galápagos operations hub. Access bookings, availability and commercial tools — all in one place.
+            Your GO Galapagos operations hub. Access bookings, availability and commercial tools — all in one place.
           </p>
         </div>
 
@@ -45,10 +54,25 @@ const Welcome = () => {
             </div>
             <div className="min-w-0">
               <p className="font-display font-semibold text-navy truncate">{user.name}</p>
-              <p className="text-xs text-muted-foreground truncate">{user.role}</p>
-              <span className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-primary font-semibold">
-                <span className="h-1 w-1 rounded-full bg-primary" /> {user.tier}
-              </span>
+              <p className="text-xs text-muted-foreground truncate">{user.role} · Andes Travel</p>
+              <TooltipProvider delayDuration={150}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="mt-1 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-primary font-semibold hover:text-ocean transition-colors">
+                      <span className="h-1 w-1 rounded-full bg-primary" /> {user.tier}
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-[260px] p-3 bg-navy text-white border-navy">
+                    <p className="font-display text-[13px] font-semibold mb-1">{user.tier} tier</p>
+                    <p className="text-[11px] text-white/80 mb-1.5">From <span className="text-primary-glow font-semibold">{tierInfo.from}</span> accumulated.</p>
+                    <p className="text-[11px] leading-snug text-white/75">{tierInfo.perks}</p>
+                    <p className="text-[10px] text-primary-glow mt-2 inline-flex items-center gap-1">
+                      Current balance: {user.miles.toLocaleString()} miles
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
 
@@ -68,12 +92,11 @@ const Welcome = () => {
         </div>
       </div>
 
-      {/* Quick metric strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 animate-fade-up" style={{ animationDelay: "180ms" }}>
+      {/* Quick metric strip — sin revenue */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8 animate-fade-up" style={{ animationDelay: "180ms" }}>
         {[
           ["Active bookings", String(user.bookings), "+12.4%"],
-          ["Open holds", "3", "expires today"],
-          ["Revenue MTD", "$284K", "+8.2%"],
+          ["Open holds", "3", "1 expires today"],
           ["Available miles", user.miles.toLocaleString(), user.tier],
         ].map(([l,v,d]) => (
           <div key={l} className="px-4 py-3 rounded-2xl bg-card/70 backdrop-blur-md border border-border/60">
@@ -86,7 +109,7 @@ const Welcome = () => {
         ))}
       </div>
 
-      {/* Quick access tiles — 6 botones */}
+      {/* Quick access tiles — 4 botones */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {tiles.map((t, i) => (
           <Link
@@ -132,7 +155,7 @@ const Welcome = () => {
 
       <div className="mt-10 flex items-center justify-between text-xs text-muted-foreground animate-fade-in">
         <span>Secure session · Last activity {user.lastActive}</span>
-        <span className="hidden md:inline">v2026.04 · Premium experience</span>
+        <span className="hidden md:inline">v2026.05 · Premium experience</span>
       </div>
     </div>
   );

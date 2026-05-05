@@ -28,6 +28,9 @@ import Tarifas from "./pages/Tarifas";
 import Reportes from "./pages/Reportes";
 import Soporte from "./pages/Soporte";
 import Perfil from "./pages/Perfil";
+import Academy from "./pages/Academy";
+import BookingDetail from "./pages/BookingDetail";
+import { BookCruisePage, BookLandPage } from "./pages/BookCruise";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -44,7 +47,11 @@ const App = () => (
           <Route element={<PortalLayout />}>
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/book/cruise" element={<BookCruisePage />} />
+            <Route path="/book/land" element={<BookLandPage />} />
             <Route path="/reservas" element={<Reservas />} />
+            <Route path="/booking/:ref" element={<BookingDetail />} />
+            <Route path="/academy" element={<Academy />} />
             <Route path="/disponibilidad" element={<Disponibilidad />} />
             <Route path="/holds" element={<Holds />} />
             <Route path="/confirmadas" element={<Confirmadas />} />
