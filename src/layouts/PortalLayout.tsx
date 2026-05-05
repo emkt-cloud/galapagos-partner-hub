@@ -1,26 +1,30 @@
 import { useEffect, useState } from "react";
-import { Outlet, NavLink, useLocation, useNavigate, Link } from "react-router-dom";
+import { Outlet, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, CalendarRange, Clock4, CheckCircle2, Tag, Package,
-  Hotel, FolderOpen, Sparkles, BarChart3, LifeBuoy, ChevronLeft,
-  Search, Bell, LogOut, UserCircle2, CalendarCheck, Command, Home, Menu, X
+  FolderOpen, Image as ImageIcon, Sparkles, LifeBuoy, ChevronLeft,
+  Search, Bell, LogOut, UserCircle2, Ship, Mountain, GraduationCap,
+  Command, Home, Menu, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getUserById } from "@/data/users";
+import PortalFooter from "@/components/PortalFooter";
 
-type NavGroup = { label?: string; items: { to: string; label: string; icon: any; badge?: string }[] };
+type NavItem = { to: string; label: string; icon: any; badge?: string; end?: boolean };
+type NavGroup = { label?: string; items: NavItem[] };
 
 const groups: NavGroup[] = [
   {
     items: [
-      { to: "/welcome",   label: "Home",      icon: Home },
+      { to: "/welcome",   label: "Home",      icon: Home,            end: true },
       { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     ],
   },
   {
     label: "Operations",
     items: [
-      { to: "/reservas",       label: "New Booking",     icon: CalendarCheck },
+      { to: "/book/cruise",    label: "Book a Cruise",   icon: Ship },
+      { to: "/book/land",      label: "Book Land Tours", icon: Mountain },
       { to: "/disponibilidad", label: "Availability",    icon: CalendarRange },
       { to: "/holds",          label: "Holds",           icon: Clock4, badge: "3" },
       { to: "/confirmadas",    label: "Confirmed",       icon: CheckCircle2 },
@@ -29,18 +33,18 @@ const groups: NavGroup[] = [
   {
     label: "Catalog",
     items: [
-      { to: "/tarifas",  label: "Rates",           icon: Tag },
-      { to: "/paquetes", label: "Products",        icon: Package },
-      { to: "/hotel",    label: "GO Quito Hotel",  icon: Hotel },
-      { to: "/recursos", label: "Resources",       icon: FolderOpen },
+      { to: "/tarifas",            label: "Rates",     icon: Tag },
+      { to: "/recursos/products",  label: "Products",  icon: Package },
+      { to: "/recursos",           label: "Resources", icon: FolderOpen, end: true },
+      { to: "/recursos/gallery",   label: "Gallery",   icon: ImageIcon },
     ],
   },
   {
     label: "Performance",
     items: [
-      { to: "/millas",   label: "Miles",   icon: Sparkles },
-      { to: "/reportes", label: "Reports", icon: BarChart3 },
-      { to: "/soporte",  label: "Support", icon: LifeBuoy },
+      { to: "/millas",   label: "Miles",      icon: Sparkles },
+      { to: "/soporte",  label: "Support",    icon: LifeBuoy },
+      { to: "/academy",  label: "GO Academy", icon: GraduationCap, badge: "NEW" },
     ],
   },
 ];
@@ -48,8 +52,8 @@ const groups: NavGroup[] = [
 const allItems = groups.flatMap(g => g.items);
 
 const PortalLayout = () => {
-  const [open, setOpen] = useState(true);          // desktop collapsed/expanded
-  const [mobileOpen, setMobileOpen] = useState(false); // mobile drawer
+  const [open, setOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const current = allItems.find(n => location.pathname.startsWith(n.to))?.label ?? "Portal";
@@ -57,10 +61,8 @@ const PortalLayout = () => {
   const userId = typeof window !== "undefined" ? sessionStorage.getItem("portal:userId") : null;
   const user = getUserById(userId);
 
-  // Close mobile drawer on route change
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
-  // Lock body scroll when mobile drawer is open
   useEffect(() => {
     if (mobileOpen) {
       const prev = document.body.style.overflow;
@@ -87,7 +89,7 @@ const PortalLayout = () => {
             <span className="font-display font-bold text-white">G</span>
           </div>
           <div className={cn("overflow-hidden transition-all duration-300 flex-1", expanded ? "opacity-100 w-auto" : "opacity-0 w-0")}>
-            <p className="font-display font-bold text-white whitespace-nowrap leading-tight">GO Galápagos</p>
+            <p className="font-display font-bold text-white whitespace-nowrap leading-tight">GO Galapagos</p>
             <p className="text-[10px] uppercase tracking-[0.25em] text-primary-glow whitespace-nowrap">Partner Portal</p>
           </div>
           {isMobile && (
@@ -113,7 +115,7 @@ const PortalLayout = () => {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  end={item.to === "/welcome"}
+                  end={item.end}
                   title={!expanded ? item.label : undefined}
                   className={({ isActive }) => cn(
                     "group relative flex items-center gap-3 h-10 rounded-xl px-3 text-[13px] transition-all duration-300",
@@ -188,8 +190,6 @@ const PortalLayout = () => {
         style={{ background: "var(--gradient-sidebar)" }}
       >
         <SidebarInner />
-
-        {/* Collapse trigger */}
         <button
           onClick={() => setOpen(o => !o)}
           aria-label="Toggle sidebar"
@@ -201,15 +201,8 @@ const PortalLayout = () => {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div
-          className="fixed inset-0 z-50 md:hidden"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className="absolute inset-0 bg-night/60 backdrop-blur-sm animate-fade-in"
-            onClick={() => setMobileOpen(false)}
-          />
+        <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-night/60 backdrop-blur-sm animate-fade-in" onClick={() => setMobileOpen(false)} />
           <aside
             className="absolute inset-y-0 left-0 w-[280px] max-w-[85vw] text-white flex flex-col shadow-navy animate-slide-in-left"
             style={{ background: "var(--gradient-sidebar)" }}
@@ -223,7 +216,6 @@ const PortalLayout = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-[64px] md:h-[72px] px-4 md:px-6 lg:px-10 flex items-center justify-between border-b border-border/60 bg-background/85 backdrop-blur-xl sticky top-0 z-30">
           <div className="flex items-center gap-3">
-            {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
@@ -239,14 +231,10 @@ const PortalLayout = () => {
           <div className="flex items-center gap-2 md:gap-2.5">
             <div className="hidden md:flex items-center gap-2 h-10 px-3.5 rounded-xl bg-secondary/60 w-[260px] lg:w-[320px] focus-within:bg-white focus-within:ring-4 focus-within:ring-primary/10 focus-within:shadow-soft transition-all">
               <Search className="h-4 w-4 text-muted-foreground" />
-              <input className="bg-transparent outline-none text-sm flex-1 placeholder:text-muted-foreground/70 min-w-0" placeholder="Bookings, GO codes, partners…" />
+              <input className="bg-transparent outline-none text-sm flex-1 placeholder:text-muted-foreground/70 min-w-0" placeholder="Bookings, T-codes, Q-codes…" />
               <kbd className="hidden lg:inline-flex items-center gap-0.5 text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5"><Command className="h-2.5 w-2.5" />K</kbd>
             </div>
-            {/* Mobile search */}
-            <button
-              aria-label="Search"
-              className="md:hidden h-10 w-10 rounded-xl bg-secondary/60 hover:bg-secondary grid place-items-center transition-colors"
-            >
+            <button aria-label="Search" className="md:hidden h-10 w-10 rounded-xl bg-secondary/60 hover:bg-secondary grid place-items-center transition-colors">
               <Search className="h-4 w-4 text-navy" />
             </button>
             <button className="relative h-10 w-10 rounded-xl bg-secondary/60 hover:bg-secondary grid place-items-center transition-colors">
@@ -266,6 +254,8 @@ const PortalLayout = () => {
         <main className="flex-1 p-4 md:p-6 lg:p-10 animate-fade-in">
           <Outlet />
         </main>
+
+        <PortalFooter />
       </div>
     </div>
   );
