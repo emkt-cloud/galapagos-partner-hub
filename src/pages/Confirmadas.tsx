@@ -1,44 +1,39 @@
 import { useState } from "react";
-import { Download, FileText, Filter, Search, CheckCircle2, AlertCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Filter, Search, Sparkles, Users, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-type Booking = {
-  code: string; ref: string; client: string; pax: number;
-  ship: string; departure: string; total: number; deposit: number;
-};
-
-const bookings: Booking[] = [
-  { code: "GO-2820", ref: "AT-9271", client: "Maria Pérez",     pax: 2, ship: "Galapagos Legend", departure: "Apr 22, 2025", total: 9780,  deposit: 4890 },
-  { code: "GO-2818", ref: "AT-9268", client: "Robert Klein",    pax: 2, ship: "Coral I",          departure: "Apr 24, 2025", total: 11350, deposit: 11350 },
-  { code: "GO-2815", ref: "AT-9261", client: "Sophie Laurent",  pax: 4, ship: "Coral II",         departure: "Apr 26, 2025", total: 7120,  deposit: 2136 },
-  { code: "GO-2812", ref: "AT-9255", client: "Hiroshi Tanaka",  pax: 2, ship: "Galapagos Legend", departure: "Apr 29, 2025", total: 8490,  deposit: 8490 },
-  { code: "GO-2809", ref: "AT-9248", client: "Anna Lindqvist",  pax: 3, ship: "Coral II",         departure: "May 2, 2025",  total: 12780, deposit: 6390 },
-  { code: "GO-2805", ref: "AT-9241", client: "James Whitaker",  pax: 2, ship: "Coral I",          departure: "May 5, 2025",  total: 7480,  deposit: 7480 },
-];
+import { confirmed, totalMilesEarned } from "@/data/bookings";
 
 const fmt = (n: number) => `$${n.toLocaleString()}`;
 
 const Confirmadas = () => {
   const [ship, setShip] = useState("All");
-  const total = bookings.reduce((a, b) => a + b.total, 0);
-  const deposited = bookings.reduce((a, b) => a + b.deposit, 0);
+  const [openPaxOf, setOpenPaxOf] = useState<string | null>(null);
+
+  const filtered = ship === "All" ? confirmed : confirmed.filter(c => c.ship === ship);
 
   return (
     <div className="space-y-6 max-w-[1480px]">
-      {/* Stats */}
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {[
-          { l: "Confirmed bookings", v: bookings.length.toString(), d: "Next 60 days" },
-          { l: "Total value",        v: fmt(total),                 d: "Confirmed pipeline" },
-          { l: "Deposited",          v: fmt(deposited),             d: `${Math.round((deposited/total)*100)}% of total` },
-          { l: "Outstanding balance",v: fmt(total - deposited),     d: "To be collected" },
-        ].map((k, i) => (
-          <div key={k.l} style={{ animationDelay: `${i*60}ms` }} className="premium-card p-5 animate-fade-up">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{k.l}</p>
-            <p className="font-display text-3xl font-semibold text-navy mt-1.5 leading-none">{k.v}</p>
-            <p className="text-xs text-muted-foreground mt-2">{k.d}</p>
+      {/* Stats — solo confirmed bookings + millas acumuladas */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="premium-card p-6 animate-fade-up relative overflow-hidden">
+          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-success/15 blur-3xl" />
+          <p className="text-[10px] uppercase tracking-[0.22em] text-success">Confirmed bookings</p>
+          <p className="font-display text-5xl font-semibold text-navy mt-2 leading-none">{confirmed.length}</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Active <span className="font-mono font-semibold text-navy">T-codes</span> in the next 90 days
+          </p>
+        </div>
+        <div className="premium-card p-6 animate-fade-up relative overflow-hidden" style={{ animationDelay: "60ms" }}>
+          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-primary">
+            <Sparkles className="h-3.5 w-3.5" /> Miles earned by these bookings
           </div>
-        ))}
+          <p className="font-display text-5xl font-semibold text-gradient-brand mt-2 leading-none">{totalMilesEarned.toLocaleString()}</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Will post to your wallet upon full payment & departure.
+          </p>
+        </div>
       </section>
 
       {/* Toolbar */}
@@ -54,13 +49,10 @@ const Confirmadas = () => {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 h-9 px-3 rounded-xl bg-secondary/60 w-64">
             <Search className="h-3.5 w-3.5 text-muted-foreground" />
-            <input className="bg-transparent outline-none text-[13px] flex-1" placeholder="Client, code, ref…" />
+            <input className="bg-transparent outline-none text-[13px] flex-1" placeholder="T-code, client, ref…" />
           </div>
           <button className="h-9 px-3.5 rounded-xl border border-border bg-card text-navy text-[13px] inline-flex items-center gap-1.5 hover:border-primary/40 transition-colors">
             <Filter className="h-3.5 w-3.5" /> Filters
-          </button>
-          <button className="h-9 px-4 rounded-xl gradient-brand text-white text-[13px] font-medium inline-flex items-center gap-1.5 shadow-glow hover:shadow-elegant transition-premium">
-            <Download className="h-3.5 w-3.5" /> Export CSV
           </button>
         </div>
       </div>
@@ -72,55 +64,72 @@ const Confirmadas = () => {
             <thead>
               <tr className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground border-b border-border/60 bg-secondary/30">
                 <th className="text-left font-medium px-6 py-3">GO Code</th>
-                <th className="text-left font-medium py-3">Agency Ref.</th>
-                <th className="text-left font-medium py-3">Client</th>
-                <th className="text-center font-medium py-3">Pax</th>
-                <th className="text-left font-medium py-3">Ship · Departure</th>
-                <th className="text-right font-medium py-3">Total</th>
-                <th className="text-right font-medium py-3">Deposited</th>
-                <th className="text-right font-medium py-3">Balance</th>
-                <th className="text-left font-medium py-3 pl-6">Status</th>
-                <th className="text-right font-medium px-6 py-3">Voucher</th>
+                <th className="text-left font-medium py-3">Reservation Type</th>
+                <th className="text-left font-medium py-3">Partner Code</th>
+                <th className="text-left font-medium py-3">Guest Reference</th>
+                <th className="text-center font-medium py-3">Pax Type</th>
+                <th className="text-left font-medium py-3">Departure</th>
+                <th className="text-left font-medium py-3">Ship</th>
+                <th className="text-right font-medium py-3 pr-6">Miles</th>
+                <th className="text-right font-medium px-6 py-3">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/40">
-              {bookings.map(b => {
-                const balance = b.total - b.deposit;
-                const paid = (b.deposit / b.total) * 100;
-                const fullyPaid = balance === 0;
-                return (
-                  <tr key={b.code} className="hover:bg-secondary/40 transition-colors group">
-                    <td className="px-6 py-3.5 font-mono text-[12px] font-medium text-navy">{b.code}</td>
-                    <td className="py-3.5 font-mono text-[12px] text-muted-foreground">{b.ref}</td>
-                    <td className="py-3.5 font-medium text-navy">{b.client}</td>
-                    <td className="py-3.5 text-center text-navy/80">{b.pax}</td>
-                    <td className="py-3.5">
-                      <p className="text-navy">{b.ship}</p>
-                      <p className="text-[11px] text-muted-foreground">{b.departure}</p>
-                    </td>
-                    <td className="py-3.5 text-right font-display font-semibold text-navy">{fmt(b.total)}</td>
-                    <td className="py-3.5 text-right text-success font-medium">{fmt(b.deposit)}</td>
-                    <td className="py-3.5 text-right font-medium" style={{ color: balance ? "hsl(var(--warning))" : "hsl(var(--success))" }}>
-                      {balance ? fmt(balance) : "—"}
-                    </td>
-                    <td className="py-3.5 pl-6">
-                      <div className="flex items-center gap-2 max-w-[140px]">
-                        <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                          <div className={cn("h-full rounded-full", fullyPaid ? "bg-success" : "gradient-brand")} style={{ width: `${paid}%` }} />
-                        </div>
-                        <span className="text-[11px] tabular-nums" style={{ color: fullyPaid ? "hsl(var(--success))" : "hsl(var(--muted-foreground))" }}>
-                          {Math.round(paid)}%
-                        </span>
+              {filtered.map(b => (
+                <>
+                  <tr key={b.goCode} className="hover:bg-secondary/40 transition-colors group">
+                    <td className="px-6 py-3.5 font-mono text-[12px] font-semibold text-navy">{b.goCode}</td>
+                    <td className="py-3.5 text-navy/80">{b.reservationType}</td>
+                    <td className="py-3.5 text-primary font-medium">{b.partnerCode}</td>
+                    <td className="py-3.5 text-navy/80">{b.guestRef}</td>
+                    <td className="py-3.5 text-center text-navy/80">{b.paxType}</td>
+                    <td className="py-3.5 text-muted-foreground">{b.departure}</td>
+                    <td className="py-3.5 text-navy">{b.ship}</td>
+                    <td className="py-3.5 pr-6 text-right font-display font-semibold text-primary">+{b.earnedMiles.toLocaleString()}</td>
+                    <td className="px-6 py-3.5 text-right">
+                      <div className="inline-flex items-center gap-1.5">
+                        <button
+                          onClick={() => setOpenPaxOf(openPaxOf === b.goCode ? null : b.goCode)}
+                          className="h-8 px-2.5 rounded-lg border border-border text-navy text-[11.5px] font-medium hover:border-primary/40 inline-flex items-center gap-1"
+                        >
+                          <Users className="h-3 w-3" /> Pax
+                        </button>
+                        <Link
+                          to={`/booking/${b.goCode}`}
+                          className="h-8 px-2.5 rounded-lg gradient-brand text-white text-[11.5px] font-medium inline-flex items-center gap-1"
+                        >
+                          Open <ArrowRight className="h-3 w-3" />
+                        </Link>
                       </div>
                     </td>
-                    <td className="px-6 py-3.5 text-right">
-                      <button className="inline-flex items-center gap-1 text-[12px] text-primary hover:text-ocean font-medium">
-                        <FileText className="h-3.5 w-3.5" /> PDF
-                      </button>
-                    </td>
                   </tr>
-                );
-              })}
+                  {openPaxOf === b.goCode && (
+                    <tr key={b.goCode + "-pax"} className="bg-secondary/30">
+                      <td colSpan={9} className="px-6 py-4">
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground mb-2.5">Passenger list — {b.goCode}</p>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+                          {b.passengers.map((p, i) => (
+                            <Link
+                              key={i}
+                              to={`/booking/${b.goCode}`}
+                              className="group/pax flex items-center gap-3 p-3 rounded-xl bg-card border border-border hover:border-primary/40 transition-colors"
+                            >
+                              <div className="h-9 w-9 rounded-full gradient-brand grid place-items-center text-white text-[11px] font-semibold shrink-0">
+                                {p.name.split(" ").map(n => n[0]).join("").slice(0,2)}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="text-[13px] font-medium text-navy truncate">{p.name}</p>
+                                <p className="text-[10.5px] text-muted-foreground">{p.type} · {p.nationality} · {p.passport}</p>
+                              </div>
+                              <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover/pax:text-primary" />
+                            </Link>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </>
+              ))}
             </tbody>
           </table>
         </div>
@@ -128,50 +137,21 @@ const Confirmadas = () => {
 
       {/* Mobile cards */}
       <section className="md:hidden space-y-3">
-        {bookings.map(b => {
-          const balance = b.total - b.deposit;
-          const fullyPaid = balance === 0;
-          const paid = (b.deposit / b.total) * 100;
-          return (
-            <div key={b.code} className="premium-card p-5">
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <p className="font-mono text-[11px] text-muted-foreground">{b.code} · {b.ref}</p>
-                  <p className="font-display font-semibold text-navy">{b.client}</p>
-                </div>
-                <span className={cn("pill", fullyPaid ? "bg-success/15 text-success" : "bg-warning/15 text-warning")}>
-                  {fullyPaid ? <CheckCircle2 className="h-3 w-3" /> : <AlertCircle className="h-3 w-3" />}
-                  {fullyPaid ? "Paid" : "Pending"}
-                </span>
+        {filtered.map(b => (
+          <div key={b.goCode} className="premium-card p-5">
+            <div className="flex items-start justify-between mb-2">
+              <div>
+                <p className="font-mono text-[12px] font-semibold text-navy">{b.goCode}</p>
+                <p className="text-[13px] text-navy/80">{b.guestRef}</p>
               </div>
-              <p className="text-[13px] text-navy/80">{b.ship} · {b.departure}</p>
-              <div className="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-border/60 text-[12px]">
-                <div>
-                  <p className="text-muted-foreground">Total</p>
-                  <p className="font-display font-semibold text-navy">{fmt(b.total)}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Deposited</p>
-                  <p className="font-medium text-success">{fmt(b.deposit)}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Balance</p>
-                  <p className="font-medium" style={{ color: balance ? "hsl(var(--warning))" : "hsl(var(--success))" }}>
-                    {balance ? fmt(balance) : "—"}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                  <div className={cn("h-full rounded-full", fullyPaid ? "bg-success" : "gradient-brand")} style={{ width: `${paid}%` }} />
-                </div>
-                <button className="text-[12px] text-primary font-medium inline-flex items-center gap-1">
-                  <FileText className="h-3.5 w-3.5" /> Voucher
-                </button>
-              </div>
+              <span className="pill bg-primary/10 text-primary">+{b.earnedMiles.toLocaleString()} mi</span>
             </div>
-          );
-        })}
+            <p className="text-[12px] text-muted-foreground">{b.ship} · {b.departure} · {b.paxType}</p>
+            <Link to={`/booking/${b.goCode}`} className="mt-3 inline-flex items-center gap-1 text-[12px] text-primary font-medium">
+              Open booking <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        ))}
       </section>
     </div>
   );
