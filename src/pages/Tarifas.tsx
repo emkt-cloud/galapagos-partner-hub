@@ -17,9 +17,19 @@ const rates = [
 ];
 
 const promos = [
-  { tag: "−15%", title: "Early Booking 2026",       desc: "Book before Aug 31, sail any 2026 departure",    until: "Aug 31, 2025" },
-  { tag: "2x1",  title: "Bring a friend · Coral I", desc: "Second pax 50% off in select departures",         until: "Jun 30, 2025" },
-  { tag: "+1",   title: "Free pre-night Quito",     desc: "Complimentary night at GO Quito with any cruise", until: "Dec 31, 2025" },
+  { tag: "−15%", title: "Early Booking 2026",       desc: "Book before Aug 31, sail any 2026 departure",    until: "Aug 31, 2026" },
+  { tag: "2x1",  title: "Bring a friend · Coral I", desc: "Second pax 50% off in select departures",         until: "Jun 30, 2026" },
+  { tag: "+1",   title: "Free pre-night Quito",     desc: "Complimentary night at GO Quito with any cruise", until: "Dec 31, 2026" },
+  { tag: "−10%", title: "Repeater discount",        desc: "Past guests get 10% off their next Galápagos cruise", until: "Open" },
+  { tag: "FREE", title: "Single supplement waived", desc: "Solo travelers · select Coral II departures",     until: "Sep 30, 2026" },
+  { tag: "GIFT", title: "Karanki experience",       desc: "Free upgrade to cultural lodge for honeymooners", until: "Dec 31, 2026" },
+];
+
+const tariffPdfs = [
+  { label: "Gross Rates 2026",      file: "/docs/legend-brochure-en.pdf", year: "2026" },
+  { label: "Gross Rates 2027",      file: "/docs/legend-brochure-en.pdf", year: "2027" },
+  { label: "Net Rates 2026",        file: "/docs/legend-brochure-en.pdf", year: "2026" },
+  { label: "Net Rates 2027",        file: "/docs/legend-brochure-en.pdf", year: "2027" },
 ];
 
 const Tarifas = () => (
@@ -27,11 +37,20 @@ const Tarifas = () => (
     <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
       <div>
         <h1 className="font-display text-3xl font-semibold text-navy">Rates & Promotions</h1>
-        <p className="text-sm text-muted-foreground mt-1">2025 partner gross rates · USD per pax · double occupancy</p>
+        <p className="text-sm text-muted-foreground mt-1">2026 partner gross rates · USD per pax · double occupancy</p>
       </div>
-      <button className="h-10 px-4 rounded-xl bg-navy text-white text-sm font-medium inline-flex items-center gap-2 hover:gradient-brand hover:shadow-glow transition-premium w-fit">
-        <Download className="h-3.5 w-3.5" /> Download tariff PDF
-      </button>
+      <div className="flex flex-wrap gap-2">
+        {tariffPdfs.map(p => (
+          <a
+            key={p.label}
+            href={p.file}
+            download
+            className="h-10 px-3.5 rounded-xl bg-secondary text-navy text-xs font-medium inline-flex items-center gap-2 hover:gradient-brand hover:text-white hover:shadow-glow transition-premium"
+          >
+            <Download className="h-3.5 w-3.5" /> {p.label}
+          </a>
+        ))}
+      </div>
     </div>
 
     {/* Seasons */}
