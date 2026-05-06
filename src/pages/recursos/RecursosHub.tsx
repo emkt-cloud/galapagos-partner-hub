@@ -1,55 +1,42 @@
 import { Link } from "react-router-dom";
-import { Image as ImageIcon, Package, Sparkles, CalendarCheck, BarChart3, DollarSign, ArrowRight } from "lucide-react";
+import { Image as ImageIcon, Package, Sparkles, ArrowRight, FileText, Map as MapIcon } from "lucide-react";
+
+const featured = {
+  to: "/recursos/products",
+  title: "Our Products",
+  sub: "Legend · Coral · GO Quito Hotel · Karanki Magdalena",
+  desc: "Tech sheets, deckplans, brochures and HD photo packs for every flagship product. Toggle between branded and unbranded versions.",
+  image: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1800&q=80",
+};
 
 const tiles = [
   {
-    to: "/dashboard",
-    title: "Dashboard",
-    sub: "Live KPIs · holds · sales",
-    icon: BarChart3,
-    tone: "from-ocean to-navy",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    to: "/reservas",
-    title: "New Booking",
-    sub: "Create a booking in seconds",
-    icon: CalendarCheck,
-    tone: "from-primary to-ocean",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    to: "/tarifas",
-    title: "Gross Rates",
-    sub: "Net & gross tariffs · 2025",
-    icon: DollarSign,
-    tone: "from-warning to-destructive",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80",
+    to: "/recursos/services",
+    title: "Our Services",
+    sub: "Best Sellers · Mainland Tours",
+    desc: "Cruise + mainland combos, day tours and multi-day journeys.",
+    icon: Sparkles,
+    tone: "from-primary/20 via-ocean/10 to-transparent",
+    accent: "text-primary",
+    image: "https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?auto=format&fit=crop&w=1200&q=80",
   },
   {
     to: "/recursos/gallery",
     title: "Gallery",
     sub: "HD photo & video library",
+    desc: "Hand-picked imagery by destination and product · 4K institutional video.",
     icon: ImageIcon,
-    tone: "from-primary-glow to-primary",
+    tone: "from-warning/20 via-warning/5 to-transparent",
+    accent: "text-warning",
     image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80",
   },
-  {
-    to: "/recursos/products",
-    title: "Our Products",
-    sub: "Legend · Coral · GO Quito · Karanki",
-    icon: Package,
-    tone: "from-ocean to-primary",
-    image: "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    to: "/recursos/services",
-    title: "Our Services",
-    sub: "Best Sellers · Mainland Tours",
-    icon: Sparkles,
-    tone: "from-navy to-ocean",
-    image: "https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?auto=format&fit=crop&w=1200&q=80",
-  },
+];
+
+const quickLinks = [
+  { to: "/recursos/products/legend",       label: "Legend brochure", icon: FileText },
+  { to: "/recursos/products/coral",        label: "Coral deckplan",  icon: MapIcon },
+  { to: "/recursos/services/best-sellers", label: "Top combos",      icon: Sparkles },
+  { to: "/recursos/gallery",               label: "Photo pack HD",   icon: ImageIcon },
 ];
 
 const Recursos = () => {
@@ -73,33 +60,77 @@ const Recursos = () => {
         </div>
       </section>
 
-      {/* Tiles */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Featured */}
+      <section>
+        <Link
+          to={featured.to}
+          className="group relative overflow-hidden rounded-3xl block h-72 lg:h-80 shadow-soft hover:shadow-elegant transition-all duration-500"
+        >
+          <img src={featured.image} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-navy/20" />
+          <div className="relative h-full p-8 lg:p-12 flex flex-col justify-between text-white max-w-2xl">
+            <div className="inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full bg-white/15 backdrop-blur border border-white/20 text-[10px] uppercase tracking-wider">
+              <Package className="h-3.5 w-3.5" /> Featured
+            </div>
+            <div>
+              <h3 className="font-display text-3xl lg:text-4xl font-bold leading-tight">{featured.title}</h3>
+              <p className="text-primary-glow text-sm mt-2">{featured.sub}</p>
+              <p className="text-white/75 text-sm mt-3 max-w-lg">{featured.desc}</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium group-hover:gap-3 transition-all">
+                Browse products <ArrowRight className="h-4 w-4" />
+              </span>
+            </div>
+          </div>
+        </Link>
+      </section>
+
+      {/* Two main tiles */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {tiles.map(t => (
           <Link
             key={t.to}
             to={t.to}
-            className="group relative overflow-hidden rounded-2xl h-56 shadow-soft hover:shadow-elegant transition-all duration-500"
+            className="group relative overflow-hidden rounded-2xl h-60 shadow-soft hover:shadow-elegant transition-all duration-500 bg-card border border-border"
           >
             <div
-              className="absolute inset-0 bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
+              className="absolute inset-0 opacity-25 group-hover:opacity-40 bg-cover bg-center transition-opacity"
               style={{ backgroundImage: `url(${t.image})` }}
             />
-            <div className={`absolute inset-0 bg-gradient-to-br ${t.tone} opacity-85 group-hover:opacity-90 transition-opacity`} />
-            <div className="relative h-full p-6 flex flex-col justify-between text-white">
-              <div className="h-11 w-11 rounded-xl bg-white/15 backdrop-blur grid place-items-center border border-white/25">
+            <div className={`absolute inset-0 bg-gradient-to-br ${t.tone}`} />
+            <div className="relative h-full p-7 flex flex-col justify-between">
+              <div className={`h-12 w-12 rounded-xl bg-card shadow-soft grid place-items-center ${t.accent}`}>
                 <t.icon className="h-5 w-5" strokeWidth={1.6} />
               </div>
               <div>
-                <h3 className="font-display text-xl font-bold leading-tight">{t.title}</h3>
-                <p className="text-white/80 text-sm mt-1">{t.sub}</p>
-                <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium opacity-90 group-hover:gap-3 transition-all">
+                <h3 className="font-display text-2xl font-bold text-navy leading-tight">{t.title}</h3>
+                <p className={`text-sm font-medium mt-1 ${t.accent}`}>{t.sub}</p>
+                <p className="text-sm text-muted-foreground mt-2 max-w-md">{t.desc}</p>
+                <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-navy group-hover:gap-3 transition-all">
                   Open <ArrowRight className="h-3.5 w-3.5" />
                 </span>
               </div>
             </div>
           </Link>
         ))}
+      </section>
+
+      {/* Quick links */}
+      <section>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-3">Quick downloads</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {quickLinks.map(q => (
+            <Link
+              key={q.to}
+              to={q.to}
+              className="premium-card p-4 flex items-center gap-3 group hover:gradient-brand hover:text-white transition-premium"
+            >
+              <div className="h-9 w-9 rounded-lg bg-secondary group-hover:bg-white/20 grid place-items-center text-primary group-hover:text-white transition-colors">
+                <q.icon className="h-4 w-4" strokeWidth={1.6} />
+              </div>
+              <span className="text-sm font-medium text-navy group-hover:text-white">{q.label}</span>
+            </Link>
+          ))}
+        </div>
       </section>
     </div>
   );

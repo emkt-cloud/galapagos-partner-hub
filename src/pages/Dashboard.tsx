@@ -18,11 +18,11 @@ const shipImageMap: Record<string, string> = {
 };
 
 const kpis = [
-  { label: "Active bookings",   value: "182",  delta: "+12.4%",        up: true,  icon: Users,        tone: "primary"  },
-  { label: "Open holds",        value: "3",    delta: "1 expires today",up: false, icon: Clock4,       tone: "warning"  },
+  { label: "Active bookings",   value: "182",  delta: "+12.4% vs LM",  up: true,  icon: Users,        tone: "primary"  },
+  { label: "Quotes",            value: "27",   delta: "in the last 7d",up: true,  icon: FileText,     tone: "ocean"    },
+  { label: "Open holds",        value: "3",    delta: "1 expires today",up: false, icon: Clock4,      tone: "warning"  },
   { label: "Revenue MTD",       value: "$284K",delta: "+8.2%",         up: true,  icon: TrendingUp,   tone: "ocean"    },
   { label: "Upcoming departures",value: "14",  delta: "this week",     up: true,  icon: Ship,         tone: "primary"  },
-  { label: "Available cabins",  value: "37",   delta: "-6 vs yday",    up: false, icon: CheckCircle2, tone: "ocean"    },
   { label: "Miles",             value: "48.2K",delta: "Platinum",      up: true,  icon: Sparkles,     tone: "primary"  },
 ];
 
@@ -92,11 +92,11 @@ const Dashboard = () => {
         <div className="absolute inset-0 grid-luxe opacity-[0.08]" />
         <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.32em] text-primary-glow mb-3">Commercial Summary · April 2025</p>
+            <p className="text-[10px] uppercase tracking-[0.32em] text-primary-glow mb-3">Commercial Summary · April 2026</p>
             <h2 className="font-display text-3xl lg:text-[44px] font-light leading-[1.1] max-w-2xl tracking-tight">
-              You're <span className="font-semibold text-primary-glow">8.2%</span> above this month's target.
+              <span className="font-semibold text-primary-glow">182</span> active bookings this month.
             </h2>
-            <p className="text-white/65 mt-3 max-w-md text-[15px]">Your best April in three years. Lock in May with the Coral II departures.</p>
+            <p className="text-white/65 mt-3 max-w-md text-[15px]">27 open quotes · 3 active holds · $284K revenue MTD. Keep the momentum going through May.</p>
           </div>
           <div className="flex flex-wrap gap-2.5">
             <Link to="/reservas" className="h-11 px-5 rounded-xl bg-white text-navy font-medium hover:bg-primary-glow hover:text-white transition-premium text-sm">New booking</Link>

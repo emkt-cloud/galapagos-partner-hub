@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import { Check } from "lucide-react";
+import { Check, Sparkles, EyeOff } from "lucide-react";
 import { findProduct, type ResourceDoc, type ProductSlug } from "@/data/resources";
 import ResourceBreadcrumb from "@/components/resources/ResourceBreadcrumb";
 import DocCard from "@/components/resources/DocCard";
@@ -10,6 +10,7 @@ const ProductDetail = () => {
   const { slug } = useParams<{ slug: ProductSlug }>();
   const product = slug ? findProduct(slug) : undefined;
   const [activeDoc, setActiveDoc] = useState<ResourceDoc | null>(null);
+  const [variant, setVariant] = useState<"branded" | "unbranded">("branded");
 
   if (!product) return <Navigate to="/recursos/products" replace />;
 
@@ -37,12 +38,25 @@ const ProductDetail = () => {
 
       {/* Docs */}
       <section className="space-y-4">
-        <div className="flex items-end justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <h3 className="font-display text-xl font-bold text-navy">Downloadable resources</h3>
-            <p className="text-sm text-muted-foreground">Available in Spanish & English.</p>
+            <p className="text-sm text-muted-foreground">Available in Spanish & English · {variant === "branded" ? "GO Galápagos branded" : "Unbranded · ready for your own logo"}</p>
           </div>
-          <span className="text-xs text-muted-foreground">{product.docs.length} files</span>
+          <div className="inline-flex p-1 rounded-xl bg-secondary border border-border self-start">
+            <button
+              onClick={() => setVariant("branded")}
+              className={`h-9 px-4 rounded-lg text-xs font-medium inline-flex items-center gap-1.5 transition-premium ${variant === "branded" ? "gradient-brand text-white shadow-glow" : "text-muted-foreground hover:text-navy"}`}
+            >
+              <Sparkles className="h-3.5 w-3.5" /> Branded
+            </button>
+            <button
+              onClick={() => setVariant("unbranded")}
+              className={`h-9 px-4 rounded-lg text-xs font-medium inline-flex items-center gap-1.5 transition-premium ${variant === "unbranded" ? "bg-navy text-white shadow-soft" : "text-muted-foreground hover:text-navy"}`}
+            >
+              <EyeOff className="h-3.5 w-3.5" /> Unbranded
+            </button>
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {product.docs.map(d => (
