@@ -3,7 +3,7 @@ import { Outlet, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, CalendarRange, Clock4, CheckCircle2, Tag, Package,
   FolderOpen, Image as ImageIcon, Sparkles, LifeBuoy, ChevronLeft,
-  Search, Bell, LogOut, UserCircle2, Ship, Mountain, GraduationCap,
+  Search, Bell, LogOut, UserCircle2, Ship, Star, GraduationCap,
   Command, Home, Menu, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
