@@ -24,7 +24,7 @@ const groups: NavGroup[] = [
     label: "Operations",
     items: [
       { to: "/book/cruise",    label: "Book a Cruise",   icon: Ship },
-      { to: "/book/land",      label: "Book Land Tours", icon: Mountain },
+      { to: "/book/best-sellers", label: "Best Sellers",  icon: Star },
       { to: "/disponibilidad", label: "Availability",    icon: CalendarRange },
       { to: "/holds",          label: "Holds",           icon: Clock4, badge: "3" },
       { to: "/confirmadas",    label: "Confirmed",       icon: CheckCircle2 },
