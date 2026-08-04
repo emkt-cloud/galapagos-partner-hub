@@ -3,7 +3,7 @@ import { Outlet, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, CalendarRange, Clock4, CheckCircle2, Tag, Package,
   FolderOpen, Image as ImageIcon, Sparkles, LifeBuoy, ChevronLeft,
-  Search, Bell, LogOut, UserCircle2, Ship, Mountain, GraduationCap,
+  Search, Bell, LogOut, UserCircle2, Ship, Star, GraduationCap,
   Command, Home, Menu, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ const groups: NavGroup[] = [
     label: "Operations",
     items: [
       { to: "/book/cruise",    label: "Book a Cruise",   icon: Ship },
-      { to: "/book/land",      label: "Book Land Tours", icon: Mountain },
+      { to: "/book/best-sellers", label: "Best Sellers",  icon: Star },
       { to: "/disponibilidad", label: "Availability",    icon: CalendarRange },
       { to: "/holds",          label: "Holds",           icon: Clock4, badge: "3" },
       { to: "/confirmadas",    label: "Confirmed",       icon: CheckCircle2 },

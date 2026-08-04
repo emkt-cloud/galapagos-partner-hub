@@ -30,7 +30,8 @@ import Soporte from "./pages/Soporte";
 import Perfil from "./pages/Perfil";
 import Academy from "./pages/Academy";
 import BookingDetail from "./pages/BookingDetail";
-import { BookCruisePage, BookLandPage } from "./pages/BookCruise";
+import { BookCruisePage } from "./pages/BookCruise";
+import BestSellersBook from "./pages/BestSellersBook";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -48,7 +49,8 @@ const App = () => (
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/book/cruise" element={<BookCruisePage />} />
-            <Route path="/book/land" element={<BookLandPage />} />
+            <Route path="/book/best-sellers" element={<BestSellersBook />} />
+            <Route path="/book/land" element={<Navigate to="/book/best-sellers" replace />} />
             <Route path="/reservas" element={<Reservas />} />
             <Route path="/booking/:ref" element={<BookingDetail />} />
             <Route path="/academy" element={<Academy />} />
