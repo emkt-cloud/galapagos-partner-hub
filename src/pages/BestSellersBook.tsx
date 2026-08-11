@@ -1,20 +1,47 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Map, ArrowRight, ArrowLeft, CalendarRange, Users, Ship as ShipIcon,
-  Search, Clock, Tag, Check, UserCheck, Star, Save, Plane, Hotel, Bus
+  Search, Clock, Tag, Check, UserCheck, Star, Save, Plane, Hotel, Bus,
+  AlertCircle, CheckCircle2, FileText, Printer,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
-  bestSellerPackages, departuresFor,
+  bestSellerPackages, departuresFor, packageFamilies,
   type BestSellerPackage, type PackageDeparture, type CabinOption,
 } from "@/data/packages";
 import ItineraryDialog from "@/components/booking/ItineraryDialog";
 import ResourceBreadcrumb from "@/components/resources/ResourceBreadcrumb";
 
-type Step = "grid" | "search" | "departures" | "config";
+type Step = "grid" | "search" | "departures" | "config" | "confirmation";
+
+const STEPS: { id: Step; label: string }[] = [
+  { id: "grid", label: "Package" },
+  { id: "search", label: "Dates" },
+  { id: "departures", label: "Departure" },
+  { id: "config", label: "Cabins & quotation" },
+  { id: "confirmation", label: "Confirmation" },
+];
 
 const serviceIcon = (type: string) =>
   type === "Transfer" ? Bus : type === "Hotel" ? Hotel : type === "Galapagos Cruise" ? ShipIcon : Plane;
+
+const money = (n: number) => `$${n.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+
+type CabinRow = { occupancy: string; pax: string };
+type Errors = Record<string, string>;
+
+const inputCls = (bad?: boolean) =>
+  cn(
+    "w-full rounded-lg border bg-background text-sm px-3 transition-premium outline-none",
+    bad ? "border-destructive focus:border-destructive" : "border-border focus:border-primary",
+  );
+
+const FieldError = ({ msg }: { msg?: string }) =>
+  msg ? (
+    <p className="mt-1 text-[11px] text-destructive inline-flex items-center gap-1">
+      <AlertCircle className="h-3 w-3 shrink-0" /> {msg}
+    </p>
+  ) : null;
 
 const BestSellersBook = () => {
   const [step, setStep] = useState<Step>("grid");
@@ -22,15 +49,95 @@ const BestSellersBook = () => {
   const [departure, setDeparture] = useState<PackageDeparture | null>(null);
   const [cabin, setCabin] = useState<CabinOption | null>(null);
   const [itinOpen, setItinOpen] = useState<BestSellerPackage | null>(null);
+  const [family, setFamily] = useState<string>("All");
 
   // search form
   const [dates, setDates] = useState("2026-08-01");
   const [pax, setPax] = useState(2);
   const [ship, setShip] = useState("All ships");
+  const [searchErrors, setSearchErrors] = useState<Errors>({});
+
+  // quotation form
+  const [cabinRows, setCabinRows] = useState<CabinRow[]>([]);
+  const [guestRef, setGuestRef] = useState("");
+  const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
+  const [configErrors, setConfigErrors] = useState<Errors>({});
+  const [quotationRef, setQuotationRef] = useState("");
 
   const departures = pkg ? departuresFor(pkg) : [];
+  const visible = useMemo(
+    () => (family === "All" ? bestSellerPackages : bestSellerPackages.filter(p => p.family === family)),
+    [family],
+  );
+
+  const cabinCount = Math.max(1, Math.ceil(pax / 2));
+  const total = cabin ? cabin.gross * pax * (1 - (cabin.discount ?? 0) / 100) : 0;
 
   const openItinerary = (p: BestSellerPackage) => setItinOpen(p);
+
+  const stepIndex = STEPS.findIndex(s => s.id === step);
+  const canGoTo = (i: number) =>
+    i <= stepIndex ||
+    (i === 1 && !!pkg) ||
+    (i === 2 && !!pkg) ||
+    (i === 3 && !!departure && !!cabin);
+
+  const goTo = (id: Step) => {
+    const i = STEPS.findIndex(s => s.id === id);
+    if (canGoTo(i)) setStep(id);
+  };
+
+  // ── validations ────────────────────────────────────
+  const validateSearch = () => {
+    const e: Errors = {};
+    if (!dates) e.dates = "Select a cruise start date.";
+    else if (new Date(dates) < new Date("2026-01-01")) e.dates = "Departures are available from Jan 2026.";
+    if (!pax || pax < 1) e.pax = "At least 1 passenger is required.";
+    if (pax > 20) e.pax = "For groups over 20 pax please contact your sales rep.";
+    setSearchErrors(e);
+    if (Object.keys(e).length) return;
+    setStep("departures");
+  };
+
+  const startConfig = (d: PackageDeparture, c: CabinOption) => {
+    setDeparture(d);
+    setCabin(c);
+    setCabinRows(
+      Array.from({ length: Math.max(1, Math.ceil(pax / 2)) }, (_, i) => ({
+        occupancy: "",
+        pax: i === 0 ? "2 ADT" : "",
+      })),
+    );
+    setConfigErrors({});
+    setStep("config");
+  };
+
+  const updateRow = (i: number, patch: Partial<CabinRow>) =>
+    setCabinRows(rows => rows.map((r, idx) => (idx === i ? { ...r, ...patch } : r)));
+
+  const validateConfig = () => {
+    const e: Errors = {};
+    if (guestRef.trim().length < 3) e.guestRef = "Enter a guest reference (min. 3 characters).";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) e.email = "Enter a valid contact email.";
+    cabinRows.forEach((r, i) => {
+      if (!r.occupancy) e[`occ-${i}`] = "Select an occupancy.";
+      if (!r.pax) e[`pax-${i}`] = "Select the passenger mix.";
+    });
+    if (departure && cabinRows.length > departure.maxCabins)
+      e.cabins = `Only ${departure.maxCabins} cabins are available on this departure.`;
+    setConfigErrors(e);
+    if (Object.keys(e).length) return;
+    setQuotationRef(`Q ${129000 + Math.floor(Math.random() * 900) + 100}`);
+    setStep("confirmation");
+  };
+
+  const resetAll = () => {
+    setStep("grid");
+    setPkg(null); setDeparture(null); setCabin(null);
+    setGuestRef(""); setEmail(""); setNotes(""); setCabinRows([]);
+    setConfigErrors({}); setSearchErrors({}); setQuotationRef("");
+  };
 
   return (
     <div className="space-y-6 max-w-[1480px]">
@@ -41,18 +148,76 @@ const BestSellersBook = () => {
         ]}
       />
 
+      {/* ── STEPPER ───────────────────────────────────── */}
+      {step !== "grid" && (
+        <nav aria-label="Booking steps" className="premium-card p-3 sm:p-4 overflow-x-auto">
+          <ol className="flex items-center gap-2 min-w-max">
+            {STEPS.map((s, i) => {
+              const done = i < stepIndex;
+              const active = i === stepIndex;
+              const clickable = canGoTo(i) && !active;
+              return (
+                <li key={s.id} className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    disabled={!clickable}
+                    onClick={() => goTo(s.id)}
+                    aria-current={active ? "step" : undefined}
+                    className={cn(
+                      "inline-flex items-center gap-2 h-9 px-3 rounded-full text-xs font-medium transition-premium",
+                      active && "gradient-brand text-white shadow-soft",
+                      !active && done && "bg-secondary text-navy hover:bg-secondary/80",
+                      !active && !done && "text-muted-foreground",
+                      !clickable && !active && "cursor-default",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "h-5 w-5 grid place-items-center rounded-full text-[10px] font-bold",
+                        active ? "bg-white/25" : done ? "bg-primary text-white" : "bg-secondary",
+                      )}
+                    >
+                      {done ? <Check className="h-3 w-3" /> : i + 1}
+                    </span>
+                    {s.label}
+                  </button>
+                  {i < STEPS.length - 1 && <span className="h-px w-4 sm:w-8 bg-border" />}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
+      )}
+
       {/* ── STEP 1 · GRID ─────────────────────────────── */}
       {step === "grid" && (
         <>
           <div>
             <h2 className="font-display text-2xl font-bold text-navy">Best Sellers</h2>
             <p className="text-sm text-muted-foreground">
-              Six signature packages combining Quito, the Andes and a Galápagos cruise.
+              {bestSellerPackages.length} signature packages across Quito, the Andes, the Amazon, Peru and the Galápagos.
             </p>
           </div>
 
+          <div className="flex flex-wrap gap-2">
+            {["All", ...packageFamilies].map(f => (
+              <button
+                key={f}
+                onClick={() => setFamily(f)}
+                className={cn(
+                  "h-8 px-3 rounded-full text-xs font-medium border transition-premium",
+                  family === f
+                    ? "gradient-brand text-white border-transparent shadow-soft"
+                    : "border-border text-muted-foreground hover:text-navy hover:border-primary/40",
+                )}
+              >
+                {f === "All" ? "All packages" : f.split(":")[0]}
+              </button>
+            ))}
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {bestSellerPackages.map(p => (
+            {visible.map(p => (
               <article key={p.slug} className="premium-card overflow-hidden flex flex-col group">
                 <div className="relative h-44 overflow-hidden">
                   <img src={p.cover} alt={p.title} loading="lazy"
@@ -72,7 +237,7 @@ const BestSellersBook = () => {
 
                   <div className="mt-3 flex items-center gap-3 text-[11px] text-muted-foreground">
                     <span className="inline-flex items-center gap-1"><ShipIcon className="h-3 w-3 text-primary" /> Cruise {p.cruiseDuration.split("/")[0].trim()}</span>
-                    <span className="inline-flex items-center gap-1"><Tag className="h-3 w-3 text-primary" /> From ${p.fromUSD.toLocaleString()}</span>
+                    <span className="inline-flex items-center gap-1"><Tag className="h-3 w-3 text-primary" /> From {money(p.fromUSD)}</span>
                   </div>
 
                   <div className="mt-4 flex items-center gap-2">
@@ -83,7 +248,7 @@ const BestSellersBook = () => {
                       <Map className="h-3.5 w-3.5" /> Itinerary
                     </button>
                     <button
-                      onClick={() => { setPkg(p); setStep("search"); }}
+                      onClick={() => { setPkg(p); setSearchErrors({}); setStep("search"); }}
                       className="flex-1 h-10 rounded-xl gradient-brand text-white text-sm font-semibold inline-flex items-center justify-center gap-2 shadow-soft hover:shadow-elegant transition-premium"
                     >
                       Book <ArrowRight className="h-4 w-4" />
@@ -116,15 +281,17 @@ const BestSellersBook = () => {
                   <label className="text-[10px] uppercase tracking-wider text-white/60 inline-flex items-center gap-1.5"><Tag className="h-3 w-3" /> Rate / Product</label>
                   <p className="text-sm mt-1">FTS · {pkg.code} Package</p>
                 </div>
-                <div className="rounded-2xl bg-white/10 backdrop-blur border border-white/20 p-3">
+                <div className={cn("rounded-2xl bg-white/10 backdrop-blur border p-3", searchErrors.dates ? "border-destructive" : "border-white/20")}>
                   <label className="text-[10px] uppercase tracking-wider text-white/60 inline-flex items-center gap-1.5"><CalendarRange className="h-3 w-3" /> Cruise date</label>
-                  <input type="date" value={dates} onChange={e => setDates(e.target.value)}
+                  <input type="date" value={dates} onChange={e => { setDates(e.target.value); setSearchErrors(s => ({ ...s, dates: "" })); }}
                     className="w-full bg-transparent text-sm mt-1 outline-none [color-scheme:dark]" />
+                  {searchErrors.dates && <p className="mt-1 text-[11px] text-red-300 inline-flex items-center gap-1"><AlertCircle className="h-3 w-3" /> {searchErrors.dates}</p>}
                 </div>
-                <div className="rounded-2xl bg-white/10 backdrop-blur border border-white/20 p-3">
+                <div className={cn("rounded-2xl bg-white/10 backdrop-blur border p-3", searchErrors.pax ? "border-destructive" : "border-white/20")}>
                   <label className="text-[10px] uppercase tracking-wider text-white/60 inline-flex items-center gap-1.5"><Users className="h-3 w-3" /> Passengers</label>
-                  <input type="number" min={1} max={20} value={pax} onChange={e => setPax(+e.target.value)}
+                  <input type="number" min={1} max={20} value={pax} onChange={e => { setPax(+e.target.value); setSearchErrors(s => ({ ...s, pax: "" })); }}
                     className="w-full bg-transparent text-sm mt-1 outline-none" />
+                  {searchErrors.pax && <p className="mt-1 text-[11px] text-red-300 inline-flex items-center gap-1"><AlertCircle className="h-3 w-3" /> {searchErrors.pax}</p>}
                 </div>
                 <div className="rounded-2xl bg-white/10 backdrop-blur border border-white/20 p-3">
                   <label className="text-[10px] uppercase tracking-wider text-white/60 inline-flex items-center gap-1.5"><ShipIcon className="h-3 w-3" /> Ship</label>
@@ -136,7 +303,7 @@ const BestSellersBook = () => {
               </div>
 
               <div className="mt-5 flex items-center gap-3">
-                <button onClick={() => setStep("departures")}
+                <button onClick={validateSearch}
                   className="h-11 px-6 rounded-xl bg-white text-navy text-sm font-semibold inline-flex items-center gap-2 hover:gap-3 transition-all">
                   <Search className="h-4 w-4" /> Search availability
                 </button>
@@ -215,7 +382,7 @@ const BestSellersBook = () => {
                         <button
                           key={c.name}
                           disabled={!c.available}
-                          onClick={() => { setDeparture(d); setCabin(c); setStep("config"); }}
+                          onClick={() => startConfig(d, c)}
                           className={cn(
                             "text-left rounded-xl border p-3 transition-premium",
                             c.available
@@ -225,7 +392,7 @@ const BestSellersBook = () => {
                         >
                           <p className="text-xs font-medium text-navy">{c.name}</p>
                           <div className="mt-1 flex items-baseline gap-2">
-                            <span className="font-display text-lg font-bold text-navy">${c.gross.toLocaleString()}</span>
+                            <span className="font-display text-lg font-bold text-navy">{money(c.gross)}</span>
                             {c.discount && <span className="pill bg-primary text-white text-[10px]">-{c.discount}%</span>}
                           </div>
                           <p className="text-[10px] text-muted-foreground mt-0.5">
@@ -253,6 +420,18 @@ const BestSellersBook = () => {
             <p className="text-sm text-muted-foreground">{pkg.title} · {departure.ship}</p>
           </div>
 
+          {Object.keys(configErrors).length > 0 && (
+            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 flex items-start gap-2.5">
+              <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-destructive">Please complete the highlighted fields</p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {Object.keys(configErrors).length} field(s) need your attention before the quotation can be generated.
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 xl:grid-cols-[1.4fr_0.85fr] gap-6 items-start">
             <div className="space-y-5">
               {/* 1 Departure information */}
@@ -275,47 +454,94 @@ const BestSellersBook = () => {
 
               {/* 2 Cabins and accommodation */}
               <section className="premium-card p-6">
-                <h3 className="font-display text-lg font-bold text-navy">2. Cabins and accommodation</h3>
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="font-display text-lg font-bold text-navy">2. Cabins and accommodation</h3>
+                  <span className="text-[11px] text-muted-foreground">{cabinCount} cabin(s) · {pax} pax</span>
+                </div>
+                <FieldError msg={configErrors.cabins} />
                 <div className="mt-4 space-y-3">
-                  {Array.from({ length: Math.max(1, Math.ceil(pax / 2)) }, (_, i) => (
-                    <div key={i} className="rounded-xl border border-border p-4 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                  {cabinRows.map((row, i) => (
+                    <div key={i} className="rounded-xl border border-border p-4 grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
                       <div>
                         <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Cabin {i + 1}</p>
                         <p className="text-sm font-semibold text-navy">{cabin.name}</p>
                       </div>
                       <div>
-                        <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Occupancy</label>
-                        <select className="w-full h-9 mt-1 rounded-lg border border-border bg-background text-sm px-2">
+                        <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Occupancy *</label>
+                        <select
+                          value={row.occupancy}
+                          onChange={e => { updateRow(i, { occupancy: e.target.value }); setConfigErrors(s => ({ ...s, [`occ-${i}`]: "" })); }}
+                          className={cn(inputCls(!!configErrors[`occ-${i}`]), "h-9 mt-1 px-2")}
+                        >
+                          <option value="">Select…</option>
                           <option>Double</option><option>Twin</option><option>Single</option><option>Triple</option>
                         </select>
+                        <FieldError msg={configErrors[`occ-${i}`]} />
                       </div>
                       <div>
-                        <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Passengers</label>
-                        <select className="w-full h-9 mt-1 rounded-lg border border-border bg-background text-sm px-2">
-                          <option>2 ADT</option><option>1 ADT</option><option>1 ADT + 1 CHD</option>
+                        <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Passengers *</label>
+                        <select
+                          value={row.pax}
+                          onChange={e => { updateRow(i, { pax: e.target.value }); setConfigErrors(s => ({ ...s, [`pax-${i}`]: "" })); }}
+                          className={cn(inputCls(!!configErrors[`pax-${i}`]), "h-9 mt-1 px-2")}
+                        >
+                          <option value="">Select…</option>
+                          <option>2 ADT</option><option>1 ADT</option><option>1 ADT + 1 CHD</option><option>3 ADT</option>
                         </select>
+                        <FieldError msg={configErrors[`pax-${i}`]} />
                       </div>
                     </div>
                   ))}
                 </div>
               </section>
 
-              {/* 3 Quotation summary */}
+              {/* 3 Save quotation */}
               <section className="premium-card p-6">
                 <h3 className="font-display text-lg font-bold text-navy">3. Save this quotation</h3>
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Guest reference</label>
-                    <input placeholder="e.g. Pérez · 2 ADT" className="w-full h-10 mt-1 rounded-lg border border-border bg-background text-sm px-3" />
+                    <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Guest reference *</label>
+                    <input
+                      value={guestRef}
+                      onChange={e => { setGuestRef(e.target.value); setConfigErrors(s => ({ ...s, guestRef: "" })); }}
+                      placeholder="e.g. Pérez · 2 ADT"
+                      className={cn(inputCls(!!configErrors.guestRef), "h-10 mt-1")}
+                    />
+                    <FieldError msg={configErrors.guestRef} />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Quotation ref.</label>
-                    <input readOnly value="Q 129104" className="w-full h-10 mt-1 rounded-lg border border-border bg-secondary/60 text-sm px-3 font-medium text-navy" />
+                    <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Contact email *</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={e => { setEmail(e.target.value); setConfigErrors(s => ({ ...s, email: "" })); }}
+                      placeholder="agent@agency.com"
+                      className={cn(inputCls(!!configErrors.email), "h-10 mt-1")}
+                    />
+                    <FieldError msg={configErrors.email} />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Observations</label>
+                    <textarea
+                      value={notes}
+                      onChange={e => setNotes(e.target.value)}
+                      rows={3}
+                      placeholder="Dietary needs, flight details, celebrations…"
+                      className={cn(inputCls(false), "mt-1 py-2 resize-none")}
+                    />
                   </div>
                 </div>
-                <button className="mt-5 h-11 px-6 rounded-xl gradient-brand text-white text-sm font-semibold inline-flex items-center gap-2 shadow-soft hover:shadow-elegant transition-premium">
-                  <Save className="h-4 w-4" /> Save quotation
-                </button>
+
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <button onClick={() => setStep("departures")}
+                    className="h-11 px-5 rounded-xl border border-border text-sm text-muted-foreground hover:text-navy hover:border-primary/40 inline-flex items-center gap-2 transition-premium">
+                    <ArrowLeft className="h-4 w-4" /> Previous step
+                  </button>
+                  <button onClick={validateConfig}
+                    className="h-11 px-6 rounded-xl gradient-brand text-white text-sm font-semibold inline-flex items-center gap-2 shadow-soft hover:shadow-elegant transition-premium">
+                    <Save className="h-4 w-4" /> Save & review quotation
+                  </button>
+                </div>
               </section>
             </div>
 
@@ -353,11 +579,151 @@ const BestSellersBook = () => {
               <div className="mt-5 pt-4 border-t border-border/60 flex items-end justify-between">
                 <div>
                   <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total ({pax} pax)</p>
-                  <p className="font-display text-2xl font-bold text-navy">
-                    ${(cabin.gross * pax * (1 - (cabin.discount ?? 0) / 100)).toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                  </p>
+                  <p className="font-display text-2xl font-bold text-navy">{money(total)}</p>
                 </div>
                 <p className="text-[11px] text-muted-foreground">{cabin.name}</p>
+              </div>
+            </aside>
+          </div>
+        </>
+      )}
+
+      {/* ── STEP 5 · CONFIRMATION ─────────────────────── */}
+      {step === "confirmation" && pkg && departure && cabin && (
+        <>
+          <section className="premium-card p-6 lg:p-8 border-primary/30">
+            <div className="flex items-start gap-4">
+              <span className="h-11 w-11 rounded-2xl bg-primary/10 grid place-items-center shrink-0">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+              </span>
+              <div>
+                <h2 className="font-display text-2xl font-bold text-navy">Quotation saved</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Reference <span className="font-semibold text-navy">{quotationRef}</span> · held for 72 hours ·
+                  guest <span className="font-semibold text-navy">{guestRef}</span> · {email}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <div className="grid grid-cols-1 xl:grid-cols-[1.4fr_0.85fr] gap-6 items-start">
+            <div className="space-y-5">
+              <section className="premium-card p-6">
+                <h3 className="font-display text-lg font-bold text-navy">Selected package</h3>
+                <div className="mt-4 flex items-start gap-4">
+                  <img src={pkg.cover} alt="" className="h-20 w-28 rounded-xl object-cover shadow-soft" />
+                  <div>
+                    <p className="font-semibold text-navy">{pkg.title}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{pkg.subtitle}</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <span className="pill bg-secondary text-navy text-[11px]">{pkg.packageDuration}</span>
+                      <span className="pill bg-primary/10 text-primary text-[11px]">Cruise {pkg.cruiseDuration}</span>
+                      <span className="pill bg-secondary text-navy text-[11px]">{pkg.itinerary.code}</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section className="premium-card p-6">
+                <h3 className="font-display text-lg font-bold text-navy">Cruise & package dates</h3>
+                <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  {[
+                    ["Ship", departure.ship],
+                    ["Guides", departure.langs.join(" / ")],
+                    ["Package dates", `${departure.packageStart} → ${departure.packageEnd}`],
+                    ["Cruise dates", `${departure.cruiseStart} → ${departure.cruiseEnd}`],
+                  ].map(([k, v]) => (
+                    <div key={k} className="rounded-xl bg-secondary/60 p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{k}</p>
+                      <p className="text-sm font-semibold text-navy mt-0.5">{v}</p>
+                    </div>
+                  ))}
+                </div>
+                <button onClick={() => openItinerary(pkg)}
+                  className="mt-4 h-9 px-3 rounded-lg border border-border text-xs text-muted-foreground hover:text-navy hover:border-primary/40 inline-flex items-center gap-1.5 transition-premium">
+                  <Map className="h-3.5 w-3.5" /> View {pkg.itinerary.code}
+                </button>
+              </section>
+
+              <section className="premium-card p-6">
+                <h3 className="font-display text-lg font-bold text-navy">Cabin configuration</h3>
+                <div className="mt-4 overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-[10px] uppercase tracking-wider text-muted-foreground text-left">
+                        <th className="pb-2 font-medium">Cabin</th>
+                        <th className="pb-2 font-medium">Category</th>
+                        <th className="pb-2 font-medium">Occupancy</th>
+                        <th className="pb-2 font-medium">Passengers</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cabinRows.map((r, i) => (
+                        <tr key={i} className="border-t border-border/60">
+                          <td className="py-2.5 text-navy font-medium">Cabin {i + 1}</td>
+                          <td className="py-2.5 text-muted-foreground">{cabin.name}</td>
+                          <td className="py-2.5 text-muted-foreground">{r.occupancy}</td>
+                          <td className="py-2.5 text-muted-foreground">{r.pax}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {notes && (
+                  <div className="mt-4 rounded-xl bg-secondary/60 p-3">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Observations</p>
+                    <p className="text-sm text-navy mt-0.5">{notes}</p>
+                  </div>
+                )}
+              </section>
+            </div>
+
+            {/* Quotation preview */}
+            <aside className="premium-card p-6 xl:sticky xl:top-6">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-primary" />
+                <p className="text-[10px] uppercase tracking-[0.25em] text-primary">Quotation preview</p>
+              </div>
+              <h3 className="font-display text-xl font-bold text-navy mt-2">{quotationRef}</h3>
+              <p className="text-xs text-muted-foreground">GO Galapagos by KleinTours · Status: Quote</p>
+
+              <div className="mt-4 space-y-1.5 text-xs">
+                {[
+                  ["Package", `${pkg.code} · ${pkg.packageDuration}`],
+                  ["Ship", departure.ship],
+                  ["Cabin category", cabin.name],
+                  ["Cabins", String(cabinRows.length)],
+                  ["Passengers", `${pax} pax`],
+                  ["Gross per pax", money(cabin.gross)],
+                  ["Discount", cabin.discount ? `-${cabin.discount}%` : "—"],
+                ].map(([k, v]) => (
+                  <div key={k} className="flex items-center justify-between gap-3">
+                    <span className="text-muted-foreground">{k}</span>
+                    <span className="text-navy font-medium text-right">{v}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-border/60 flex items-end justify-between">
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total quotation</p>
+                  <p className="font-display text-2xl font-bold text-navy">{money(total)}</p>
+                </div>
+                <p className="text-[11px] text-muted-foreground">USD · net of taxes</p>
+              </div>
+
+              <div className="mt-5 space-y-2">
+                <button className="w-full h-11 rounded-xl gradient-brand text-white text-sm font-semibold inline-flex items-center justify-center gap-2 shadow-soft hover:shadow-elegant transition-premium">
+                  <Printer className="h-4 w-4" /> Download quotation
+                </button>
+                <button onClick={() => setStep("config")}
+                  className="w-full h-11 rounded-xl border border-border text-sm text-muted-foreground hover:text-navy hover:border-primary/40 inline-flex items-center justify-center gap-2 transition-premium">
+                  <ArrowLeft className="h-4 w-4" /> Edit configuration
+                </button>
+                <button onClick={resetAll}
+                  className="w-full h-11 rounded-xl bg-secondary text-navy text-sm font-medium inline-flex items-center justify-center gap-2 hover:bg-secondary/80 transition-premium">
+                  New quotation
+                </button>
               </div>
             </aside>
           </div>
