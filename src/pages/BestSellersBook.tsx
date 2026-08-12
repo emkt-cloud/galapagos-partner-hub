@@ -555,48 +555,9 @@ const BestSellersBook = () => {
                 </div>
               </section>
             </div>
-
-            {/* Summary sidebar */}
-            <aside className="premium-card p-6 xl:sticky xl:top-6">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-primary">Package detail</p>
-              <h3 className="font-display text-lg font-bold text-navy mt-1 leading-tight">{pkg.title}</h3>
-              <p className="text-xs text-muted-foreground mt-1">{pkg.packageDuration} · Cruise {pkg.cruiseDuration}</p>
-
-              <div className="mt-4 space-y-2">
-                {pkg.services.map((s, i) => {
-                  const Icon = serviceIcon(s.type);
-                  return (
-                    <div key={i} className="flex items-start gap-2.5 text-xs">
-                      <span className="h-6 w-6 shrink-0 rounded-lg bg-secondary grid place-items-center">
-                        <Icon className="h-3 w-3 text-primary" />
-                      </span>
-                      <div className="min-w-0">
-                        <p className="text-navy font-medium truncate">{s.service}</p>
-                        <p className="text-[10px] text-muted-foreground">Day {s.day} · {s.type}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-border/60 space-y-1.5">
-                {pkg.includes.map(i => (
-                  <p key={i} className="text-[11px] text-muted-foreground flex items-start gap-1.5">
-                    <Check className="h-3 w-3 mt-0.5 text-primary shrink-0" /> {i}
-                  </p>
-                ))}
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-border/60 flex items-end justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Total ({pax} pax)</p>
-                  <p className="font-display text-2xl font-bold text-navy">{money(total)}</p>
-                </div>
-                <p className="text-[11px] text-muted-foreground">{cabin.name}</p>
-              </div>
-            </aside>
           </div>
         </>
+
       )}
 
       {/* ── STEP 5 · CONFIRMATION ─────────────────────── */}
