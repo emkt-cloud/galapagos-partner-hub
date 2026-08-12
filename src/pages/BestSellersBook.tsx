@@ -412,28 +412,39 @@ const BestSellersBook = () => {
       {/* ── STEP 4 · CABIN CONFIG & QUOTATION ─────────── */}
       {step === "config" && pkg && departure && cabin && (
         <>
-          <button onClick={() => setStep("departures")} className="text-xs text-muted-foreground inline-flex items-center gap-1.5 hover:text-navy">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to departures
-          </button>
-          <div>
-            <h2 className="font-display text-2xl font-bold text-navy">Cabin configuration & save quotation</h2>
-            <p className="text-sm text-muted-foreground">{pkg.title} · {departure.ship}</p>
-          </div>
+          <div className="relative mx-auto w-full max-w-3xl space-y-5">
+            <button onClick={() => setStep("departures")} className="text-xs text-muted-foreground inline-flex items-center gap-1.5 hover:text-navy">
+              <ArrowLeft className="h-3.5 w-3.5" /> Back to departures
+            </button>
 
-          {Object.keys(configErrors).length > 0 && (
-            <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 flex items-start gap-2.5">
-              <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+            <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold text-destructive">Please complete the highlighted fields</p>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {Object.keys(configErrors).length} field(s) need your attention before the quotation can be generated.
-                </p>
+                <h2 className="font-display text-2xl font-bold text-navy">Cabin configuration & save quotation</h2>
+                <p className="text-sm text-muted-foreground">{pkg.title} · {departure.ship}</p>
+              </div>
+              <div className="hidden sm:block shrink-0 sticky top-6 z-20">
+                <QuotationSummarySheet pkg={pkg} departure={departure} total={total} pax={pax} cabinName={cabin.name} />
               </div>
             </div>
-          )}
 
-          <div className="grid grid-cols-1 xl:grid-cols-[1.4fr_0.85fr] gap-6 items-start">
+            <div className="sm:hidden">
+              <QuotationSummarySheet pkg={pkg} departure={departure} total={total} pax={pax} cabinName={cabin.name} />
+            </div>
+
+            {Object.keys(configErrors).length > 0 && (
+              <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 flex items-start gap-2.5">
+                <AlertCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold text-destructive">Please complete the highlighted fields</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    {Object.keys(configErrors).length} field(s) need your attention before the quotation can be generated.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div className="space-y-5">
+
               {/* 1 Departure information */}
               <section className="premium-card p-6">
                 <h3 className="font-display text-lg font-bold text-navy">1. Departure information</h3>
