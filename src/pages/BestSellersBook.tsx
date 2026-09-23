@@ -705,6 +705,11 @@ const BestSellersBook = () => {
         </>
       )}
 
+      <PackagePreviewDialog
+        pkg={previewOpen}
+        open={!!previewOpen}
+        onOpenChange={v => !v && setPreviewOpen(null)}
+      />
       <ItineraryDialog
         itinerary={itinOpen?.itinerary ?? null}
         open={!!itinOpen}
