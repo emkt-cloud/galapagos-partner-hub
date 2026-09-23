@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  ArrowLeft, Check, Download, ExternalLink, GraduationCap, ListChecks,
+  ArrowLeft, Check, Download, ExternalLink, FileText, GraduationCap, ListChecks,
   MonitorPlay, Play,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
