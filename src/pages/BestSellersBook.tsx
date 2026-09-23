@@ -10,6 +10,7 @@ import {
   type BestSellerPackage, type PackageDeparture, type CabinOption,
 } from "@/data/packages";
 import ItineraryDialog from "@/components/booking/ItineraryDialog";
+import PackagePreviewDialog from "@/components/booking/PackagePreviewDialog";
 import QuotationSummarySheet from "@/components/booking/QuotationSummarySheet";
 import ResourceBreadcrumb from "@/components/resources/ResourceBreadcrumb";
 
