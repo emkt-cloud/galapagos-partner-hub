@@ -245,7 +245,7 @@ const BestSellersBook = () => {
 
                   <div className="mt-4 flex items-center gap-2">
                     <button
-                      onClick={() => openItinerary(p)}
+                      onClick={() => setPreviewOpen(p)}
                       className="h-10 px-3 rounded-xl border border-border text-xs text-muted-foreground hover:text-navy hover:border-primary/40 inline-flex items-center gap-1.5 transition-premium"
                     >
                       <Map className="h-3.5 w-3.5" /> Itinerary
