@@ -10,6 +10,7 @@ import {
   type BestSellerPackage, type PackageDeparture, type CabinOption,
 } from "@/data/packages";
 import ItineraryDialog from "@/components/booking/ItineraryDialog";
+import PackagePreviewDialog from "@/components/booking/PackagePreviewDialog";
 import QuotationSummarySheet from "@/components/booking/QuotationSummarySheet";
 import ResourceBreadcrumb from "@/components/resources/ResourceBreadcrumb";
 
@@ -50,6 +51,7 @@ const BestSellersBook = () => {
   const [departure, setDeparture] = useState<PackageDeparture | null>(null);
   const [cabin, setCabin] = useState<CabinOption | null>(null);
   const [itinOpen, setItinOpen] = useState<BestSellerPackage | null>(null);
+  const [previewOpen, setPreviewOpen] = useState<BestSellerPackage | null>(null);
   const [family, setFamily] = useState<string>("All");
 
   // search form
@@ -243,7 +245,7 @@ const BestSellersBook = () => {
 
                   <div className="mt-4 flex items-center gap-2">
                     <button
-                      onClick={() => openItinerary(p)}
+                      onClick={() => setPreviewOpen(p)}
                       className="h-10 px-3 rounded-xl border border-border text-xs text-muted-foreground hover:text-navy hover:border-primary/40 inline-flex items-center gap-1.5 transition-premium"
                     >
                       <Map className="h-3.5 w-3.5" /> Itinerary
@@ -703,6 +705,11 @@ const BestSellersBook = () => {
         </>
       )}
 
+      <PackagePreviewDialog
+        pkg={previewOpen}
+        open={!!previewOpen}
+        onOpenChange={v => !v && setPreviewOpen(null)}
+      />
       <ItineraryDialog
         itinerary={itinOpen?.itinerary ?? null}
         open={!!itinOpen}
