@@ -51,6 +51,7 @@ const BestSellersBook = () => {
   const [departure, setDeparture] = useState<PackageDeparture | null>(null);
   const [cabin, setCabin] = useState<CabinOption | null>(null);
   const [itinOpen, setItinOpen] = useState<BestSellerPackage | null>(null);
+  const [previewOpen, setPreviewOpen] = useState<BestSellerPackage | null>(null);
   const [family, setFamily] = useState<string>("All");
 
   // search form
